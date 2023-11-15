@@ -2,10 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import platform
+from dotenv import load_dotenv
 
 
 def main():
     """Run administrative tasks."""
+    if platform.node() == 'digi-khedmat':
+        load_dotenv('.env.prod')
+    else:
+        load_dotenv('.env.dev')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'digi_kedmat.settings')
     try:
         from django.core.management import execute_from_command_line

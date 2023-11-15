@@ -1,17 +1,17 @@
 <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="{% url 'main-page' %}">دیجی خدمت</a>
-      </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">خانه</a></li>
-        <li><a href="#">تهاتر کالا</a></li>
-        <li><a href="#">تبلیغات</a></li>
-        <li><a href="#">کاریابی</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">ثبت نام</a></li>
-        <li><a href="#">ورود</a></li>
-      </ul>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'main-page' %}">دیجی خدمت</a>
     </div>
-  </nav> 
+    <ul id="main-nav" class="nav navbar-nav">
+      <li class="active"><a href="{% url 'main-page' %}">خانه</a></li>
+      <li><a href="#">تهاتر کالا</a></li>
+      <li><a href="#">تبلیغات</a></li>
+      <li><a href="#">کاریابی</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-left">
+      <li><a href="#">ثبت نام</a></li>
+      <li><a href="#">ورود</a></li>
+    </ul>
+  </div>
+</nav> 
