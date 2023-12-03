@@ -10,7 +10,7 @@ DEBUG = eval(os.environ.get('DEBUG'))
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+    ALLOWED_HOSTS = eval(os.environ.get('ALLOWED_HOSTS'))
 
 # installed Apps for Application
 INSTALLED_APPS = [
