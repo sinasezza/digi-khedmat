@@ -23,6 +23,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.main_view,name='main-page'),
+    path('account/',include('account.urls')),
 ]
 
 if settings.DEBUG:

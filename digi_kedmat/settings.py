@@ -11,6 +11,10 @@ if DEBUG:
     ALLOWED_HOSTS = []
 else:
     ALLOWED_HOSTS = eval(os.environ.get('ALLOWED_HOSTS'))
+    
+
+# Authentication Model
+AUTH_USER_MODEL = 'account.Account'
 
 # installed Apps for Application
 INSTALLED_APPS = [
@@ -24,8 +28,10 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'bootstrap5',
+    'phonenumber_field',
     
     # self apps
+    'account',
     
 ]
 
@@ -86,13 +92,21 @@ TIME_ZONE = os.environ.get('TIME_ZONE')
 USE_I18N = os.environ.get('USE_I18N')
 USE_TZ = os.environ.get('USE_TZ')
 
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = os.environ.get('STATIC_URL')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+
 
 # Media Files (image, video, ...)
 MEDIA_URL = os.environ.get('MEDIA_URL')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # default Auto Field
 DEFAULT_AUTO_FIELD = os.environ.get('DEFAULT_AUTO_FIELD')
+
+
+# PhoneNumberField Configurations
+PHONENUMBER_DEFAULT_REGION = os.environ.get("PHONENUMBER_DEFAULT_REGION")
+PHONENUMBER_DEFAULT_FORMAT = os.environ.get("PHONENUMBER_DEFAULT_FORMAT")
