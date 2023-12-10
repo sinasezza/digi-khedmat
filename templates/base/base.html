@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load compress %} 
     {% load static %}
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
+    {% compress css %} 
+        <link rel="stylesheet" href="{% static 'tailwind/tailwind-output.css' %}"> 
+    {% endcompress %} 
     {% block custom_assets %}{% endblock custom_assets %}
     <title>{% block title %}دیجی خدمت{% endblock title %}</title>
 </head>
