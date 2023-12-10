@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +32,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'bootstrap5',
     'phonenumber_field',
+    'compressor',
+    'cssmin',
+    'jsmin',
     
     # self apps
     'account',
@@ -36,6 +42,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.gzip.GZipMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -96,11 +105,38 @@ USE_TZ = os.environ.get('USE_TZ')
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = os.environ.get('STATIC_URL')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static-cdn')
+else:
+    STATIC_ROOT = os.environ.get('STATIC_ROOT')
+
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
+
+# Compression settings and conf
+COMPRESS_ROOT = BASE_DIR / 'static'
+COMPRESS_ENABLED = not DEBUG
+COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_FILTERS = {
+    'css':[
+        'compressor.filters.css_default.CssAbsoluteFilter',
+        'compressor.filters.cssmin.rCSSMinFilter',
+    ],
+    'js':[
+        'compressor.filters.jsmin.JSMinFilter',
+    ]
+}
+HTML_MINIFY = True
+KEEP_COMMENTS_ON_MINIFYING = True
 
 
 # Media Files (image, video, ...)
 MEDIA_URL = os.environ.get('MEDIA_URL')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
 
 
 # default Auto Field
