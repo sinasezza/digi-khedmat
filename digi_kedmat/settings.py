@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +13,11 @@ DEBUG = eval(os.environ.get('DEBUG'))
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+    ALLOWED_HOSTS = eval(os.environ.get('ALLOWED_HOSTS'))
+    
+
+# Authentication Model
+AUTH_USER_MODEL = 'account.Account'
 
 # installed Apps for Application
 INSTALLED_APPS = [
@@ -24,12 +31,20 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'bootstrap5',
+    'phonenumber_field',
+    'compressor',
+    'cssmin',
+    'jsmin',
     
     # self apps
+    'account',
     
 ]
 
 MIDDLEWARE = [
+    'django.middleware.gzip.GZipMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,13 +101,48 @@ TIME_ZONE = os.environ.get('TIME_ZONE')
 USE_I18N = os.environ.get('USE_I18N')
 USE_TZ = os.environ.get('USE_TZ')
 
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = os.environ.get('STATIC_URL')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static-cdn')
+else:
+    STATIC_ROOT = os.environ.get('STATIC_ROOT')
+
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
+
+# Compression settings and conf
+COMPRESS_ROOT = BASE_DIR / 'static'
+COMPRESS_ENABLED = not DEBUG
+COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_FILTERS = {
+    'css':[
+        'compressor.filters.css_default.CssAbsoluteFilter',
+        'compressor.filters.cssmin.rCSSMinFilter',
+    ],
+    'js':[
+        'compressor.filters.jsmin.JSMinFilter',
+    ]
+}
+HTML_MINIFY = True
+KEEP_COMMENTS_ON_MINIFYING = True
+
 
 # Media Files (image, video, ...)
 MEDIA_URL = os.environ.get('MEDIA_URL')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
+
 
 # default Auto Field
 DEFAULT_AUTO_FIELD = os.environ.get('DEFAULT_AUTO_FIELD')
+
+
+# PhoneNumberField Configurations
+PHONENUMBER_DEFAULT_REGION = os.environ.get("PHONENUMBER_DEFAULT_REGION")
+PHONENUMBER_DEFAULT_FORMAT = os.environ.get("PHONENUMBER_DEFAULT_FORMAT")
