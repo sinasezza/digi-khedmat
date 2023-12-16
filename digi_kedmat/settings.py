@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     
     # third party apps
     'rest_framework',
-    'bootstrap5',
     'phonenumber_field',
     'compressor',
     'cssmin',
@@ -111,7 +110,12 @@ else:
     STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
 
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
+)
 
 
 # Compression settings and conf
@@ -127,6 +131,7 @@ COMPRESS_FILTERS = {
         'compressor.filters.jsmin.JSMinFilter',
     ]
 }
+COMPRESS_STORAGE = "staticfiles.storage.StaticFileStorage"
 HTML_MINIFY = True
 KEEP_COMMENTS_ON_MINIFYING = True
 

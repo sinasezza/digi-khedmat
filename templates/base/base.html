@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load compress %} 
     {% load static %}
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
+
     {% compress css %} 
+        <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
         <link rel="stylesheet" href="{% static 'tailwind/tailwind-output.css' %}"> 
-    {% endcompress %} 
+    {% endcompress css %} 
+
+    {% compress js %}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% endcompress js %}
+    
     {% block custom_assets %}{% endblock custom_assets %}
     <title>{% block title %}دیجی خدمت{% endblock title %}</title>
 </head>
