@@ -11,10 +11,8 @@
         <link rel="stylesheet" href="{% static 'tailwind/tailwind-output.css' %}"> 
     {% endcompress css %} 
 
-    {% compress js %}
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    {% endcompress js %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     {% block custom_assets %}{% endblock custom_assets %}
     <title>{% block title %}دیجی خدمت{% endblock title %}</title>
