@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-migrations/
 
 # C extensions
 *.so
@@ -61,6 +60,10 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+media/
+static-cdn/
+migrations/
+!migrations/__init__.py
 
 # Flask stuff:
 instance/
@@ -145,9 +148,6 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
-# django Compressor caches
-static/CACHE/
 
 # Pyre type checker
 .pyre/
