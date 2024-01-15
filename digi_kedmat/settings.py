@@ -19,7 +19,13 @@ CORS_ALLOWED_ORIGINS = eval(os.environ.get("CORS_ALLOWED_ORIGINS"))
 CSRF_TRUSTED_ORIGINS = eval(os.environ.get("CSRF_TRUSTED_ORIGINS"))
 CORS_ORIGIN_ALLOW_ALL = eval(os.environ.get("CORS_ORIGIN_ALLOW_ALL"))
 CORS_ALLOW_HEADERS = eval(os.environ.get("CORS_ALLOW_HEADERS"))
-    
+
+#### SSL SETTINGS
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+
+
 
 # Authentication Model
 AUTH_USER_MODEL = 'account.Account'
