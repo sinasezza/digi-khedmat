@@ -2,6 +2,7 @@ asgiref==3.7.2
 beautifulsoup4==4.12.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
+colorama==0.4.6
 cssmin==0.2.0
 defusedxml==0.7.1
 diff-match-patch==20230430

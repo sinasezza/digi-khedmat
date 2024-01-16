@@ -2,7 +2,8 @@ from django import forms
 from . import models
 
 
-class StuffCreationForm(forms.ModelForm):
+class StuffForm(forms.ModelForm):
+    # images = ???
     
     class Meta:
         model = models.Stuff

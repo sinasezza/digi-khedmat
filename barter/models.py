@@ -56,9 +56,9 @@ class Stuff(models.Model):
     # --------------------------------------
     slug = models.SlugField(max_length=200, unique=True)
     # --------------------------------------
-    url_address = models.URLField(max_length=300, null=True, blank=True, verbose_name="آدرس url آگهی") 
+    owner = models.ForeignKey(to=Account, null=False, blank=False, on_delete=models.CASCADE, verbose_name="مالک")
     # --------------------------------------
-    owner = models.OneToOneField(to=Account, null=False, blank=False, on_delete=models.CASCADE)
+    url_address = models.URLField(max_length=300, null=True, blank=True, verbose_name="آدرس url آگهی") 
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد آگهی")
     # --------------------------------------
@@ -66,7 +66,7 @@ class Stuff(models.Model):
     # --------------------------------------
     date_updated = models.DateTimeField(auto_now=True, verbose_name="تاریخ آخرین تغییر")
     # --------------------------------------
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, verbose_name="وضعیت انتشار",)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True, verbose_name="وضعیت انتشار",)
     # --------------------------------------
     summary = models.CharField(max_length=400, null=True, blank=True, verbose_name="خلاصه")
     # --------------------------------------
@@ -136,9 +136,11 @@ class Stuff(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         
+        # generate url address of barter object
         current_site = Site.objects.get_current()
-        self.url_address = str(current_site) + reverse("barter:stuff-detail", kwargs={"stuff_id": self.id, "stuff_slug": self.slug}) 
+        self.url_address = str(current_site) + self.get_absolute_url()
                 
+        # create QRcode based on generated url address
         qr_text = self.url_address
         qr_image = qrcode.make(qr_text, box_size=25)
         qr_image_pil = qr_image.get_image()

@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} title {% endblock title %}
+
+{% block custom_assets %}
+	<link rel="stylesheet" href="{% static 'global/404.css' %}">
+{% endblock custom_assets %}
+
+
+{% block content %}
+	<section class="page_404">
+		<div class="container">
+			<div class="row">	
+			<div class="col-sm-12 ">
+			<div class="col-sm-10 col-sm-offset-1  text-center">
+			<div class="four_zero_four_bg">
+				<h1 class="text-center ">404</h1>
+			</div>
+			
+			<div class="contant_box_404">
+			<h3 class="h2">
+			مثل این که راهتو گم کردی !
+			</h3>
+			
+			<p>صفحه ای که دنبالشی رو پیدا نکردیم</p>
+			
+			<a href="{% url 'main-page' %}" class="link_404">صفحه اصلی</a>
+		</div>
+			</div>
+			</div>
+			</div>
+		</div>
+	</section>
+{% endblock content %}

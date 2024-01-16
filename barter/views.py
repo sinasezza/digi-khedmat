@@ -15,10 +15,13 @@ def stuff_list_view(request):
 # ---------------------------------------------------------
 
 def stuff_detail_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
-    stuff = models.Stuff.objects.get(id=stuff_id)
+    try:
+        stuff = models.Stuff.objects.get(id=stuff_id)
+    except:
+        return render(request, 'common/404.html')
     
     if stuff.status == 'draft':
-        return HttpResponse("NO")
+        return HttpResponse("این آگهی پیدا نشده یا در دست ساخت است.")
     
     context = {
         'stuff': stuff,
@@ -28,10 +31,13 @@ def stuff_detail_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
 # ---------------------------------------------------------
 
 def stuff_update_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
-    stuff = models.Stuff.objects.get(id=stuff_id)
+    try:
+        stuff = models.Stuff.objects.get(id=stuff_id)
+    except:
+        return render(request, 'common/404.html')
     
     if not stuff.owner == request.user:
-        return HttpResponse("NOT PERMITTED")
+        return HttpResponse("شما دسترسی به این آگهی ندارید.")
     
     context = {
         
@@ -44,7 +50,7 @@ def stuff_delete_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
     stuff = models.Stuff.objects.get(id=stuff_id)
     
     if not stuff.owner == request.user:
-        return HttpResponse("NOT PERMITTED")
+        return HttpResponse("شما دسترسی به این آگهی ندارید.")
     
     stuff.delete()
     
