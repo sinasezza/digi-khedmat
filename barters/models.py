@@ -10,7 +10,7 @@ from django.utils import timezone
 # from shortuuid.django_fields import ShortUUIDField
 from django.db import models
 from django.urls import reverse
-from account.models import Account
+from accounts.models import Account
 
 
 class Category(models.Model):

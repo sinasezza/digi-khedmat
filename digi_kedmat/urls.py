@@ -7,10 +7,12 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.main_view,name='main-page'),
-    path('account/',include('account.urls')),
-    path('tahator/',include('barter.urls')),
+    path('auth/',include('accounts.urls')),
+    path('tahator/',include('barters.urls')),
+    path('ads/', include('ads.urls')),
+    path('jobs/', include('jobs.urls')),
     
-    # third party apps urls
+    # third party packages urls
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]

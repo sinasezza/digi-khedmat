@@ -28,7 +28,7 @@ if not DEBUG:
 
 
 # Authentication Model
-AUTH_USER_MODEL = 'account.Account'
+AUTH_USER_MODEL = 'accounts.Account'
 
 # installed Apps for Application
 INSTALLED_APPS = [
@@ -58,8 +58,10 @@ INSTALLED_APPS = [
     
     
     # self apps
-    'account',
-    'barter',
+    'accounts',
+    'barters',
+    'ads',
+    'jobs',
     
 ]
 
