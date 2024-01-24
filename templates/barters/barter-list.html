@@ -6,8 +6,8 @@
 
 {% block content %}
     <ul>
-        {% for stuff in stuffs %}
-            <li><a href="{{ stuff.get_absolute_url }}">{{ stuff }}</a></li>
+        {% for barter in barters %}
+            <li><a href="{{ barter.get_absolute_url }}">{{ barter }}</a></li>
         {% endfor %}
     </ul>
 {% endblock content %}

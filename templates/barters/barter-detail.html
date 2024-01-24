@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+
+{% block title %}دیجی خدمت | تهاتر کالا | {{barter.title}} {% endblock title %}
+
+{% block custom_assets %}
+
+{% endblock custom_assets %}
+
+{% block content %}
+	<li><a href="{{ barter.get_absolute_url }}">{{ barter }}</a></li>
+{% endblock content %}

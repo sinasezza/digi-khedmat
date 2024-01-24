@@ -14,28 +14,28 @@ from generics import models as generics_models
 from accounts.models import Account
 
 
-class StuffImage(models.Model):
-    def stuff_image_path(instance, filename):
+class BarterImage(models.Model):
+    def barter_image_path(instance, filename):
         file_path = pathlib.Path(filename)
         new_filename = str(uuid.uuid1())
-        return f"stuff/imgs/{new_filename}{file_path.suffix}"
+        return f"barter/imgs/{new_filename}{file_path.suffix}"
     
     title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
-    image = models.ImageField(max_length=255, upload_to=stuff_image_path, verbose_name="تصویر")
+    image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
     
 # ================================================
 
 class BarterAdvertising(generics_models.BaseAdvertisingModel):  
-    def stuff_qrcode_path(instance, filename):
+    def barter_qrcode_path(instance, filename):
         new_filename = str(uuid.uuid1())
-        return f"stuff/qrcodes/{new_filename}.png"
+        return f"barter/qrcodes/{new_filename}.png"
     
     # --------------------------------------
     owner = models.ForeignKey(to=Account, null=False, blank=False, on_delete=models.CASCADE, verbose_name="مالک")
     # --------------------------------------
-    images = models.ManyToManyField(StuffImage, related_name="barters", blank=True, verbose_name="تصاویر")
+    images = models.ManyToManyField(BarterImage, related_name="barters", blank=True, verbose_name="تصاویر")
     # --------------------------------------
-    qrcode_image = models.ImageField(max_length=255, upload_to=stuff_qrcode_path, blank=True, null=True, verbose_name="بارکد آگهی")
+    qrcode_image = models.ImageField(max_length=255, upload_to=barter_qrcode_path, blank=True, null=True, verbose_name="بارکد آگهی")
     # --------------------------------------
     
     class Meta:
@@ -44,17 +44,17 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     
     def get_absolute_url(self):
-        return reverse("barters:stuff-detail", kwargs={"stuff_id": self.id, "stuff_slug": self.slug})
+        return reverse("barters:barter-detail", kwargs={"barter_id": self.id, "barter_slug": self.slug})
     
     # --------------------------------------
     
     def get_update_url(self):
-        return reverse("barters:stuff-update", kwargs={"stuff_id": self.id, "stuff_slug": self.slug})
+        return reverse("barters:barter-update", kwargs={"barter_id": self.id, "barter_slug": self.slug})
     
     # --------------------------------------
     
     def get_delete_url(self):
-        return reverse("barters:stuff-delete", kwargs={"stuff_id": self.id, "stuff_slug": self.slug})
+        return reverse("barters:barter-delete", kwargs={"barter_id": self.id, "barter_slug": self.slug})
     
     # --------------------------------------
     
