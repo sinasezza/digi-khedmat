@@ -4,56 +4,56 @@ from django.http import HttpRequest, HttpResponse
 from . import models, forms
 
 
-def stuff_list_view(request):
-    stuffs = models.Stuff.objects.filter(status='published')
+def barter_list_view(request):
+    barters = models.BarterAdvertising.objects.filter(status='published')
     
     context = {
-        'stuffs': stuffs,
+        'barters': barters,
     }
-    return render(request, 'barter/stuff-list.html', context)
+    return render(request, 'barters/barter-list.html', context)
 
 # ---------------------------------------------------------
 
-def stuff_detail_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
+def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
     try:
-        stuff = models.Stuff.objects.get(id=stuff_id)
+        barter = models.BarterAdvertising.objects.get(id=barter_id)
     except:
         return render(request, 'common/404.html')
     
-    if stuff.status == 'draft':
+    if barter.status == 'draft':
         return HttpResponse("این آگهی پیدا نشده یا در دست ساخت است.")
     
     context = {
-        'stuff': stuff,
+        'barter': barter,
     }
-    return render (request, 'barter/stuff-detail.html', context)
+    return render (request, 'barters/barter-detail.html', context)
 
 # ---------------------------------------------------------
 
-def stuff_update_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
+def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
     try:
-        stuff = models.Stuff.objects.get(id=stuff_id)
+        barter = models.BarterAdvertising.objects.get(id=barter_id)
     except:
         return render(request, 'common/404.html')
     
-    if not stuff.owner == request.user:
+    if not barter.owner == request.user:
         return HttpResponse("شما دسترسی به این آگهی ندارید.")
     
     context = {
         
     }
     
-    return render(request, 'barter/stuff-update.html', context)
+    return render(request, 'barters/barter-update.html', context)
 # ---------------------------------------------------------
 
-def stuff_delete_view(request: HttpRequest, stuff_id: str, stuff_slug: str):
-    stuff = models.Stuff.objects.get(id=stuff_id)
+def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
+    barter = models.BarterAdvertising.objects.get(id=barter_id)
     
-    if not stuff.owner == request.user:
+    if not barter.owner == request.user:
         return HttpResponse("شما دسترسی به این آگهی ندارید.")
     
-    stuff.delete()
+    barter.delete()
     
-    return reverse_lazy("barter:stuff-list")
+    return reverse_lazy("barters:barter-list")
     
 # ---------------------------------------------------------

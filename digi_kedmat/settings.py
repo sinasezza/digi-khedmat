@@ -59,8 +59,9 @@ INSTALLED_APPS = [
     
     # self apps
     'accounts',
-    'barters',
     'ads',
+    'barters',
+    'generics',
     'jobs',
     
 ]
