@@ -1,3 +1,8 @@
+import uuid
 from django.db import models
+from generics import models as generics_models
 
-# Create your models here.
+
+class Advertise(generics_models.BaseAdvertisingModel):
+    class Meta:
+        default_related_name = "ads"

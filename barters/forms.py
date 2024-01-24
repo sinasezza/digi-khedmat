@@ -2,16 +2,16 @@ from django import forms
 from . import models
 
 
-class StuffForm(forms.ModelForm):
+class BarterForm(forms.ModelForm):
     # images = ???
     
     class Meta:
-        model = models.Stuff
+        model = models.BarterAdvertising
         fields = (
             "title",
             "summary",
             "description",
-            "category",
+            "categories",
             "tags",
-            "location",
+            "locations",
         )
