@@ -7,7 +7,10 @@ from django.db import models
 class Category(models.Model):
     CATEGORY_LIST   = (("shop", "فروشگاهی"), ("services", "خدماتی"), ("productive", "تولیدی"))
     title           = models.CharField(max_length=30, verbose_name="نام دسته بندی")
-    category_type  = models.CharField(max_length=20, choices=CATEGORY_LIST, verbose_name="نوع کسب و کار", default="shop",)
+    category_type   = models.CharField(max_length=20, choices=CATEGORY_LIST, verbose_name="نوع کسب و کار", default="shop",)
+    
+    class Meta:
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         return self.title
@@ -58,7 +61,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="تگ")
     # --------------------------------------
-    locations = models.ManyToManyField(to=Location, verbose_name="موقعیت(های) مکانی")
+    locations = models.ManyToManyField(to=Location, blank=True, verbose_name="موقعیت(های) مکانی")
     # --------------------------------------
 
     

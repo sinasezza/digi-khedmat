@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+
+{% block title %}دیجی خدمت | تبلیغات | {{adv.title}} {% endblock title %}
+
+{% block custom_assets %}
+
+{% endblock custom_assets %}
+
+{% block content %}
+	<li><a href="{{ adv.get_absolute_url }}">{{ adv }}</a></li>
+{% endblock content %}

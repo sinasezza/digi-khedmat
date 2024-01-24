@@ -1,0 +1,13 @@
+{% extends "base/base.html" %}
+
+{% block title %}دیجی خدمت | کاریابی{% endblock title %}
+
+{% block custom_assets %}{% endblock custom_assets %}
+
+{% block content %}
+    <ul>
+        {% for job in jobs %}
+            <li><a href="{{ job.get_absolute_url }}">{{ job }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
