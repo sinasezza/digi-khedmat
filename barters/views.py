@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
@@ -40,12 +42,18 @@ class BarterListView(generic.ListView):
 
 # ---------------------------------------------------------
 
-class BarterDetailView(generic.DeleteView):
-    model = models.BarterAdvertising
+class BarterDetailView(generic.DetailView):
     queryset = models.BarterAdvertising.objects.filter(status='published')
     template_name = "barters/barter-list.html"
     pk_url_kwarg = 'barter_id'
     context_object_name = 'barter'
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        qs = self.queryset.filter(id=self.pk_url_kwarg)
+        print(f"\n\n\n qs is {qs} \n\n\n")
+        if not qs.exists():
+            self.template_name = 'common/404.html'
+        return qs
     
 # ---------------------------------------------------------
 
