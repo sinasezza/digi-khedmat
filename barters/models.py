@@ -23,6 +23,10 @@ class BarterImage(models.Model):
     title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
     image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
     
+    def __str__(self):
+        return f"{self.id}>{self.title}"
+    
+    
 # ================================================
 
 class BarterAdvertising(generics_models.BaseAdvertisingModel):  
@@ -41,6 +45,11 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     class Meta:
         default_related_name = "barters"
 
+    # --------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.slug}"
+    
     # --------------------------------------
     
     def get_absolute_url(self):
