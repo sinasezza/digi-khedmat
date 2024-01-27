@@ -12,6 +12,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = eval(os.environ.get('DEBUG'))
 
 ALLOWED_HOSTS = eval(os.environ.get("ALLOWED_HOSTS"))
+INTERNAL_IPS = eval(os.environ.get("INTERNAL_IPS"))
 
 
 #### CORS/CSRF Options And Settings
@@ -55,6 +56,9 @@ INSTALLED_APPS = [
     'import_export',
     'captcha',
     'django_jalali',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
     
     
     # self apps
@@ -74,6 +78,7 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -152,10 +157,14 @@ STATICFILES_FINDERS = (
 )
 
 
+# TailwindCss Settings
+TAILWIND_APP_NAME = 'theme'
+
+
 # Compression settings and conf
 COMPRESS_ENABLED = not DEBUG
 COMPRESS_ROOT = STATIC_ROOT
-# COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE = True
 COMPRESS_CSS_HASHING_METHOD = 'content'
 COMPRESS_FILTERS = {
     'css':[
