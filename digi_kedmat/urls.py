@@ -13,6 +13,7 @@ urlpatterns = [
     path('jobs/', include('jobs.urls')),
     
     # third party packages urls
+    path("__reload__/", include("django_browser_reload.urls")),
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
