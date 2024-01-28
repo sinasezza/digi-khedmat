@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+    'debug_toolbar',
     
     
     # self apps
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -116,6 +118,20 @@ WSGI_APPLICATION = 'digi_kedmat.wsgi.application'
 DATABASES = {
     'default': eval(os.environ.get('DATABASE_INFO'))
 }
+
+#### IN MEMORY DBs : REDIS,  MEMCACHED , ...
+try:
+    CACHES = {
+        "default": eval(os.environ.get('CACHE_INFO'))
+    }
+except:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
+    
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -177,7 +193,7 @@ COMPRESS_FILTERS = {
 }
 # COMPRESS_STORAGE = "staticfiles.storage.StaticFileStorage"
 HTML_MINIFY = True
-KEEP_COMMENTS_ON_MINIFYING = True
+KEEP_COMMENTS_ON_MINIFYING = False
 
 
 # Media Files (image, video, ...)
