@@ -1,3 +1,5 @@
+import uuid
+import logging
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
@@ -7,53 +9,44 @@ from django.views import generic
 from . import models, forms
 
 
-# def barter_list_view(request):
-#     barters = models.BarterAdvertising.objects.filter(status='published')
+logger = logging.getLogger("barters.views")
+
+def barter_list_view(request):
+    barters = models.BarterAdvertising.objects.filter(status='published')
     
-#     context = {
-#         'barters': barters,
-#     }
-#     return render(request, 'barters/barter-list.html', context)
+    logger.info(f"barter list fetched by  user {request.user}")
+        
+    context = {
+        'barters': barters,
+    }
+    return render(request, 'barters/barter-list.html', context)
 
 # ---------------------------------------------------------
 
-class BarterListView(generic.ListView):
-    model = models.BarterAdvertising
-    queryset = models.BarterAdvertising.objects.filter(status='published')
-    template_name = "barters/barter-list.html"
-    context_object_name = 'barters'
+# class BarterListView(generic.ListView):
+#     model = models.BarterAdvertising
+#     queryset = models.BarterAdvertising.objects.filter(status='published')
+#     template_name = "barters/barter-list.html"
+#     context_object_name = 'barters'
 
 # ---------------------------------------------------------
 
+def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
+    logger.info(f"user {request.user} requested for barter detail")
+    try:
+        barter = models.BarterAdvertising.objects.get(id=barter_id)
+        if barter.status == 'draft':
+            return render(request, 'common/404.html', status=404)
+    except:
+        return render(request, 'common/404.html', status=404)
 
-# def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
-#     try:
-#         barter = models.BarterAdvertising.objects.get(id=barter_id)
-#     except:
-#         return render(request, 'common/404.html')
+    logger.info(f"user {request.user} retrieved barter detail {barter}")
     
-#     if barter.status == 'draft':
-#         return HttpResponse("این آگهی پیدا نشده یا در دست ساخت است.")
-    
-#     context = {
-#         'barter': barter,
-#     }
-#     return render (request, 'barters/barter-detail.html', context)
+    context = {
+        'barter': barter,
+    }
+    return render (request, 'barters/barter-detail.html', context)
 
-# ---------------------------------------------------------
-
-class BarterDetailView(generic.DetailView):
-    queryset = models.BarterAdvertising.objects.filter(status='published')
-    template_name = "barters/barter-list.html"
-    pk_url_kwarg = 'barter_id'
-    context_object_name = 'barter'
-    
-    def get_queryset(self) -> QuerySet[Any]:
-        qs = self.queryset.filter(id=self.pk_url_kwarg)
-        print(f"\n\n\n qs is {qs} \n\n\n")
-        if not qs.exists():
-            self.template_name = 'common/404.html'
-        return qs
     
 # ---------------------------------------------------------
 
@@ -61,7 +54,7 @@ def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
     try:
         barter = models.BarterAdvertising.objects.get(id=barter_id)
     except:
-        return render(request, 'common/404.html')
+        return render(request, 'common/404.html', status=404)
     
     if not barter.owner == request.user:
         return HttpResponse("شما دسترسی به این آگهی ندارید.")
@@ -71,6 +64,7 @@ def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
     }
     
     return render(request, 'barters/barter-update.html', context)
+
 # ---------------------------------------------------------
 
 def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
