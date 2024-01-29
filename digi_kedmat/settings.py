@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django_browser_reload.middleware.BrowserReloadMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,7 +131,75 @@ except:
         }
     }
     
-
+    
+#### LOGGING SETTINGS AND CONFIGS
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+        },
+        "verbose": {
+            "format": "{levelname} - {asctime} - {name} - {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "default": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "logs/digi_khedmat_logs.log",
+            "maxBytes":  1024*1024*5, # 5 MB
+            "backupCount":  5,
+            "formatter": "standard",
+        },  
+        "request_handler": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "logs/django_requests.log",
+            "maxBytes": 1024*1024*5, # 5 MB
+            "backupCount": 5,
+            "formatter": "standard",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        "barters_logger": {
+            "level":"INFO",
+            "class":"logging.handlers.RotatingFileHandler",
+            "filename": "logs/barters_logs.log",
+            "maxBytes": 1024*1024*5, # 5 MB
+            "backupCount": 5,
+            "formatter":"verbose",
+        }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["default"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["request_handler"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "barters": {
+            "handlers": ["barters_logger",],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
