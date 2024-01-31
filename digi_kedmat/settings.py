@@ -33,6 +33,7 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 # installed Apps for Application
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
     'debug_toolbar',
+    'channels',
     
     
     # self apps
@@ -113,6 +115,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'digi_kedmat.wsgi.application'
+ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
 # Database
 DATABASES = {

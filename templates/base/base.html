@@ -13,6 +13,9 @@
         {% tailwind_css %}
     {% endcompress css %} 
 
+    {% compress js %} 
+        <script src="{% static  'global/js/jquery-3.7.1.min.js.js' %}"></script>
+    {% endcompress js %}
     
     {% block custom_assets %}{% endblock custom_assets %}
     <title>{% block title %}دیجی خدمت{% endblock title %}</title>
