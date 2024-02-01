@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'import_export',
     'captcha',
     'django_jalali',
+    'jalali_date',
     'tailwind',
     'theme',
     'django_browser_reload',
@@ -111,11 +112,15 @@ TEMPLATES = [
             "libraries": {
                 "staticfiles": "django.templatetags.static",
             },
+            "builtins": [
+                "generics.templatetags.generics_tags",
+                "generics.templatetags.generics_filters",
+            ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'digi_kedmat.wsgi.application'
+WSGI_APPLICATION = "digi_kedmat.wsgi.application"
 ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
 # Database
@@ -137,73 +142,74 @@ except:
     
     
 #### LOGGING SETTINGS AND CONFIGS
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "standard": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+if not DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "standard": {
+                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+            },
+            "verbose": {
+                "format": "{levelname} - {asctime} - {name} - {message}",
+                "style": "{",
+            },
+            "simple": {
+                "format": "{levelname} {message}",
+                "style": "{",
+            },
         },
-        "verbose": {
-            "format": "{levelname} - {asctime} - {name} - {message}",
-            "style": "{",
+        "handlers": {
+            "default": {
+                "level": "DEBUG",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": "logs/digi_khedmat_logs.log",
+                "maxBytes":  1024*1024*5, # 5 MB
+                "backupCount":  5,
+                "formatter": "standard",
+            },  
+            "request_handler": {
+                "level": "DEBUG",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": "logs/django_requests.log",
+                "maxBytes": 1024*1024*5, # 5 MB
+                "backupCount": 5,
+                "formatter": "standard",
+            },
+            "console": {
+                "class": "logging.StreamHandler",
+            },
+            "barters_logger": {
+                "level":"INFO",
+                "class":"logging.handlers.RotatingFileHandler",
+                "filename": "logs/barters_logs.log",
+                "maxBytes": 1024*1024*5, # 5 MB
+                "backupCount": 5,
+                "formatter":"verbose",
+            }
         },
-        "simple": {
-            "format": "{levelname} {message}",
-            "style": "{",
+        "root": {
+            "handlers": ["console"],
+            "level": "WARNING",
         },
-    },
-    "handlers": {
-        "default": {
-            "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": "logs/digi_khedmat_logs.log",
-            "maxBytes":  1024*1024*5, # 5 MB
-            "backupCount":  5,
-            "formatter": "standard",
-        },  
-        "request_handler": {
-            "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": "logs/django_requests.log",
-            "maxBytes": 1024*1024*5, # 5 MB
-            "backupCount": 5,
-            "formatter": "standard",
+        "loggers": {
+            "django": {
+                "handlers": ["default"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+            "django.request": {
+                "handlers": ["request_handler"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+            "barters": {
+                "handlers": ["barters_logger",],
+                "level": "INFO",
+                "propagate": False,
+            },
         },
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-        "barters_logger": {
-            "level":"INFO",
-            "class":"logging.handlers.RotatingFileHandler",
-            "filename": "logs/barters_logs.log",
-            "maxBytes": 1024*1024*5, # 5 MB
-            "backupCount": 5,
-            "formatter":"verbose",
-        }
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "WARNING",
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["default"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
-        "django.request": {
-            "handlers": ["request_handler"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
-        "barters": {
-            "handlers": ["barters_logger",],
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [

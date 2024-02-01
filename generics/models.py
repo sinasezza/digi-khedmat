@@ -71,36 +71,6 @@ class BaseAdvertisingModel(models.Model):
 
     # --------------------------------------
     
-    @property
-    def JaliliDateCreated(self):
-        return jdatetime.date.fromgregorian(
-            day=self.date_created.day,
-            month=self.date_created.month,
-            year=self.date_created.year,
-        )
-
-    # --------------------------------------    
-
-    @property
-    def JaliliDatePublished(self):
-        return jdatetime.date.fromgregorian(
-            day=self.date_published.day,
-            month=self.date_published.month,
-            year=self.date_published.year,
-        )
-    
-    # --------------------------------------
-    
-    @property
-    def JalaliDateUpdated(self):
-        return jdatetime.date.fromgregorian(
-            day=self.date_updated.day,
-            month=self.date_updated.month,
-            year=self.date_updated.year,
-        )
-    
-    # --------------------------------------
-    
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)       
     #     super().save(*args, **kwargs)

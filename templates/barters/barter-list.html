@@ -2,12 +2,20 @@
 
 {% block title %}دیجی خدمت | تهاتر کالا{% endblock title %}
 
-{% block custom_assets %}{% endblock custom_assets %}
+{% block custom_assets %}
+
+{% endblock custom_assets %}
 
 {% block content %}
-    <ul>
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {% for barter in barters %}
-            <li><a href="{{ barter.get_absolute_url }}">{{ barter }}</a></li>
+            <div class="bg-white p-4 rounded-md shadow-md hover:shadow-lg">
+                <a href="{{ barter.get_absolute_url }}" class="text-lg font-bold">{{ barter.title }}</a>
+                <p class="text-gray-600">{{ barter.summary }}</p>
+                <p class="text-sm text-gray-500">{{ barter.date_published | to_jdate }}</p>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+  </div>
 {% endblock content %}
