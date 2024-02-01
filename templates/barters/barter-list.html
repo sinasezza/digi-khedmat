@@ -1,5 +1,4 @@
 {% extends "base/base.html" %}
-{% load jalali_tags %}
 
 {% block title %}دیجی خدمت | تهاتر کالا{% endblock title %}
 
@@ -14,7 +13,7 @@
             <div class="bg-white p-4 rounded-md shadow-md hover:shadow-lg">
                 <a href="{{ barter.get_absolute_url }}" class="text-lg font-bold">{{ barter.title }}</a>
                 <p class="text-gray-600">{{ barter.summary }}</p>
-                <p class="text-sm text-gray-500">{{ barter.date_published | to_jalali }}</p>
+                <p class="text-sm text-gray-500">{{ barter.date_published | to_jdate }}</p>
             </div>
         {% endfor %}
     </div>

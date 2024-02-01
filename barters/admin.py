@@ -4,7 +4,7 @@ from . import models
 
 @admin.register(models.BarterAdvertising)
 class BarterAdvertisingAdmin(admin.ModelAdmin):
-    list_display = ('id','title')
+    list_display = ('id','title', 'status',)
 
 # ================================================
     
