@@ -11,6 +11,7 @@ urlpatterns = [
     path('tahator/',include('barters.urls')),
     path('ads/', include('ads.urls')),
     path('jobs/', include('jobs.urls')),
+    path('chat/', include('chat.urls')),
     
     # third party packages urls
     path("__reload__/", include("django_browser_reload.urls")),

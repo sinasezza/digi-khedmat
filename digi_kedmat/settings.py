@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'accounts',
     'ads',
     'barters',
+    'chat',
     'generics',
     'jobs',
     
