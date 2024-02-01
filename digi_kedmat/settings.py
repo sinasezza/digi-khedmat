@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'import_export',
     'captcha',
     'django_jalali',
+    'jalali_date',
     'tailwind',
     'theme',
     'django_browser_reload',

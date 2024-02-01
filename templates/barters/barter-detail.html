@@ -7,5 +7,31 @@
 {% endblock custom_assets %}
 
 {% block content %}
-	<li><a href="{{ barter.get_absolute_url }}">{{ barter }}</a></li>
+  <div class="container mx-auto mt-8">
+    <div class="bg-white p-8 rounded-md shadow-md">
+        <h2 class="text-3xl font-bold mb-4">{{ barter.title }}</h2>
+        <p class="text-gray-600 mb-4">{{ barter.summary }}</p>
+        <p class="text-sm text-gray-500 mb-4">{{ barter.JaliliDatePublished }}</p>
+        <img src="{{ barter.qrcode_image.url }}" alt="QR Code" class="w-40 h-40 mb-4">
+        <div class="mb-4">
+            <strong>Categories:</strong>
+            {% for category in barter.categories.all %}
+                <span class="mr-2">{{ category.title }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            <strong>Tags:</strong>
+            {% for tag in barter.tags.all %}
+                <span class="mr-2">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            <strong>Locations:</strong>
+            {% for location in barter.locations.all %}
+                <span class="mr-2">{{ location.city }}, {{ location.province }}</span>
+            {% endfor %}
+        </div>
+        <p class="text-gray-800">{{ barter.description }}</p>
+    </div>
+  </div>
 {% endblock content %}
