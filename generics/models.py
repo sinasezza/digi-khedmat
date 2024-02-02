@@ -63,12 +63,18 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     locations = models.ManyToManyField(to=Location, blank=True, verbose_name="موقعیت(های) مکانی")
     # --------------------------------------
-
+    views = models.PositiveIntegerField(default=0, verbose_name="تعداد بازدید")
     
     class Meta:
         abstract = True
         ordering = ("-date_published",)
 
+    # --------------------------------------
+    
+    def increment_views(self):
+        self.views += 1
+        super().save()
+    
     # --------------------------------------
     
     # def save(self, *args, **kwargs):

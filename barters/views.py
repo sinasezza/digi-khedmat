@@ -2,7 +2,8 @@ import uuid
 import logging
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
@@ -41,6 +42,7 @@ def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
         return render(request, 'common/404.html', status=404)
 
     logger.info(f"user {request.user} retrieved barter detail {barter}")
+    barter.increment_views()
     
     context = {
         'barter': barter,
@@ -50,6 +52,28 @@ def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
     
 # ---------------------------------------------------------
 
+@login_required(login_url='accounts:login')
+def barter_create_view(request: HttpRequest) -> HttpResponse:
+    """View to create a new ad."""
+    # If the request is not from POST method then display blank form
+    form = forms.BarterForm(request.POST, request.FILES)
+    
+    if form.is_valid():
+        new_barter = form.save(commit=False)
+        new_barter.owner = request.user
+        new_barter.save()
+        
+        return redirect('accounts:user-panel')
+
+    context = {
+        'form': form,
+    }        
+    
+    return render(request, 'barters/barter-create.html', context)
+
+# ---------------------------------------------------------
+
+@login_required(login_url='accounts:login')
 def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
     try:
         barter = models.BarterAdvertising.objects.get(id=barter_id)
@@ -67,6 +91,7 @@ def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
 
 # ---------------------------------------------------------
 
+@login_required(login_url='accounts:login')
 def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
     barter = models.BarterAdvertising.objects.get(id=barter_id)
     
