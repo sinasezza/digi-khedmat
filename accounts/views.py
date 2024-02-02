@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 # from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -11,7 +12,7 @@ from . import models, forms
 
 # class RegisterView(SuccessMessageMixin, CreateView):
 #     # model = models.Account
-#     template_name = 'account/register.html'
+#     template_name = 'accounts/register.html'
 #     success_url = reverse_lazy('login')
 #     form_class = forms.UserRegisterForm
 #     success_message = "حساب کاربری شما با موفقیت ایجاد شد."
@@ -22,7 +23,7 @@ from . import models, forms
 # class AccountLoginView(SuccessMessageMixin, LoginView):
 #     model = models.Account
 #     redirect_authenticated_user = True
-#     template_name = 'account/login.html'
+#     template_name = 'accounts/login.html'
 #     success_message = "شما به حساب کابری خود وارد شدید."
     
 #     def get_success_url(self):
@@ -41,7 +42,7 @@ def register_view(request):
         if form.is_valid():
             form.save()
             messages.info(request, f"حساب کاربری با موفقیت ایجاد شد.")
-            return redirect('account:login')
+            return redirect('accounts:login')
         else:
             print(f"error {form.errors.as_data}")
             messages.warning(request, 'لطفا فرم را صحیح تر پر کنید.')
@@ -52,7 +53,7 @@ def register_view(request):
     context = {
         'form': form,
     }
-    return render(request, 'account/register.html',context)
+    return render(request, 'accounts/register.html',context)
             
 
 
@@ -71,13 +72,23 @@ def login_view(request):
     else:
         form = forms.UserLoginForm()
     context = {'form': form,}
-    return render(request, 'account/login.html', context)
+    return render(request, 'accounts/login.html', context)
 
 # ---------------------------------------------------
 
-@login_required(login_url='account:login')
+@login_required(login_url='accounts:login')
 def logout_view(request):
     logout(request)
-    return redirect('account:login')
+    return redirect('accounts:login')
 
 # ---------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def user_panel_view(request: HttpRequest) -> HttpResponse:
+    """View for the user panel page."""
+    
+    context = {}
+    return render(request, 'accounts/user-panel.html', context)
+
+# ---------------------------------------------------
+
