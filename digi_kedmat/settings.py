@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'debug_toolbar',
     'channels',
+    'watchman',
     
     
     # self apps
@@ -164,7 +165,7 @@ if not DEBUG:
                 "level": "DEBUG",
                 "class": "logging.handlers.RotatingFileHandler",
                 "filename": "logs/digi_khedmat_logs.log",
-                "maxBytes":  1024*1024*5, # 5 MB
+                "maxBytes":  1024*1024*50, # 50 MB
                 "backupCount":  5,
                 "formatter": "standard",
             },  
@@ -202,6 +203,10 @@ if not DEBUG:
                 "handlers": ["request_handler"],
                 "level": "DEBUG",
                 "propagate": False,
+            },
+            "watchman": {
+                "handlers": ["console"],
+                "level": "DEBUG",
             },
             "barters": {
                 "handlers": ["barters_logger",],
@@ -309,3 +314,7 @@ CAPTCHA_IMAGE_SIZE = (200,60)
 CAPTCHA_FONT_SIZE = 25
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_arcs','captcha.helpers.noise_dots',)
 # CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',)
+
+
+#### WATCHMAN SETTINGS
+WATCHMAN_AUTH_DECORATOR = 'django.contrib.admin.views.decorators.staff_member_required'

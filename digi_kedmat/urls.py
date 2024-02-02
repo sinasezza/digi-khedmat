@@ -18,6 +18,7 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^watchman/', include('watchman.urls')),
 ]
 
 if settings.DEBUG:
