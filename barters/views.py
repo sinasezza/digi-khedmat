@@ -3,6 +3,8 @@ import logging
 from typing import Any
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
@@ -16,9 +18,15 @@ def barter_list_view(request):
     barters = models.BarterAdvertising.objects.filter(status='published')
     
     logger.info(f"barter list fetched by  user {request.user}")
+    
+    # Pagination
+    paginated = Paginator(barters, 6)  # Show up to 9 posts on each page
+    page_number = request.GET.get("page")  # Get the requested page number from the URL
+    page = paginated.get_page(page_number)
         
     context = {
-        'barters': barters,
+        'barters': page.object_list,
+        'page': page,
     }
     return render(request, 'barters/barter-list.html', context)
 
@@ -32,10 +40,10 @@ def barter_list_view(request):
 
 # ---------------------------------------------------------
 
-def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
+def barter_detail_view(request: HttpRequest, barter_slug: str):
     logger.info(f"user {request.user} requested for barter detail")
     try:
-        barter = models.BarterAdvertising.objects.get(id=barter_id)
+        barter = models.BarterAdvertising.objects.get(slug=barter_slug)
         if barter.status == 'draft':
             return render(request, 'common/404.html', status=404)
     except:
@@ -56,20 +64,55 @@ def barter_detail_view(request: HttpRequest, barter_id: str, barter_slug: str):
 def barter_create_view(request: HttpRequest) -> HttpResponse:
     """View to create a new ad."""
     # If the request is not from POST method then display blank form
-    form = forms.BarterForm(request.POST, request.FILES)
-    
-    if form.is_valid():
-        new_barter = form.save(commit=False)
-        new_barter.owner = request.user
-        new_barter.save()
+    if request.method == 'POST':
+        form = forms.BarterForm(request.POST, request.FILES)
         
-        return redirect('accounts:user-panel')
-
-    context = {
-        'form': form,
-    }        
+        if form.is_valid():
+            new_barter = form.save(commit=False)
+            new_barter.owner = request.user
+            new_barter.save()
+            
+            return redirect('barters:attach-images', barter_slug=new_barter.slug)
+    else:
+        context = {
+            'form': forms.BarterForm(),
+        }        
     
     return render(request, 'barters/barter-create.html', context)
+
+# ---------------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResponse:
+    """Add an image to existing ad."""
+    try:
+        barter = models.BarterAdvertising.objects.get(slug=barter_slug)
+        if not barter.owner == request.user:
+            return render(request, 'common/404.html', status=404)
+    except models.BarterAdvertising.DoesNotExist:
+        return render(request, 'common/404.html', status=404)
+    
+    if request.method == 'POST':
+        ok = request.POST.get('ok', None)
+        if ok is not None and ok == 'True':
+            messages.success(request, "آگهی شما با موفقیت ساخته شد")
+            return redirect('accounts:user-panel')
+        
+        images = request.FILES.getlist("images")
+        
+        for image in images: 
+            image_obj = models.BarterImage.objects.create(image=image)
+            barter.images.add(image_obj)
+        return redirect('barters:attach-images',  barter_slug=barter.slug)
+    
+    barter_images = [image_obj.image for image_obj in barter.images.all()]
+    context = {
+        'barter': barter,
+        'barter_images': barter_images,
+    }
+    
+    return render(request, 'barters/attach-images.html', context)
+        
 
 # ---------------------------------------------------------
 

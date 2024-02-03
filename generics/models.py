@@ -35,15 +35,15 @@ class Location(models.Model):
 
 class BaseAdvertisingModel(models.Model):  
     STATUS_CHOICES = (
-        ('published', 'منتشر شده'),
         ('draft', 'معلق'),
+        ('published', 'منتشر شده'),
     )
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
     title = models.CharField(max_length=120, verbose_name="عنوان")
     # --------------------------------------
-    slug = models.SlugField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=256, unique=True)
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد آگهی")
     # --------------------------------------
@@ -51,7 +51,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     date_updated = models.DateTimeField(auto_now=True, verbose_name="تاریخ آخرین تغییر")
     # --------------------------------------
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True, verbose_name="وضعیت انتشار",)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft', verbose_name="وضعیت انتشار",)
     # --------------------------------------
     summary = models.CharField(max_length=400, null=True, blank=True, verbose_name="خلاصه")
     # --------------------------------------
