@@ -3,35 +3,43 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% load compress %} 
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load compress %} 
+  
 
-    {% compress css %} 
-        <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
-        {% tailwind_css %}
-    {% endcompress css %} 
+  {% compress css %} 
+      <link rel="icon" type="image/x-icon" href="{% static 'global/images/digi-khedmat-favicon.png' %}">
+      <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
+      {% tailwind_css %}
+  {% endcompress css %} 
 
-    {% compress js %} 
-        <script src="{% static  'global/js/jquery-3.7.1.min.js.js' %}"></script>
-    {% endcompress js %}
-    
-    {% block custom_assets %}{% endblock custom_assets %}
-    <title>{% block title %}دیجی خدمت{% endblock title %}</title>
+  {% compress js %} 
+      <script src="{% static  'global/js/jquery-3.7.1.min.js.js' %}"></script>
+  {% endcompress js %}
+  
+  {% block custom_assets %}{% endblock custom_assets %}
+  <title>{% block title %}دیجی خدمت{% endblock title %}</title>
 </head>
 
 <body class="bg-slate-100">
-    {% include "partials/header.html" %}
-    {% include "partials/navbar.html" %}
-    
-    {% block content %}{% endblock content %}
-    
-    {% include "partials/footer.html" %}
+  {% include "partials/header.html" %}
+  {% include "partials/navbar.html" %}
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="w-9/12 h-8 items-center rounded text-center bg-blue-600 text-black"> {{ message }} </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+  {% block content %}{% endblock content %}
+  
+  {% include "partials/footer.html" %}
 
-    {% block custom_js %}{% endblock custom_js %}
+  {% block custom_js %}{% endblock custom_js %}
 </body>
 </html>

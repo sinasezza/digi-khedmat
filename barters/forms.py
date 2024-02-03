@@ -1,5 +1,7 @@
 from django import forms
+from django.forms.models import inlineformset_factory
 from . import models
+
 
 
 class BarterForm(forms.ModelForm):
@@ -11,7 +13,11 @@ class BarterForm(forms.ModelForm):
             "title",
             "summary",
             "description",
-            "categories",
-            "tags",
-            "locations",
+            "status",
+            
+            # "categories",
+            # "tags",
+            # "locations",
         )
+
+# =====================================================

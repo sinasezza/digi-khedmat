@@ -60,8 +60,8 @@ INSTALLED_APPS = [
     'jalali_date',
     'tailwind',
     'theme',
-    'django_browser_reload',
-    'debug_toolbar',
+    # 'django_browser_reload',
+    # 'debug_toolbar',
     'channels',
     'watchman',
     
@@ -84,8 +84,8 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'django_browser_reload.middleware.BrowserReloadMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     # 'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -53,22 +53,24 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     
     def get_absolute_url(self):
-        return reverse("barters:barter-detail", kwargs={"barter_id": self.id, "barter_slug": self.slug})
+        return reverse("barters:barter-detail", kwargs={"barter_slug": self.slug})
     
     # --------------------------------------
     
     def get_update_url(self):
-        return reverse("barters:barter-update", kwargs={"barter_id": self.id, "barter_slug": self.slug})
+        return reverse("barters:barter-update", kwargs={"barter_slug": self.slug})
     
     # --------------------------------------
     
     def get_delete_url(self):
-        return reverse("barters:barter-delete", kwargs={"barter_id": self.id, "barter_slug": self.slug})
+        return reverse("barters:barter-delete", kwargs={"barter_slug": self.slug})
     
     # --------------------------------------
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+        self.slug = f"{self.id}-{slugify(self.title)}"
         
         # generate url address of barter object
         current_site = Site.objects.get_current()

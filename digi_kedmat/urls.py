@@ -14,8 +14,8 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     
     # third party packages urls
-    path("__reload__/", include("django_browser_reload.urls")),
-    path("__debug__/", include("debug_toolbar.urls")),
+    # path("__reload__/", include("django_browser_reload.urls")),
+    # path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^watchman/', include('watchman.urls')),
