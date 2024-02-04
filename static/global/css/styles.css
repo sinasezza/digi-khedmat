@@ -1,21 +1,27 @@
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 body {
-    direction: rtl;
+  direction: rtl;
+  margin: 0;
+  padding-bottom: 60px; /* Height of the footer */
+  box-sizing: border-box;
 }
 
-/* -------------------------------------------- */
-
-.navbar-nav { 
-    flex-direction: row;
+body.sidebar-open {
+  margin-left: 240px; /* Adjust the width based on your sidebar width */
+  transition: margin-left 0.3s ease; /* Add a smooth transition effect */
 }
 
-/* -------------------------------------------- */
-
-.navbar-left > li {
-    margin: 1.25rem;
+#sidebar {
+  width: 240px; /* Adjust the width based on your sidebar width */
+  transition: margin-left 0.3s ease; 
 }
 
-/* -------------------------------------------- */
-
-#main-nav > li {
-    margin: 1.25rem;
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

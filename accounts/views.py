@@ -92,3 +92,11 @@ def user_panel_view(request: HttpRequest) -> HttpResponse:
 
 # ---------------------------------------------------
 
+@login_required(login_url='accounts:login')
+def user_profile_view(request: HttpRequest) -> HttpResponse:
+    """View for the user profile page."""
+    
+    context = {}
+    return render(request, 'accounts/user-profile.html', context)
+
+# ---------------------------------------------------

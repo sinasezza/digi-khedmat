@@ -1,6 +1,7 @@
 import uuid
 import logging
 from typing import Any
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -19,6 +20,15 @@ def barter_list_view(request):
     
     logger.info(f"barter list fetched by  user {request.user}")
     
+    # response to search barter
+    search_input = request.GET.get('search-area') or ''
+    if search_input:
+        barters = barters.filter(
+            Q(title__icontains=search_input) | 
+            Q(summary__icontains=search_input) | 
+            Q(description__icontains=search_input)
+        )
+    
     # Pagination
     paginated = Paginator(barters, 6)  # Show up to 9 posts on each page
     page_number = request.GET.get("page")  # Get the requested page number from the URL
@@ -27,6 +37,7 @@ def barter_list_view(request):
     context = {
         'barters': page.object_list,
         'page': page,
+        'search_input': search_input,
     }
     return render(request, 'barters/barter-list.html', context)
 

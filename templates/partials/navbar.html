@@ -31,20 +31,16 @@
       <!-- Right-aligned items -->
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         {% if request.user.is_authenticated %}
-          <!-- User profile image and link to panel -->
-          <div class="flex items-center">
-            <img class="h-8 w-8 rounded-full" src="{{ request.user.profile.image.url }}" alt="{{ request.user.username }}">
-            <a href="{% url 'accounts:user-panel' %}" class="ml-2 text-gray-300 hover:text-white text-sm font-medium">پنل کاربری</a>
-            <a href="{% url 'accounts:logout' %}" class="ml-2 text-gray-300 hover:text-white text-sm font-medium">خروج</a>
-          </div>
-
           <!-- Notifications button -->
           <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <!-- ... (your notifications icon code) ... -->
+            <img src="{% static 'global/icons/notification.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-gray-500">
+         </button>
+         
+          <!-- Profile dropdown (if needed) -->
+          <button id="toggleSidebarBtn" class="flex items-center mx-2 text-gray-300 hover:text-white text-sm font-medium">
+            <img src="{% static 'global/icons/settings.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-slate-300">
           </button>
 
-          <!-- Profile dropdown (if needed) -->
-          <!-- ... (your profile dropdown code) ... -->
         {% else %}
           <!-- Register and Login buttons (if needed) -->
           <a href="{% url 'accounts:register' %}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">ثبت نام</a>
