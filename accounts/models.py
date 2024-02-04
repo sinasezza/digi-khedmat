@@ -35,14 +35,13 @@ class Account(AbstractUser):
     # -----------------------------------------
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # -----------------------------------------
-    phone_number    = PhoneNumberField(
-            max_length=20,
-            region=settings.PHONENUMBER_DEFAULT_REGION,
-            null=False,
-            blank=False,
-            unique=True,
-            verbose_name="تلفن"
-        )
+    phone_number = models.CharField(
+        max_length=20,
+        # region=settings.PHONENUMBER_DEFAULT_REGION,
+        null=False,
+        blank=False,
+        verbose_name="تلفن"
+    )
     # -----------------------------------------
     profile_photo   = models.ImageField(upload_to=user_profile_image_path, null=True, blank=True, verbose_name="عکس پروفایل")
     # -----------------------------------------

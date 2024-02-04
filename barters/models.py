@@ -67,6 +67,12 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     
     # --------------------------------------
     
+    def get_chat_url(self):
+        return reverse('chat:get-create-chat-room')
+    
+    # --------------------------------------
+    
+    
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

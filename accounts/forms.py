@@ -5,7 +5,6 @@ from . import models
 
 class UserRegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(label="Password", widget=forms.PasswordInput)
-    phone_number = PhoneNumberField(region='IR')
     
     class Meta:
         model = models.Account
@@ -49,10 +48,14 @@ class UserRegisterForm(forms.ModelForm):
     
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
+        print(f"phone number is {phone_number}")
         matching_phone_numbers = models.Account.objects.filter(phone_number=phone_number)
-        
+        print(f"\n\n\n i am here \n\n\n")
         if matching_phone_numbers.exists():
+            print(f"it exists")
             raise forms.ValidationError('این شماره تلفن وجود دارد.')
+        else:
+            print("it does not exitst")
         
         return phone_number
 
