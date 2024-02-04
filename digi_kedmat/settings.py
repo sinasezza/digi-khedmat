@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from shutil import which
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -258,6 +259,7 @@ STATICFILES_FINDERS = (
 
 # TailwindCss Settings
 TAILWIND_APP_NAME = 'theme'
+NPM_BIN_PATH = which("npm")
 
 
 # Compression settings and conf

@@ -8,4 +8,9 @@
 
 {% block content %}
 	LETS CHAT!
+	<ul>
+    {% for message in room_messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
 {% endblock content %}
