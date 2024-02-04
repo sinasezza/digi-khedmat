@@ -1,0 +1,8 @@
+{% extends "base/base.html" %}
+
+{% block title %}حساب کاربری{% endblock title %}
+
+{% block content %}
+  <p>{{ request.user.username }}</p>
+{% endblock content %}
+
