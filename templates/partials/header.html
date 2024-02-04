@@ -8,7 +8,7 @@
         <!-- Start Search Box -->
         <form method="get" class="flex items-center space-x-4">
           <div class="relative">
-            <input type="text" placeholder="Search" class="py-2 px-4 rounded-full outline-none" name="search-area" value="{{ search_input }}">
+            <input action="{{request.resolver_match.app_name}}/list/" type="text" placeholder="Search" class="py-2 px-4 rounded-full outline-none" name="search-area" value="{{ search_input }}">
             <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 focus:outline-none">
               <!-- Search icon (replace with your icon) -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

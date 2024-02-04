@@ -31,7 +31,7 @@
               <span class="mr-2">{{ location.city }}, {{ location.province }}</span>
           {% endfor %}
       </div>
-      <p class="text-gray-800">{{ barter.description }}</p>
+      <div class="text-gray-800">{{ barter.description | linebreaksbr | safe }}"</div>
   </div>
 </div>
 {% endblock content %}
