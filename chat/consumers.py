@@ -1,5 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from asgiref.sync import sync_to_async
 from . import models
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -26,9 +27,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        sender = text_data_json['sender']
+        receiver = text_data_json['receiver']
 
         # Save message to the database
-        await self.save_message(message)
+        await self.save_message(sender, receiver, message)
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -48,14 +51,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': message,
         }))
 
-    async def save_message(self, message_content):
+    async def save_message(self, sender, receiver, message_content):
         # Retrieve users and thread based on your application logic
-        user1 = self.scope['user']
-        user2 = None  # Set the second user based on your application logic
+        # user1 = self.scope['user']
+        user1 = sender
+        
+        print(f"\n\n\nuser1 is {user1}\n\n\n")
+        user2 = receiver  # Set the second user based on your application logic
         thread = None  # Set the thread based on your application logic
 
         # Save the message to the database
-        await models.Message.objects.create(
+        await sync_to_async(models.Message.objects.create)(
             thread=thread,
             from_user=user1,
             to_user=user2,
