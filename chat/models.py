@@ -25,7 +25,7 @@ class Thread(models.Model):
     # -------------------------------------------------
     
     def get_room_url(self):
-        return reverse('chat:chat-room', kwargs={'room_id': self.id})
+        return reverse('chat:chat-room', kwargs={'room_name': self.name})
 
 # =====================================================================
 

@@ -30,6 +30,9 @@ def get_or_create_chat_room_view(request: HttpRequest, receiver_id: str) -> Http
 def chat_room_view(request: HttpRequest, room_name: str) -> HttpResponse:
     # Retrieve the thread or return a 404 response
     thread = get_object_or_404(models.Thread, name=room_name)
+    
+    sender = request.user
+    receiver = thread.user1 if thread.user2 == sender else thread.user2
 
     # Retrieve room messages ordered by created_at
     room_messages = thread.messages.all().order_by('created_at')
@@ -49,5 +52,7 @@ def chat_room_view(request: HttpRequest, room_name: str) -> HttpResponse:
     context = {
         'room_name': thread.name,
         'room_messages': room_messages,
+        'sender': sender,
+        'receiver': receiver,
     }
     return render(request, 'chat/chat-room.html', context)
