@@ -61,6 +61,8 @@
         if (message !== '') {
           chatSocket.send(JSON.stringify({
             'type': 'chat.message',
+            'sender': '{{sender.username}}',
+            'receiver': '{{receiver.username}}',
             'message': message,
           }));
           messageInput.val('');
