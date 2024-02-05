@@ -7,7 +7,7 @@ from channels.security.websocket import AllowedHostsOriginValidator, OriginValid
 import chat.routing
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'digi-khedmat.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'digi_khedmat.settings')
 
 
 application = ProtocolTypeRouter({

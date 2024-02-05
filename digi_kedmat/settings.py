@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     
 ]
 
-# SITE ID
+#### SITE ID
 SITE_ID = eval(os.environ.get('SITE_ID'))
 
 
@@ -125,7 +125,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "digi_kedmat.wsgi.application"
 ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
-# Database
+#### Database
 DATABASES = {
     'default': eval(os.environ.get('DATABASE_INFO'))
 }
@@ -233,14 +233,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+#### Internationalization
 LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE')
 TIME_ZONE = os.environ.get('TIME_ZONE')
 USE_I18N = os.environ.get('USE_I18N')
 USE_TZ = os.environ.get('USE_TZ')
 
 
-# Static files (CSS, JavaScript, Images)
+#### Static files (CSS, JavaScript, Images)
 STATIC_URL = os.environ.get('STATIC_URL')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 if DEBUG:
@@ -257,7 +257,7 @@ STATICFILES_FINDERS = (
 )
 
 
-# TailwindCss Settings
+##### TailwindCss Settings
 TAILWIND_APP_NAME = 'theme'
 NPM_BIN_PATH = which("npm")
 

@@ -5,7 +5,7 @@ import uuid
 
 
 class Thread(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # -------------------------------------------------
     user1 = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='my_threads')
     # -------------------------------------------------

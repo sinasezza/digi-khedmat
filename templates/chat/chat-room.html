@@ -2,15 +2,70 @@
 
 {% block title %}دیجی خدمت{% endblock title %}
 
-{% block custom_assets %}
-
-{% endblock custom_assets %}
-
 {% block content %}
-	LETS CHAT!
-	<ul>
-    {% for message in room_messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
+  <div class="container mx-auto my-8">
+    <h1 class="text-3xl font-bold mb-4">LETS CHAT!</h1>
+
+    <ul id="messages" class="mb-4">
+      {% for message in room_messages %}
+        <li>{{ message.from_user }}: {{ message.content }}</li>
+      {% endfor %}
+    </ul>
+
+    <form action="" id="message-form" class="flex items-center">
+      {% csrf_token %}
+      <input type="text" name="message" placeholder="Type your message here..." class="flex-1 border p-2 mr-2">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+    </form>
+  </div>
 {% endblock content %}
+
+
+{% block custom_js %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      const roomName = '{{ room_name }}';
+      console.log(`currLocation is ${window.location.host}`);
+      console.log(`room id is ${roomName}`);
+
+      let protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
+      let url = `${protocol}://${window.location.host}/ws/${roomName}/`;
+
+      const chatSocket = new WebSocket(url);
+
+      chatSocket.onmessage = function (e) {
+        let data = JSON.parse(e.data);
+        console.log('data is', data);
+
+        if (data.type === 'chat') {
+          let messages = $('#messages');
+          let div = $('<div>').html(`<p>${data.message}</p>`);
+          messages.append(div);
+        } else if (data.type === 'chat.room_info') {
+          // Update UI with chat room information
+          let messages = $('#messages');
+          messages.empty();
+
+          for (let message of data.room_messages) {
+            let li = $('<li>').html(`${message.from_user}: ${message.content}`);
+            messages.append(li);
+          }
+        }
+      }
+
+      $('#message-form').on('submit', function (e) {
+        e.preventDefault();
+        let messageInput = $('[name="message"]');
+        let message = messageInput.val().trim();
+
+        if (message !== '') {
+          chatSocket.send(JSON.stringify({
+            'type': 'chat.message',
+            'message': message,
+          }));
+          messageInput.val('');
+        }
+      });
+    });
+  </script>
+{% endblock custom_js %}
