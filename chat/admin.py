@@ -7,7 +7,7 @@ class MessageInline(admin.TabularInline):  # You can also use StackedInline
 
 @admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user1', 'user2',)
+    list_display = ('name', 'user1', 'user2',)
     inlines = [MessageInline]  # Add the MessageInline to the ThreadAdmin
 
 @admin.register(Message)
