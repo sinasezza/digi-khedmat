@@ -3,20 +3,40 @@
 {% block title %}دیجی خدمت{% endblock title %}
 
 {% block content %}
-  <div class="container mx-auto my-8">
-    <h1 class="text-3xl font-bold mb-4">LETS CHAT!</h1>
-
-    <ul id="messages" class="mb-4">
-      {% for message in room_messages %}
-        <li>{{ message.from_user }}: {{ message.content }}</li>
-      {% endfor %}
-    </ul>
-
-    <form action="" id="message-form" class="flex items-center">
-      {% csrf_token %}
-      <input type="text" name="message" placeholder="Type your message here..." class="flex-1 border p-2 mr-2">
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
-    </form>
+  <div id="messages" class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+    <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+      <div id="message-list" class="flex flex-col flex-grow h-0 p-4 overflow-auto">
+        {% for message in room_messages %}
+          {% if request.user == message.from_user %}
+            <div class="flex w-full mt-2 space-x-3 max-w-xs">
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+              <div>
+                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                  <p class="text-sm">{{ message.content }}</p>
+                </div>
+                <span class="text-xs text-gray-500 leading-none">{{ message.created_at }}</span>
+              </div>
+            </div>
+          {% else %}
+            <div class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+              <div>
+                <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                  <p class="text-sm">{{ message.content }}</p>
+                </div>
+                <span class="text-xs text-gray-500 leading-none">{{ message.created_at }}</span>
+              </div>
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      
+      <form action="" id="message-form" class="flex items-center">
+        {% csrf_token %}
+        <input type="text" name="message" placeholder="Type your message here..." class="flex-1 border p-2 mr-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+      </form>
+    </div>
   </div>
 {% endblock content %}
 
@@ -29,7 +49,7 @@
       console.log(`room id is ${roomName}`);
 
       let protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
-      let url = `${protocol}://${window.location.host}/ws/${roomName}/`;
+      let url = `${protocol}://${window.location.host}/ws/chat/${roomName}/`;
 
       const chatSocket = new WebSocket(url);
 
@@ -38,9 +58,27 @@
         console.log('data is', data);
 
         if (data.type === 'chat') {
-          let messages = $('#messages');
-          let div = $('<div>').html(`<p>${data.message}</p>`);
-          messages.append(div);
+          const messages = JSON.parse(data.message); // Parse the JSON string to an array of message objects
+          messages.forEach(message => {
+            // Access the properties of each message object
+            const content = message.fields.content;
+            const created_at = message.fields.created_at;
+            const from_user = message.fields.from_user;
+            // Create HTML elements to display the message
+            const div = $('<div>').html(`
+              <div class="flex w-full mt-2 space-x-3 max-w-xs">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                <div>
+                  <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                    <p class="text-sm">${content}</p>
+                  </div>
+                  <span class="text-xs text-gray-500 leading-none">${created_at}</span>
+                </div>
+              </div>  
+            `);
+            // Append the message HTML to the messages container
+            $('#message-list').append(div);
+          });
         } else if (data.type === 'chat.room_info') {
           // Update UI with chat room information
           let messages = $('#messages');
