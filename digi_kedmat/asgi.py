@@ -4,7 +4,8 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
-import chat.routing
+from django.urls import re_path
+from chat.consumers import ChatConsumer
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'digi_khedmat.settings')
@@ -14,7 +15,12 @@ application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AllowedHostsOriginValidator(
         AuthMiddlewareStack(
-            URLRouter(chat.routing.websocket_urlpatterns)
+            URLRouter(
+                [
+                    re_path(r'ws/chat/(?P<room_name>[\w-]+)/$', ChatConsumer.as_asgi()),
+                    # re_path(r"^ws/notification/(?P<room_name>\w+)/$", NotificationConsumer.as_asgi()),
+                ]
+            )
         )
     )
 })

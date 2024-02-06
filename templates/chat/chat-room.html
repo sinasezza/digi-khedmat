@@ -49,7 +49,7 @@
       console.log(`room id is ${roomName}`);
 
       let protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
-      let url = `${protocol}://${window.location.host}/ws/${roomName}/`;
+      let url = `${protocol}://${window.location.host}/ws/chat/${roomName}/`;
 
       const chatSocket = new WebSocket(url);
 

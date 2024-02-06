@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
+from notifications.models import Notification as BaseNotification
 
 
 class AccountManager(UserManager):
@@ -19,7 +20,9 @@ class AccountManager(UserManager):
         user.save(using=self._db)
         return user
     
-    
+
+# ==================================================================================
+
 class Account(AbstractUser):
     
     def user_profile_image_path(instance, filename):
@@ -56,3 +59,21 @@ class Account(AbstractUser):
     address = models.CharField(max_length=400, null=True, blank=True, verbose_name="آدرس")
     # -----------------------------------------
     objects = AccountManager()
+
+# ==================================================================================
+
+class NotificationType(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+# # ==================================================================================
+
+# class Notification(BaseNotification):
+#     recipient = models.ForeignKey(Account, on_delete=models.CASCADE)
+#     notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
+#     # Additional fields specific to your notification
+
+#     class Meta:
+#         ordering = ['-timestamp']
