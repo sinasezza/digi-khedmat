@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load static %}
 
 {% block title %}دیجی خدمت{% endblock title %}
 
@@ -9,12 +10,14 @@
         {% for message in room_messages %}
           {% if request.user == message.from_user %}
             <div class="flex w-full mt-2 space-x-3 max-w-xs">
-              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+              <div class="flex-shrink-0 h-10 w-10 rounded-full">
+                <img src="{% if sender.profile_photo %} {{sender.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
+              </div>
               <div>
                 <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                   <p class="text-sm">{{ message.content }}</p>
                 </div>
-                <span class="text-xs text-gray-500 leading-none">{{ message.created_at }}</span>
+                <span class="text-xs text-gray-500 leading-none">{{ message.created_at | to_Jdatetime }}</span>
               </div>
             </div>
           {% else %}
@@ -23,9 +26,11 @@
                 <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                   <p class="text-sm">{{ message.content }}</p>
                 </div>
-                <span class="text-xs text-gray-500 leading-none">{{ message.created_at | to_jdate }}</span>
+                <span class="text-xs text-gray-500 leading-none">{{ message.created_at | to_Jdatetime }}</span>
               </div>
-              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+              <div class="flex-shrink-0 h-10 w-10 rounded-full">
+                <img src="{% if receiver.profile_photo %} {{receiver.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
+              </div>
             </div>
           {% endif %}
         {% endfor %}
@@ -40,81 +45,14 @@
   </div>
 {% endblock content %}
 
-
 {% block custom_js %}
+  <!-- script for defining and using django variables in js file -->
   <script>
-    function gregorianToJalali(gregorianDate) {
-      return moment(gregorianDate).format('YYYY-MM-DD - HH:mm:ss');
-    }
+    const roomName = '{{ room_name }}';
+    const senderUsername = '{{sender.username}}';
+    const receiverUsername = '{{receiver.username}}';
+    const currentUser = '{{request.user.id}}';
   </script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      const roomName = '{{ room_name }}';
-      console.log(`currLocation is ${window.location.host}`);
-      console.log(`room id is ${roomName}`);
-
-      $("#message-list").animate({ scrollTop: 9999 }, 2000);
-      $("#message-form > input").focus();
-
-      let protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
-      let url = `${protocol}://${window.location.host}/ws/chat/${roomName}/`;
-
-      const chatSocket = new WebSocket(url);
-
-      chatSocket.onmessage = function (e) {
-        let data = JSON.parse(e.data);
-        console.log('data is', data);
-
-        if (data.type === 'chat') {
-          const messages = JSON.parse(data.message); // Parse the JSON string to an array of message objects
-          messages.forEach(message => {
-            // Access the properties of each message object
-            const content = message.fields.content;
-            const created_at = message.fields.created_at;
-            const from_user = message.fields.from_user;
-            // Create HTML elements to display the message
-            const div = $('<div>').html(`
-              <div class="flex w-full mt-2 space-x-3 max-w-xs">
-                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
-                <div>
-                  <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
-                    <p class="text-sm">${content}</p>
-                  </div>
-                  <span class="text-xs text-gray-500 leading-none">${gregorianToJalali(created_at)}</span>
-                </div>
-              </div>  
-            `);
-            // Append the message HTML to the messages container
-            $('#message-list').append(div);
-            $("#message-list").animate({ scrollTop: 9999 }, 1000);
-          });
-        } else if (data.type === 'chat.room_info') {
-          // Update UI with chat room information
-          let messages = $('#messages');
-          messages.empty();
-
-          for (let message of data.room_messages) {
-            let li = $('<li>').html(`${message.from_user}: ${message.content}`);
-            messages.append(li);
-          }
-        }
-      }
-
-      $('#message-form').on('submit', function (e) {
-        e.preventDefault();
-        let messageInput = $('[name="message"]');
-        let message = messageInput.val().trim();
-
-        if (message !== '') {
-          chatSocket.send(JSON.stringify({
-            'type': 'chat.message',
-            'sender': '{{sender.username}}',
-            'receiver': '{{receiver.username}}',
-            'message': message,
-          }));
-          messageInput.val('');
-        }
-      });
-    });
-  </script>
+  
+  <script src="{% static 'chat/js/chat.js' %}"></script>
 {% endblock custom_js %}
