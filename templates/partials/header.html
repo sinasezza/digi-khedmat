@@ -8,8 +8,8 @@
         <!-- Start Search Box -->
         <form method="get" class="flex items-center space-x-4">
           <div class="relative">
-            <input action="{{request.resolver_match.app_name}}/list/" type="text" placeholder="Search" class="py-2 px-4 rounded-full outline-none" name="search-area" value="{{ search_input }}">
-            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 focus:outline-none">
+            <input action="{{request.resolver_match.app_name}}/list/" type="text" placeholder="جستجو" class="py-2 px-10 rounded-full outline-none" name="search-area" value="{{ search_input }}">
+            <button class="absolute right-2 mx-2 top-1/2 transform -translate-y-1/2 text-gray-400 focus:outline-none">
               <!-- Search icon (replace with your icon) -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M14.5 13h-.79l-.28-.27a6.5 6.5 0 10-1.42 1.42l.27.28v.79l5 4.99L19.49 18l-4.99-5zm-6 0C8.01 13 6 10.99 6 8.5S8.01 4 10.5 4 15 6.01 15 8.5 12.99 13 10.5 13z"/>
