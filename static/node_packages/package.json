@@ -1,0 +1,15 @@
+{
+  "name": "node_packages",
+  "version": "1.0.0",
+  "description": "its node js packages that needed to work with some pages and packages like channels, etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment-jalaali": "^0.10.0",
+    "reconnecting-websocket": "^4.4.0"
+  }
+}

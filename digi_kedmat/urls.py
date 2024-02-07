@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 import notifications.urls
 
 
@@ -13,9 +14,10 @@ urlpatterns = [
     path('ads/', include('ads.urls', namespace='ads')),
     path('jobs/', include('jobs.urls', namespace='jobs')),
     path('chat/', include('chat.urls', namespace='chat')),
+    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/digi-khedmat-favicon.png', permanent=True)),
     
     # third party packages urls
-    # path("__reload__/", include("django_browser_reload.urls")),
+    path("__reload__/", include("django_browser_reload.urls")),
     # path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),

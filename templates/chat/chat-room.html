@@ -3,7 +3,7 @@
 {% block title %}دیجی خدمت{% endblock title %}
 
 {% block content %}
-  <div id="messages" class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+  <div id="messages" class="flex flex-col items-center justify-center w-screen min-h-[80vh] bg-gray-100 text-gray-800 p-10">
     <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
       <div id="message-list" class="flex flex-col flex-grow h-0 p-4 overflow-auto">
         {% for message in room_messages %}
@@ -23,7 +23,7 @@
                 <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                   <p class="text-sm">{{ message.content }}</p>
                 </div>
-                <span class="text-xs text-gray-500 leading-none">{{ message.created_at }}</span>
+                <span class="text-xs text-gray-500 leading-none">{{ message.created_at | to_jdate }}</span>
               </div>
               <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
             </div>
@@ -33,8 +33,8 @@
       
       <form action="" id="message-form" class="flex items-center">
         {% csrf_token %}
-        <input type="text" name="message" placeholder="Type your message here..." class="flex-1 border p-2 mr-2">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+        <input type="text" name="message" placeholder="پیام خود را وارد کنید..." class="flex-1 border p-2 mr-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">ارسال</button>
       </form>
     </div>
   </div>
@@ -42,11 +42,19 @@
 
 
 {% block custom_js %}
+  <script>
+    function gregorianToJalali(gregorianDate) {
+      return moment(gregorianDate).format('YYYY-MM-DD - HH:mm:ss');
+    }
+  </script>
   <script type="text/javascript">
     $(document).ready(function () {
       const roomName = '{{ room_name }}';
       console.log(`currLocation is ${window.location.host}`);
       console.log(`room id is ${roomName}`);
+
+      $("#message-list").animate({ scrollTop: 9999 }, 2000);
+      $("#message-form > input").focus();
 
       let protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
       let url = `${protocol}://${window.location.host}/ws/chat/${roomName}/`;
@@ -72,12 +80,13 @@
                   <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                     <p class="text-sm">${content}</p>
                   </div>
-                  <span class="text-xs text-gray-500 leading-none">${created_at}</span>
+                  <span class="text-xs text-gray-500 leading-none">${gregorianToJalali(created_at)}</span>
                 </div>
               </div>  
             `);
             // Append the message HTML to the messages container
             $('#message-list').append(div);
+            $("#message-list").animate({ scrollTop: 9999 }, 1000);
           });
         } else if (data.type === 'chat.room_info') {
           // Update UI with chat room information
