@@ -37,18 +37,6 @@ def chat_room_view(request: HttpRequest, room_name: str) -> HttpResponse:
     # Retrieve room messages ordered by created_at
     room_messages = thread.messages.all().order_by('created_at')
 
-    # # Send chat room information to the WebSocket
-    # channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.group_add)(
-    #     f'group__{room_name}',
-    #     {
-    #         'type': 'chat.room_info',
-    #         'room_name': room_name,
-    #         'room_name': str(thread),
-    #         'room_messages': [{'content': message.content, 'from_user': message.from_user.username} for message in room_messages],
-    #     }
-    # )
-
     context = {
         'room_name': thread.name,
         'room_messages': room_messages,

@@ -19,8 +19,14 @@
 
   {% compress js %} 
       <script src="{% static  'global/js/jquery-3.7.1.min.js.js' %}"></script>
-      <script src="{% static 'node_packages/node_modules/moment/min/moment.min.js' %}"></script>
-      <script src="{% static 'node_packages/node_modules/moment-jalaali/build/moment-jalaali.js' %}"></script>
+
+      {% comment %} <script src="{% static 'node_packages/node_modules/moment/min/moment.min.js' %}"></script>
+      <script src="{% static 'node_packages/node_modules/moment-jalaali/build/moment-jalaali.js' %}"></script> {% endcomment %}
+      
+      <script src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.js' %}"></script>
+      <script src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js' %}"></script>
+      <script src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js.map' %}"></script>
+
       <script src="{% static  'global/js/scripts.js' %}"></script>
   {% endcompress js %}
   
