@@ -21,7 +21,7 @@ cssmin==0.2.0
 daphne==4.0.0
 defusedxml==0.7.1
 diff-match-patch==20230430
-Django==5.0.1
+Django==5.0.2
 django-appconf==1.0.6
 django-browser-reload==1.12.1
 django-ckeditor==6.7.0
