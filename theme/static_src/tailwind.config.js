@@ -43,6 +43,9 @@ module.exports = {
     ],
     theme: {
         extend: {},
+        fontFamily: {
+            vazir: ["Vazir"],
+        }
     },
     plugins: [
         /**
