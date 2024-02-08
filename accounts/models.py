@@ -62,16 +62,16 @@ class Account(AbstractUser):
 
 # ==================================================================================
 
-class NotificationType(models.Model):
-    name = models.CharField(max_length=100)
+# class NotificationType(models.Model):
+#     name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
-# # ==================================================================================
+# ==================================================================================
 
-# class Notification(BaseNotification):
-#     recipient = models.ForeignKey(Account, on_delete=models.CASCADE)
+# class UserNotification(BaseNotification):
+#     recipient = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='my_notifications')
 #     notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
 #     # Additional fields specific to your notification
 
