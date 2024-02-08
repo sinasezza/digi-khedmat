@@ -1,24 +1,120 @@
 <!-- partials/header.html -->
-<header>
-    <nav class="bg-gray-700 py-4">
-      <div class="container mx-auto flex justify-between items-center">
-        <!-- Logo -->
-        <h1 class="text-2xl font-bold text-gray-50">دیجی خدمت</h1>
-  
+{% load static %}
+
+<header class="bg-white">
+    <nav class="pr-504 mx-auto flex justify-between p-6" aria-label="Global">
+        
+        <div class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            role="group">
+            <a href="#" type="button"
+                class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                ثبت‌نام
+            </a>
+            <a href="#" type="button"
+                class="inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                ورود
+            </a>
+        </div>  
+
+        <div style="margin-left: 448px" class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            role="group">
+            <a href="#" type="button"
+                class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                دیجی‌خدمت
+            </a>
+            <a href="#" type="button"
+                class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                تهاتر کالا
+            </a>
+            <a href="#" type="button"
+                class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                تبلیغات
+            </a>
+            <a href="#" type="button"
+                class="inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
+                data-te-ripple-init data-te-ripple-color="light">
+                کاریابی
+            </a>
+        </div>
         <!-- Start Search Box -->
         <form method="get" class="flex items-center space-x-4">
-          <div class="relative">
-            <input action="{{request.resolver_match.app_name}}/list/" type="text" placeholder="جستجو" class="py-2 px-10 rounded-full outline-none" name="search-area" value="{{ search_input }}">
-            <button class="absolute right-2 mx-2 top-1/2 transform -translate-y-1/2 text-gray-400 focus:outline-none">
-              <!-- Search icon (replace with your icon) -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M14.5 13h-.79l-.28-.27a6.5 6.5 0 10-1.42 1.42l.27.28v.79l5 4.99L19.49 18l-4.99-5zm-6 0C8.01 13 6 10.99 6 8.5S8.01 4 10.5 4 15 6.01 15 8.5 12.99 13 10.5 13z"/>
-              </svg>
-            </button>
+          <div class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+              <div class="relative flex w-full flex-wrap items-stretch">
+                <!--Search button-->
+                <button
+                    class="relative z-[2] rounded-r border-2 border-primary px-6 py-2 text-xs font-medium uppercase text-primary transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
+                    type="button" id="button-addon3" data-te-ripple-init>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 border-black" >
+                        <path fill-rule="evenodd"
+                            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                 
+                <input 
+                    name="search-area" 
+                    value="{{ search_input }}"
+                    action="{{request.resolver_match.app_name}}/list/" 
+                    type="search"
+                    style="border-color: inherit; text-align: center; color: black"
+                    class="font-vazir relative m-0 -mr-0.5 block min-w-0 flex-auto rounded-l bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                    placeholder="جستجو"  aria-label="Search" aria-describedby="button-addon3" />
+              </div>
           </div>
         </form>
-        <!-- End Search Box -->
-      </div>
+        <!-- Logo -->
+        <div class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+            <a href="#" class="-m-1.5 p-1.5 inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700">
+                <span class="sr-only">Your Company</span>
+                <img class=" h-8 w-auto" src="{% static 'global/images/DigiKhedmatLogo.png' %}" alt="">
+            </a>
+        </div>
     </nav>
-  </header>
-  
+    <!-- Mobile menu, show/hide based on menu open state. -->
+    <div class="lg:hidden" role="dialog" aria-modal="true">
+        <!-- Background backdrop, show/hide based on slide-over state. -->
+        <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="flex items-center justify-between">
+                <a href="#" class="-m-1.5 p-1.5">
+                    <span class="sr-only">Your Company</span>
+                    <img class="h-8 w-auto" src="./images/DigiKhedmat.png"
+                        alt="">
+                </a>
+            </div>
+            <form>
+                <label for="default-search" class="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <div class="relative">
+                    <input style="border: solid;" type="search" id="default-search"
+                        class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="جستجو" required>
+                    <button type="submit"
+                        class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                </div>
+            </form>
+
+            <div style="text-align: right;" class="mt-6 flow-root">
+                <div class="-my-6 divide-y divide-gray-500/10">
+                    <div class="space-y-2 py-6">
+                        <a href="#"
+                            class="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50">دیجی‌خدمت</a>
+                        <a href="#"
+                            class="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50">تهاتر کالا</a>
+                        <a href="#"
+                            class="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50">تبلیغات</a>
+                        <a href="#"
+                            class="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50">کاریابی</a>
+                    </div>
+                    <div class="py-6">
+                        <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base leading-7 text-gray-900 hover:bg-gray-50">ورود</a>
+                        <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base leading-7 text-gray-900 hover:bg-gray-50">ثبت‌نام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
