@@ -53,8 +53,8 @@ INSTALLED_APPS = [
     'compressor',
     'cssmin',
     'jsmin',
-    'ckeditor',  # CKEditor config
-    'ckeditor_uploader',  # CKEditor media uploader
+    'ckeditor',  
+    'ckeditor_uploader', 
     'import_export',
     'captcha',
     'django_jalali',
@@ -323,15 +323,107 @@ DEFAULT_AUTO_FIELD = os.environ.get('DEFAULT_AUTO_FIELD')
 
 
 # Ckeditor Settings and Configs
-CKEDITOR_BASEPATH = os.environ.get("CKEDITOR_BASEPATH")
-CKEDITOR_UPLOAD_PATH = os.environ.get("CKEDITOR_UPLOAD_PATH")
-CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_BASEPATH = os.environ.get('CKEDITOR_BASEPATH')
+CKEDITOR_UPLOAD_PATH = os.environ.get('CKEDITOR_UPLOAD_PATH')
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_JQUERY_URL = os.environ.get("CKEDITOR_JQUERY_URL")
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar_Custom": [
+            {
+                "name": "clipboard",
+                "items": [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ],
+            },
+            # {
+            #     "name": "colors", 
+            #     "items": [
+            #         "TextColor", 
+            #         "BGColor"
+            #     ]
+            # },
+            {
+                "name": "yourcustomtools",
+                "items": [
+                    # put the name of your editor.ui.addButton here
+                    "Preview",
+                    "Maximize",
+                ],
+            },
+            "/",
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    "Subscript",
+                    "Superscript",
+                    "RemoveFormat",
+                ],
+            },
+            {
+                "name": "paragraph",
+                "items": [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                    "-",
+                    "BidiLtr",
+                    "BidiRtl",
+                ],
+            },
+        ],
+        "toolbar": "Custom",  # put selected toolbar config here
+        "toolbarGroups": [
+            {"name": "document", "groups": ["mode", "document", "doctools"]}
+        ],
+        "height": 400,
+        # 'width': '100%',
+        "tabSpaces": 4,
+        "extraPlugins": ",".join(
+            [
+                "uploadimage",  # the upload image feature
+                # your extra plugins here
+                "div",
+                "autolink",
+                "autoembed",
+                "embedsemantic",
+                "autogrow",
+                "devtools",
+                "widget",
+                "lineutils",
+                "clipboard",
+                "dialog",
+                "dialogui",
+                "elementspath",
+                "codesnippet",
+            ]
+        ),
+    }
+}
 
 
 
 #### PhoneNumberField Configurations
-PHONENUMBER_DEFAULT_REGION = os.environ.get("PHONENUMBER_DEFAULT_REGION")
-PHONENUMBER_DEFAULT_FORMAT = os.environ.get("PHONENUMBER_DEFAULT_FORMAT")
+PHONENUMBER_DEFAULT_REGION = os.environ.get('PHONENUMBER_DEFAULT_REGION')
+PHONENUMBER_DEFAULT_FORMAT = os.environ.get('PHONENUMBER_DEFAULT_FORMAT')
 
 
 #### CAPTCHA SETTINGS

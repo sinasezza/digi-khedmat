@@ -3,9 +3,9 @@
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <form action="" method="post">
+  <form action="" method="post" class="">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_p | safe }}
 
     <button type="submit">ثبت</button>
   </form>
