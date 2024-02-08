@@ -1,6 +1,7 @@
 import uuid
 import jdatetime
 from django.utils.text import slugify
+from ckeditor.fields import RichTextField
 from django.db import models
   
 
@@ -55,7 +56,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     summary = models.CharField(max_length=400, null=True, blank=True, verbose_name="خلاصه")
     # --------------------------------------
-    description = models.TextField(max_length=2000, null=True, blank=True, verbose_name="توضیحات")
+    description = RichTextField(max_length=2000, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
     categories = models.ManyToManyField(Category, blank=True, verbose_name='دسته بندی')
     # --------------------------------------

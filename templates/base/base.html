@@ -18,7 +18,11 @@
   {% endcompress css %} 
 
   {% compress js %} 
-      <script src="{% static  'global/js/jquery-3.7.1.min.js.js' %}"></script>
+      <script src="{% static  'global/js/jquery-3.7.1.min.js' %}"></script>
+
+      <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+      <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
 
       {% comment %} <script src="{% static 'node_packages/node_modules/moment/min/moment.min.js' %}"></script>
       <script src="{% static 'node_packages/node_modules/moment-jalaali/build/moment-jalaali.js' %}"></script> {% endcomment %}
