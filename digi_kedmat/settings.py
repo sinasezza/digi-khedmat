@@ -125,6 +125,20 @@ TEMPLATES = [
 WSGI_APPLICATION = "digi_kedmat.wsgi.application"
 ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+     ),
+    'PAGE_SIZE': 100,
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+    ),
+}
+
 #### Database
 DATABASES = {
     'default': eval(os.environ.get('DATABASE_INFO'))

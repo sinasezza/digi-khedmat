@@ -6,6 +6,7 @@ from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
+    # ******************************** MVTs ********************************
     path('admin/', admin.site.urls),
     path('', include('generics.urls', namespace='generics')),
     path('auth/',include('accounts.urls', namespace='accounts')),
@@ -15,7 +16,13 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
     re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/digi-khedmat-favicon.png', permanent=True)),
     
-    # third party packages urls
+    
+    # ******************************** APIs ********************************
+    path('api/auth/' , include('accounts.api.urls', namespace='accounts-api')), 
+
+    
+    
+    # **************************** 3rd Parties *****************************
     path("__reload__/", include("django_browser_reload.urls")),
     # path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),

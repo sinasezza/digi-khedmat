@@ -94,14 +94,9 @@ class Notification(models.Model):
     
     # -----------------------------------------
     
-    def mark_as_seen(self):
-        self.seen = True
-        self.save()
-
-    # -----------------------------------------
-
-    def mark_as_useen(self):
-        self.seen = False
+    def toggle_seen(self):
+        
+        self.seen = not self.seen
         self.save()
 
     # -----------------------------------------
