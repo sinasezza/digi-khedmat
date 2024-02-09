@@ -44,3 +44,19 @@ def chat_room_view(request: HttpRequest, room_name: str) -> HttpResponse:
         'receiver': receiver,
     }
     return render(request, 'chat/chat-room.html', context)
+
+# --------------------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def room_list_view(request: HttpRequest) -> HttpResponse:
+    user = request.user    
+    rooms = models.Thread.objects.filter(Q(user1=user) | Q(user2=user)).distinct()
+            
+    context = {
+        'rooms': rooms,
+    }
+    
+    return render(request, 'chat/room-list.html', context)
+
+# --------------------------------------------------------------
+

@@ -1,12 +1,15 @@
 from django.db.models.signals import post_save, m2m_changed, post_delete
-from notifications.models import Notification
-from notifications.signals import notify
 from django.dispatch import receiver
+from accounts.models import Notification
 from . import models
 
-@receiver(post_save, sender=models.Message)
-def my_handler(sender, instance, created, **kwargs):
+@receiver(post_save, sender=models.Thread)
+def my_handler(sender, instance: models.Thread, created, **kwargs):
     if created:
-        notify.send(sender=instance.from_user, recipient=instance.to_user, verb='شما یک پیام دریافت کردید')
-    # notify.send(instance.author, recipient=instance.recipient, action=notify.Action)
+        
+        Notification.objects.create(
+            recipient= instance.user2,
+            message=f"کاربر {instance.user1} یک صفحه چت با شما ایجاد کرده است.",
+            review_link=instance.get_room_url(),
+        )
     

@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load chat_tags %}
+
+{% block title %}پیام ها{% endblock title %}
+
+{% block content %}
+  <h3>چت های شما</h3>
+
+  <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    {% for room in rooms %}
+      {% get_other_user request.user room as other_user %}
+      <li class="m-4 pb-3 sm:pb-4 bg-white">
+        <a href="{{room.get_room_url}}">
+          <div class="flex items-center space-x-4 rtl:space-x-reverse">
+            <div class="flex-shrink-0">
+              <img src="{% if other_user.profile_photo %} {{other_user.profile_photo.url}} {% else %} {% static 'global/icons/user.png' %} {% endif %}" class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                {{ room.user1 }} <-> {{ room.user2 }}
+              </p>
+              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                {% if room.messages.count %} 
+                  <p>{{ room.messages.last.content }}</p>
+                  <p class="text-gray-400">{{ room.messages.last.created_at | to_Jdatetime }}</p> 
+                {% else %} 
+                  - 
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}
+

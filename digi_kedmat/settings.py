@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     # 'debug_toolbar',
     'channels',
     'watchman',
-    'notifications',
     
     
     # self apps

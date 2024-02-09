@@ -6,7 +6,6 @@ from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 from django.urls import re_path
 from chat.consumers import ChatConsumer
-from accounts.consumers import NotificationsConsumer
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'digi_khedmat.settings')
@@ -19,7 +18,6 @@ application = ProtocolTypeRouter({
             URLRouter(
                 [
                     re_path(r'ws/chat/(?P<room_name>[\w-]+)/$', ChatConsumer.as_asgi()),
-                    re_path(r'^ws/notifications/$', NotificationsConsumer.as_asgi()),
                 ]
             )
         )

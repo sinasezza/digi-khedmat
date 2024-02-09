@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from notifications.models import Notification
 # from django.views.generic.edit import CreateView
 # from django.contrib.auth.views import LoginView
 from . import models, forms
@@ -102,9 +101,13 @@ def user_profile_view(request: HttpRequest) -> HttpResponse:
 
 # ---------------------------------------------------
 
-@login_required
+@login_required(login_url='accounts:login')
 def notifications_view(request):
-    notifications = Notification.objects.filter(recipient=request.user)
-    return render(request, 'notifications.html', {'notifications': notifications})
+    notifications = models.Notification.objects.filter(recipient=request.user)
+    
+    context = {
+        'notifications': notifications,
+    }
+    return render(request, 'accounts/notifications.html', context)
 
 # ---------------------------------------------------

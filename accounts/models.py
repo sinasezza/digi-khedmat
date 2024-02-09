@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
-from notifications.models import Notification as BaseNotification
 
 
 class AccountManager(UserManager):
@@ -62,18 +61,47 @@ class Account(AbstractUser):
 
 # ==================================================================================
 
-# class NotificationType(models.Model):
-#     name = models.CharField(max_length=100)
+class NotificationManager(models.Manager):
+    def unseen_notifications(self):
+        return self.filter(seen=False)
 
-#     def __str__(self):
-#         return self.name
+class Notification(models.Model):
+    TYPES = (
+        ('success', "موفقیت"),
+        ('info', "اطلاع رسانی"),
+        ('warning', "هشدار"),
+        ('error', "خطا"),
+    )
 
-# ==================================================================================
+    type = models.CharField(max_length=20, default="info", choices=TYPES, verbose_name="نوع")
+    # -----------------------------------------
+    recipient = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='notifications', verbose_name="دریافت کننده")
+    # -----------------------------------------
+    seen = models.BooleanField(default=False, db_index=True, verbose_name="دیده شده")
+    # -----------------------------------------
+    message = models.CharField(max_length=255,  verbose_name="پیغام")
+    # -----------------------------------------
+    review_link = models.URLField(max_length=200, blank=True, null=True, verbose_name="لینک بررسی")
+    # -----------------------------------------
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
+    # -----------------------------------------
+    
+    objects = NotificationManager()
+      
+    class Meta:
+        ordering = ['-date_created']
+        index_together = ('recipient', 'seen')
+    
+    # -----------------------------------------
+    
+    def mark_as_seen(self):
+        self.seen = True
+        self.save()
 
-# class UserNotification(BaseNotification):
-#     recipient = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='my_notifications')
-#     notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
-#     # Additional fields specific to your notification
+    # -----------------------------------------
 
-#     class Meta:
-#         ordering = ['-timestamp']
+    def mark_as_useen(self):
+        self.seen = False
+        self.save()
+
+    # -----------------------------------------

@@ -3,7 +3,6 @@ from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
-import notifications.urls
 
 
 urlpatterns = [
@@ -22,7 +21,6 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^watchman/', include('watchman.urls')),
-    re_path(r'^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
 
 if settings.DEBUG:
