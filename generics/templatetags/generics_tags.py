@@ -7,9 +7,9 @@ register = template.Library()
 
 @register.inclusion_tag(filename='partials/sidebar.html')
 def load_sidebar(request):
-    notifications = request.user.notifications.all()
+    unseen_notifications_count = request.user.notifications.filter(seen=False).count()
     
     context = {
-        'notifications': notifications,
+        'unseen_notifications_count': unseen_notifications_count,
     }
     return context
