@@ -6,12 +6,12 @@
         
         <div class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
             role="group">
-            <a href="#" type="button"
+            <a href="{% url 'accounts:register' %}" type="button"
                 class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 ثبت‌نام
             </a>
-            <a href="#" type="button"
+            <a href="{% url 'accounts:login' %}" type="button"
                 class="inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 ورود
@@ -20,22 +20,22 @@
 
         <div style="margin-left: 448px" class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
             role="group">
-            <a href="#" type="button"
+            <a href="{% url 'generics:main-page' %}" type="button"
                 class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 دیجی‌خدمت
             </a>
-            <a href="#" type="button"
+            <a href="{% url 'barters:barter-list' %}" type="button"
                 class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 تهاتر کالا
             </a>
-            <a href="#" type="button"
+            <a href="{% url 'ads:adv-list' %}" type="button"
                 class="inline-block bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 تبلیغات
             </a>
-            <a href="#" type="button"
+            <a href="{% url 'jobs:job-list' %}" type="button"
                 class="inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
                 data-te-ripple-init data-te-ripple-color="light">
                 کاریابی
@@ -69,7 +69,7 @@
         </form>
         <!-- Logo -->
         <div class="inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-            <a href="#" class="-m-1.5 p-1.5 inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700">
+            <a href="{% url 'generics:main-page' %}" class="-m-1.5 p-1.5 inline-block rounded-l bg-primary px-6 pb-2 pt-2.5 text-xs font-vazir uppercase leading-normal transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700">
                 <span class="sr-only">Your Company</span>
                 <img class=" h-8 w-auto" src="{% static 'global/images/DigiKhedmatLogo.png' %}" alt="">
             </a>
