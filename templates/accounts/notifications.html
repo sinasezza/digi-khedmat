@@ -1,0 +1,27 @@
+{% extends "base/base.html" %}
+
+{% block title %}اعلان ها{% endblock title %}
+
+{% block content %}
+  <h3>اعلان های شما</h3>
+  
+  <ul class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+    {% for notification in notifications %}
+      <div class="bg-slate-100 rounded px-4 py-5 sm:p-6">
+        <div class="flex gap-5">
+          <button id="seen-btn" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-900">خوانده شده</button>
+          <button id="delete-btn" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">حذف</button>
+        </div>
+        
+        <div>
+          <a href="{{notification.review_link}}" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">پیغام - سطح {{notification.type}}</h5>
+            <p class="font-normal text-gray-700 dark:text-gray-400">{{notification.message}}</p>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}
+

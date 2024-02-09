@@ -8,12 +8,6 @@ class AccountAdmin(admin.ModelAdmin):
 
 # =================================================================
 
-# @admin.register(models.NotificationType)
-# class NotificationTypeAdmin(admin.ModelAdmin):
-#     list_display = ('name',)
-
-# =================================================================
-
-# @admin.register(models.UserNotification)
-# class UserNotificationAdmin(admin.ModelAdmin):
-#     list_display = ('recipient', 'notification_type',)
+@admin.register(models.Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'type', 'recipient', 'seen', 'date_created',)

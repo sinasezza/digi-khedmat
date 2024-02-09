@@ -34,9 +34,9 @@ class Message(models.Model):
     # -------------------------------------------------
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='messages')
     # -------------------------------------------------
-    from_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sent_messages')
+    from_user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, related_name='sent_messages')
     # -------------------------------------------------
-    to_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='received_messages')
+    to_user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, related_name='received_messages')
     # -------------------------------------------------
     content = models.CharField(max_length=255, blank=True, null=True)
     # -------------------------------------------------
