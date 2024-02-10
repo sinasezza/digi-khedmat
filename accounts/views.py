@@ -102,7 +102,7 @@ def user_profile_view(request: HttpRequest) -> HttpResponse:
 # ---------------------------------------------------
 
 @login_required(login_url='accounts:login')
-def notifications_view(request):
+def notifications_view(request: HttpRequest) -> HttpResponse:
     notifications = models.Notification.objects.filter(recipient=request.user)
     
     context = {
@@ -111,3 +111,12 @@ def notifications_view(request):
     return render(request, 'accounts/notifications.html', context)
 
 # ---------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def favorites_view(request: HttpRequest) -> HttpResponse:
+    
+    favorites = request.user.favorites.order_by('-date_created')
+    context = {
+        'favorites': favorites
+    }
+    return render(request, 'accounts/favorites.html', context)

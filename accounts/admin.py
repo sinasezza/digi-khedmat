@@ -11,3 +11,9 @@ class AccountAdmin(admin.ModelAdmin):
 @admin.register(models.Notification)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'type', 'recipient', 'seen', 'date_created',)
+
+# =================================================================
+
+@admin.register(models.Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('content_type', 'object_id', 'content_object', 'owner',)
