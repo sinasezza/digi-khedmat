@@ -49,3 +49,17 @@ def mark_as_read_api(request: HttpRequest, id: str) -> Response:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
 
 # --------------------------------------------------------------------------------
+
+@api_view(http_method_names=('DELETE',))
+@authentication_classes([rest_authentications.SessionAuthentication,])
+@permission_classes([permissions.IsNotificationOwnerOrReadOnly,])
+@handle_api_response("Favorite Object deleted successfully", "Error deleting notification", rest_status.HTTP_204_NO_CONTENT)
+def delete_favorite_api(request: HttpRequest, id: str) -> Response:
+    if request.method == "DELETE":
+        notification = models.Favorite.objects.get(id=id)
+        notification.delete()
+        return Response(status=rest_status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+
+# --------------------------------------------------------------------------------

@@ -15,6 +15,8 @@
       <link rel="icon" type="image/x-icon" href="{% static 'global/images/digi-khedmat-favicon.png' %}">
       <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
       {% tailwind_css %}
+
+      {% block custom_assets %}{% endblock custom_assets %}
   {% endcompress css %} 
 
   {% compress js %} 
@@ -32,9 +34,10 @@
       {% comment %} <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js.map' %}"></script> {% endcomment %}
 
       <script src="{% static  'global/js/scripts.js' %}"></script>
+
+      {% block custom_js %}{% endblock custom_js %}
   {% endcompress js %}
   
-  {% block custom_assets %}{% endblock custom_assets %}
   <title>{% block title %}دیجی خدمت{% endblock title %}</title>
 </head>
 
@@ -57,6 +60,5 @@
   
   {% include "partials/footer.html" %}
 
-  {% block custom_js %}{% endblock custom_js %}
 </body>
 </html>
