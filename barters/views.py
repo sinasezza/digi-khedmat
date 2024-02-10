@@ -30,13 +30,12 @@ def barter_list_view(request):
         )
     
     # Pagination
-    paginated = Paginator(barters, 6)  # Show up to 9 posts on each page
-    page_number = request.GET.get("page")  # Get the requested page number from the URL
-    page = paginated.get_page(page_number)
+    paginated = Paginator(barters, 6) 
+    page_number = request.GET.get("page")  
+    paginated_barters = paginated.get_page(page_number)
         
     context = {
-        'barters': page.object_list,
-        'page': page,
+        'barters': paginated_barters,
         'search_input': search_input,
     }
     return render(request, 'barters/barter-list.html', context)

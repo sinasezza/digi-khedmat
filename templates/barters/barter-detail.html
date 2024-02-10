@@ -1,40 +1,83 @@
-{% extends "base/base.html" %}
-
-{% block title %}دیجی خدمت | تهاتر کالا | {{barter.title}} {% endblock title %}
-
-{% block custom_assets %}
-
-{% endblock custom_assets %}
+{% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mx-auto mt-8">
-<div class="bg-white p-8 rounded-md shadow-md">
-    <h2 class="text-3xl font-bold mb-4">{{ barter.title }}</h2>
-    <h3 class="text-3xl font-bold text-gray-700">
-      ارتباط با <a href="{{ barter.get_chat_url }}">{{ barter.owner.username }}</a>
-    </h3>
-    <p class="text-gray-600 mb-4">{{ barter.summary }}</p>
-    <p class="text-sm text-gray-500 mb-4">{{ barter.JaliliDatePublished }}</p>
-    <img src="{{ barter.qrcode_image.url }}" alt="QR Code" class="w-40 h-40 mb-4">
-    <div class="mb-4">
-        <strong>Categories:</strong>
+  <div class="container mx-auto mt-8">
+    <div class="bg-white p-8 rounded-md shadow-md">
+      <h2 class="text-3xl font-bold mb-4">{{ barter.title }}</h2>
+      <h3 class="text-2xl font-semibold text-gray-700 mb-4">
+        ارتباط با <a href="{{ barter.get_chat_url }}" class="text-blue-600 hover:underline">{{ barter.owner.username }}</a>
+      </h3>
+
+      <button id="add-favorite-btn" class="text-white px-4 py-2 rounded-md shadow-md transition duration-300">
+        <img src="{% static 'global/icons/instagram-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+      </button>
+      
+      
+      
+      <p class="text-gray-600 my-4">{{ barter.summary }}</p>
+      <p class="text-sm text-gray-500 my-4">{{ barter.JaliliDatePublished }}</p>
+      <img src="{{ barter.qrcode_image.url }}" alt="QR Code" class="w-40 h-40 my-4">
+
+      <div class="mb-4">
+        <strong>دسته بندی‌ها:</strong>
         {% for category in barter.categories.all %}
             <span class="mr-2">{{ category.title }}</span>
         {% endfor %}
-    </div>
-    <div class="mb-4">
-        <strong>Tags:</strong>
+      </div>
+      
+      <div class="mb-4">
+        <strong>برچسب‌ها:</strong>
         {% for tag in barter.tags.all %}
             <span class="mr-2">{{ tag.name }}</span>
         {% endfor %}
-    </div>
-    <div class="mb-4">
-        <strong>Locations:</strong>
+      </div>
+
+      <div class="mb-4">
+        <strong>موقعیت‌ها:</strong>
         {% for location in barter.locations.all %}
             <span class="mr-2">{{ location.city }}, {{ location.province }}</span>
         {% endfor %}
+      </div>
+
+      <div class="text-gray-800">{{ barter.description | safe }}</div>
     </div>
-    <div class="text-gray-800">{{ barter.description | safe }}"</div>
-</div>
-</div>
+  </div>
 {% endblock content %}
+
+
+{% block custom_js %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var addFavoriteButton = $("#add-favorite-btn");
+      addFavoriteButton.on('click', function() {
+        var csrftoken = getCookie('csrftoken');
+        var advertisementId = "{{ barter.id }}";  // Assuming the barter object has an ID field
+        var advertisementType = "BarterAdvertising";  // Assuming the advertisement type is "BarterAdvertising"
+
+        fetch('/api/auth/add-favorite/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify({
+            advertisement_id: advertisementId,
+            advertisement_type: advertisementType
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error adding favorite');
+            $(this).find('.favorite-icon').toggleClass('bg-slate-700');
+          }
+          console.log('Favorite added successfully');
+          // Update button text or style to indicate the favorite is added
+        })
+        .catch(error => {
+          console.error('Error adding favorite:', error.message);
+        });
+      });
+    });
+  </script>
+{% endblock custom_js %}

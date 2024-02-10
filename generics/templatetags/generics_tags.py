@@ -8,8 +8,10 @@ register = template.Library()
 @register.inclusion_tag(filename='partials/sidebar.html')
 def load_sidebar(request):
     unseen_notifications_count = request.user.notifications.unseen_notifications().count()
+    favorites_count = request.user.favorites.all().count
     
     context = {
         'unseen_notifications_count': unseen_notifications_count,
+        'favorites_count': favorites_count,
     }
     return context

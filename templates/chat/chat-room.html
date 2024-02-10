@@ -50,7 +50,9 @@
   <script>
     const roomName = '{{ room_name }}';
     const senderUsername = '{{sender.username}}';
+    const senderProfilePhoto = "{% if sender.profile_photo %} {{sender.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}";
     const receiverUsername = '{{receiver.username}}';
+    const receiverProfilePhoto = "{% if receiver.profile_photo %} {{receiver.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}";
     const currentUser = '{{request.user.id}}';
   </script>
   

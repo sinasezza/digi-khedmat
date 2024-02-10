@@ -16,12 +16,7 @@
           <span class="text-xs text-gray-600">{{ favorite.date_created | to_Jdatetime}}</span>
         </div>
         <div class="p-4 border-t border-gray-200">
-          <!-- Display favorite content -->
-          <p class="text-sm text-gray-600">{{ favorite.content_type }}</p>
-          
-          <!-- Display additional information about the favorite content -->
-          <p class="text-lg font-semibold">{{ favorite.content_object }}</p>
-          
+          <p class="text-lg font-semibold">{{ favorite.advertisement.title }}</p>
         </div>
       </li>
     {% endfor %}
