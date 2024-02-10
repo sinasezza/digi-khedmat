@@ -16,4 +16,4 @@ class NotificationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('content_type', 'object_id', 'content_object', 'owner',)
+    list_display = ('owner', 'advertisement_type', 'object_id', 'advertisement', 'date_created',)

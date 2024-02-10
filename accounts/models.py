@@ -1,6 +1,7 @@
 import uuid
 import pathlib
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -105,15 +106,20 @@ class Notification(models.Model):
 # ==================================================================================
 
 class Favorite(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    # -----------------------------------------
-    object_id = models.UUIDField()
-    # -----------------------------------------
-    content_object = GenericForeignKey("content_type", "object_id")
-    # -----------------------------------------
     owner = models.ForeignKey(Account, related_name='favorites', on_delete=models.CASCADE, verbose_name="مالک")
+    # -----------------------------------------
+    advertisement_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name="نوع آگهی")
+    # -----------------------------------------
+    object_id = models.UUIDField(verbose_name="شناسه آگهی")
+    # -----------------------------------------
+    advertisement = GenericForeignKey("advertisement_type", "object_id")
     # -----------------------------------------
     date_created = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ ثبت')
     # -----------------------------------------
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=["advertisement_type", "object_id"]),
+        ]
 
 # ==================================================================================

@@ -52,14 +52,48 @@ def mark_as_read_api(request: HttpRequest, id: str) -> Response:
 
 @api_view(http_method_names=('DELETE',))
 @authentication_classes([rest_authentications.SessionAuthentication,])
-@permission_classes([permissions.IsNotificationOwnerOrReadOnly,])
-@handle_api_response("Favorite Object deleted successfully", "Error deleting notification", rest_status.HTTP_204_NO_CONTENT)
+@permission_classes([permissions.IsFavoriteOwnerOrReadOnly,])
+@handle_api_response("Favorite Object deleted successfully", "Error deleting Favorite Object", rest_status.HTTP_204_NO_CONTENT)
 def delete_favorite_api(request: HttpRequest, id: str) -> Response:
     if request.method == "DELETE":
-        notification = models.Favorite.objects.get(id=id)
-        notification.delete()
+        favorite_obj = models.Favorite.objects.get(id=id)
+        favorite_obj.delete()
         return Response(status=rest_status.HTTP_204_NO_CONTENT)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
 
 # --------------------------------------------------------------------------------
+
+from barters.models import BarterAdvertising
+from ads.models import Advertise
+from jobs.models import JobAdvertising
+
+from django.contrib.contenttypes.models import ContentType
+
+@api_view(http_method_names=('POST',))
+@authentication_classes([rest_authentications.SessionAuthentication,])
+@permission_classes([permissions.IsFavoriteOwnerOrReadOnly,])
+def add_favorite_api(request: HttpRequest) -> Response:
+    if request.method == "POST":
+        advertisement_id = request.data.get('advertisement_id')
+        advertisement_type = request.data.get('advertisement_type')
+        
+        # Check if the advertisement type is valid
+        if advertisement_type not in ['BarterAdvertising', 'Advertise', 'JobAdvertising']:
+            return Response(data={"message": "Invalid advertisement type"}, status=rest_status.HTTP_400_BAD_REQUEST)
+        
+        # Get the ContentType object for the advertisement type
+        content_type = ContentType.objects.get(model=advertisement_type.lower())
+        
+        try:
+            # Create a Favorite object
+            favorite = models.Favorite.objects.create(
+                owner=request.user,
+                advertisement_type=content_type,
+                object_id=advertisement_id
+            )
+            return Response(data={"message": "Favorite Object Created successfully"}, status=rest_status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(data={"message": str(e)}, status=rest_status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
