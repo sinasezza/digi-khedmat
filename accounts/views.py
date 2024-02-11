@@ -10,32 +10,6 @@ from django.contrib.auth.decorators import login_required
 from . import models, forms
 
 
-# class RegisterView(SuccessMessageMixin, CreateView):
-#     # model = models.Account
-#     template_name = 'accounts/register.html'
-#     success_url = reverse_lazy('login')
-#     form_class = forms.UserRegisterForm
-#     success_message = "حساب کاربری شما با موفقیت ایجاد شد."
-
-
-# ---------------------------------------------------
-
-# class AccountLoginView(SuccessMessageMixin, LoginView):
-#     model = models.Account
-#     redirect_authenticated_user = True
-#     template_name = 'accounts/login.html'
-#     success_message = "شما به حساب کابری خود وارد شدید."
-    
-#     def get_success_url(self):
-#         return reverse_lazy('main-page') 
-    
-#     def form_invalid(self, form):
-#         messages.error(self.request, 'نام کاربری یا رمز ورود اشتباه است.')
-#         return self.render_to_response(self.get_context_data(form=form))
-
-# ---------------------------------------------------
-
-
 def register_view(request):
     if request.method == 'POST':
         form = forms.UserRegisterForm(request.POST)

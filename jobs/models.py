@@ -1,3 +1,5 @@
+from django.urls import reverse
+from django.utils.text import slugify
 from django.db import models
 from generics import models as generics_models
 
@@ -74,6 +76,26 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     
     class Meta:
         default_related_name = "jobs"
+
+    # --------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.title}"
+    
+    # --------------------------------------
+    
+    def get_absolute_url(self):
+        return reverse("jobs:job-detail", kwargs={"job_slug": self.slug})
+    
+    # --------------------------------------
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.slug = f"{self.id}-{slugify(self.title)}"
+        super().save(*args, **kwargs)
+    
+    # --------------------------------------
+    
 
 # =======================================================================
 
