@@ -6,15 +6,12 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.db.models import Q
 from accounts.models import Account
-from . import models
+from . import models, decorators
 
 
 def get_or_create_chat_room_view(request: HttpRequest, receiver_id: str) -> HttpResponseRedirect:
-    try:
-        receiver = Account.objects.get(id=receiver_id)
-    except:
-        return  render(request, 'common/404.html')
-    
+    receiver = get_object_or_404(Account, id=receiver_id)
+
     threads = models.Thread.objects.filter((Q(user1=request.user) &  Q(user2=receiver)) | (Q(user1=receiver) & Q(user2=request.user)))
     if threads.exists():
         thread = threads.first()
@@ -27,6 +24,7 @@ def get_or_create_chat_room_view(request: HttpRequest, receiver_id: str) -> Http
 # --------------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.member_required
 def chat_room_view(request: HttpRequest, room_name: str) -> HttpResponse:
     # Retrieve the thread or return a 404 response
     thread = get_object_or_404(models.Thread, name=room_name)
