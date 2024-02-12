@@ -3,6 +3,88 @@
 {% block title %}پنل کاربری{% endblock title %}
 
 {% block content %}
-  <a href="{% url 'barters:barter-create' %}">ساخت آگهی مبادله کالا</a>
-{% endblock content %}
+  <div class="grid grid-cols-3 gap-8">
+    <!-- First column for barters -->
+    <div class="col-span-1">
+      <!-- Display user's created barters -->
+      <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="mb-8">
+          <a href="{% url 'barters:barter-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی مبادله کالا</a>
+        </div>
+        <h2 class="text-xl font-semibold mb-4">آگهی‌های شما | تهاتر کالا:</h2>
+        {% if barters %}
+          <ul>
+            {% for barter in barters %}
+              <li class="border-b border-gray-300 py-4">
+                <div class="flex items-center justify-start">
+                  <p class="text-lg font-medium">{{ barter.title }}</p>
+                  <div>
+                    <a href="{% url 'barters:barter-update' barter_slug=barter.slug %}" class="text-blue-500 hover:text-blue-600 mr-2">ویرایش</a>
+                    |
+                    <a href="{% url 'barters:barter-detail' barter_slug=barter.slug %}" class="text-blue-500 hover:text-blue-600">مشاهده</a>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-lg">شما هیچ آگهی‌ای مبادله کالا ندارید.</p>
+        {% endif %}
+      </div>
+    </div>
 
+    <!-- Second column for jobs -->
+    <div class="col-span-1">
+      <!-- Display user's created jobs -->
+      <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="mb-8">
+          <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی کاریابی</a>
+        </div>
+        <h2 class="text-xl font-semibold mb-4">آگهی های شما | کاریابی:</h2>
+        {% if jobs %}
+          <ul>
+            {% for job in jobs %}
+              <li class="border-b border-gray-300 py-4">
+                <div class="flex items-center justify-start">
+                  <p class="text-lg font-medium">{{ job.title }}</p>
+                  <div>
+                    <a href="{% url 'jobs:job-update' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600 mr-2">ویرایش</a>
+                    |
+                    <a href="{% url 'jobs:job-detail' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">مشاهده</a>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-lg">شما هیچ آگهی کاریابی ندارید.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Third column for ads -->
+    <div class="col-span-1">
+      <!-- Display user's created ads -->
+      <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="mb-8">
+          <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی تبلیغاتی</a>
+        </div>
+        <h2 class="text-xl font-semibold mb-4">آگهی‌های شما | تبلیغات :</h2>
+        {% if ads %}
+          <ul>
+            {% for ad in ads %}
+              <li class="border-b border-gray-300 py-4">
+                <div class="flex items-center justify-start">
+                  <p class="text-lg font-medium">{{ ad.title }}</p>
+                  <!-- Add links or other actions for ads if needed -->
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-lg">شما هیچ آگهی تبلیغاتی ندارید.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -52,14 +52,9 @@ def barter_list_view(request):
 
 def barter_detail_view(request: HttpRequest, barter_slug: str):
     logger.info(f"user {request.user} requested for barter detail")
-    try:
-        barter = models.BarterAdvertising.objects.get(slug=barter_slug)
-        if barter.status == 'draft':
-            return render(request, 'common/404.html', status=404)
-    except:
-        return render(request, 'common/404.html', status=404)
-
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug, status='published')
     logger.info(f"user {request.user} retrieved barter detail {barter}")
+    
     barter.increment_views()
     
     context = {
@@ -125,17 +120,19 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
-def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
-    try:
-        barter = models.BarterAdvertising.objects.get(id=barter_id)
-    except:
-        return render(request, 'common/404.html', status=404)
+def barter_update_view(request: HttpRequest, barter_slug: str):
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     
-    if not barter.owner == request.user:
-        return HttpResponse("شما دسترسی به این آگهی ندارید.")
+    if request.method == "POST":
+        form = forms.BarterForm(request.POST, request.FILES, instance=barter)
+        if form.is_valid():
+            updated_barter = form.save()
+            return redirect('barters:attach-images', barter_slug=updated_barter.slug)
+    else:
+        form = forms.BarterForm(instance=barter) 
     
     context = {
-        
+        'form': form,
     }
     
     return render(request, 'barters/barter-update.html', context)
@@ -145,13 +142,11 @@ def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
 @login_required(login_url='accounts:login')
 @decorators.owner_required
 def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
-    barter = models.BarterAdvertising.objects.get(id=barter_id)
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     
-    if not barter.owner == request.user:
-        return HttpResponse("شما دسترسی به این آگهی ندارید.")
-    
-    barter.delete()
-    
-    return reverse_lazy("barters:barter-list")
+    if request.method == "POST":
+        barter.delete()
+        messages.success(request, f"{barter} has been deleted.")
+        return reverse_lazy("barters:barter-list")
     
 # ---------------------------------------------------------

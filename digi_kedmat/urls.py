@@ -14,7 +14,7 @@ urlpatterns = [
     path('ads/', include('ads.urls', namespace='ads')),
     path('jobs/', include('jobs.urls', namespace='jobs')),
     path('chat/', include('chat.urls', namespace='chat')),
-    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/digi-khedmat-favicon.png', permanent=True)),
+    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/global/images/digi-khedmat-favicon.png', permanent=True)),
     
     
     # ******************************** APIs ********************************

@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.db import models
 from generics import models as generics_models
+from accounts.models import Account
 
 
 class CooperationType(models.Model):
@@ -55,6 +56,9 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
         ("female", "زن"),
         ("unknown", "فرقی نمیکند"),
     )
+    # ---------------------------------------------------------------------
+    owner = models.ForeignKey(to=Account, related_name="jobs", on_delete=models.CASCADE, verbose_name="مالک")
+    # ---------------------------------------------------------------------
     cooperation_types = models.ManyToManyField(to=CooperationType, blank=True, verbose_name="نوع همکاری")
     # ---------------------------------------------------------------------
     group = models.ForeignKey(to=JobGroup, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="گروه شعلی")
