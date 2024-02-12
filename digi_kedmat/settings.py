@@ -150,14 +150,18 @@ DATABASES = {
 }
 
 #### IN MEMORY DBs : REDIS,  MEMCACHED , ...
-try:
-    CACHES = {
-        "default": eval(os.environ.get('CACHE_INFO'))
-    }
-except:
+if DEBUG:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache", 
+            "LOCATION":os.environ.get("REDIS_HOST"), 
+            "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient",},
         }
     }
     

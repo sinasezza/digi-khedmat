@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load static %}
 
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
@@ -6,13 +7,13 @@
   <h3 class="flex content-center">حداقل 1 و حداکثر 9 تصویر بارگزاری کنید.</h3>
   <form action="" method="post" id="formData" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif" multiple>
+    <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif">
 
     {% if barter_images|length >= 1  and barter_images|length <= 9 %}
       <button type="button" id="register" class="border border-green-600 text-black py-2 px-4 rounded">ثبت</button>
-      <input id="ok" type="text" hidden name="ok" value="False">
+      <input id="ok" type="text" hidden name="ok" value="True">
     {% else %}
-      <button type="button" id="register" class="border border-black text-black py-2 px-4 rounded opacity-50 cursor-not-allowed">ثبت</button>
+      <span class="border border-black text-black py-2 px-4 rounded opacity-50 cursor-not-allowed">ثبت</span>
     {% endif %}
   </form>
 
@@ -47,88 +48,9 @@
 {% endblock content %}
 
 {% block custom_js %}
-
   <script>
-    $(document).ready(function () {
-      const input = $("#imagesInput");
-      const form = $("#formData");
-      const registerBtn = $("#register");
-      const imageCount = {{barter_images|length}};
-  
-      input.on('change', (e) => {
-        form.submit();
-      });
-  
-      registerBtn.on('click', (e) => {
-        e.preventDefault();
-  
-        if (imageCount >= 1 && imageCount <= 9) {
-          $('#ok').val("True");
-          form.submit();
-        }
-      });
-  
-      function deleteImage(image) {
-        console.log(`image is ${image}`);
-        console.log(`image value is ${image.val()}`);
-      }
-
-      let $carouselItems = $('[data-carousel-item]');
-      let currentIndex = 0;
-    
-      $('[data-carousel-prev]').on('click', function () {
-        currentIndex = (currentIndex - 1 + $carouselItems.length) % $carouselItems.length;
-        showImage(currentIndex);
-      });
-    
-      $('[data-carousel-next]').on('click', function () {
-        currentIndex = (currentIndex + 1) % $carouselItems.length;
-        showImage(currentIndex);
-      });
-    
-      // Show delete button on hover
-      $carouselItems.on('mouseenter', function () {
-        $(this).find('.delete-button').css('opacity', 1);
-      }).on('mouseleave', function () {
-        $(this).find('.delete-button').css('opacity', 0);
-      });
-    
-      // Handle delete button click
-      $('.delete-button').on('click', function () {
-        let imageId = $(this).data('image-id');
-        deleteImage(imageId);
-      });
-    
-      // Initial show
-      showImage(currentIndex);
-    
-      function showImage(index) {
-        $carouselItems.hide().eq(index).show();
-      }
-    
-      function deleteImage(imageId) {
-        // Perform delete action or show a confirmation modal
-        console.log('Delete image with id:', imageId);
-        // Add your delete logic here, e.g., AJAX request to server
-        fetch(`/api/barters/delete-barter-image/${imageId}/`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-              throw new Error('Error deleting image');
-            }
-            // Image deleted successfully
-            $(`[data-image-id="${imageId}"]`).closest('[data-carousel-item]').remove();
-            window.location.reload();
-        })
-        .catch(error => {
-            // Error occurred while deleting the image
-            console.error('Error deleting image:', error);
-        });
-      }
-    });
+    let currentIndex = {% if barter_images|length >= 1 %} {{barter_images|length}}-1 {% else %} 0 {% endif %};
   </script>
+  
+  <script src="{% static 'barters/attach-images.js' %}"></script>
 {% endblock custom_js %}

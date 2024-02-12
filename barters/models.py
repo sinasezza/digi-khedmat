@@ -35,7 +35,7 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
         return f"barter/qrcodes/{new_filename}.png"
     
     # --------------------------------------
-    owner = models.ForeignKey(to=Account, null=False, blank=False, on_delete=models.CASCADE, verbose_name="مالک")
+    owner = models.ForeignKey(to=Account, related_name="barters", on_delete=models.CASCADE, verbose_name="مالک")
     # --------------------------------------
     images = models.ManyToManyField(BarterImage, related_name="barters", blank=True, verbose_name="تصاویر")
     # --------------------------------------

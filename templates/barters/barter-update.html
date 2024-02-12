@@ -1,6 +1,31 @@
 {% extends "base/base.html" %}
 
+{% block title %}ویرایش آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-    به دیجی خدمت خوش آمدید.
+  <form action="" method="post" class="max-w-lg mx-auto mt-8">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+      <label for="id_title" class="block text-sm font-medium text-gray-700">عنوان</label>
+      {{ form.title }}
+    </div>
+
+    <div class="mb-4">
+      <label for="id_summary" class="block text-sm font-medium text-gray-700">خلاصه</label>
+      {{ form.summary }}
+    </div>
+
+    <div class="mb-4">
+      <label for="id_description" class="block text-sm font-medium text-gray-700">توضیحات</label>
+      {{ form.description }}
+    </div>
+
+    <div class="mb-4">
+      <label for="id_status" class="block text-sm font-medium text-gray-700">وضعیت</label>
+      {{ form.status }}
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition duration-300">ثبت</button>
+  </form>
 {% endblock content %}
