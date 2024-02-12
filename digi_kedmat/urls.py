@@ -19,6 +19,7 @@ urlpatterns = [
     
     # ******************************** APIs ********************************
     path('api/auth/' , include('accounts.api.urls', namespace='accounts-api')), 
+    path('api/barters/', include('barters.api.urls', namespace='barters-api')),  
 
     
     

@@ -50,43 +50,45 @@
           </div>
         {% endfor %}
         <!-- end barter items -->
-
+        
         <!-- start pagination -->
-        <div class="flex justify-center mt-5">
-          <ul class="flex">
-            {% if barters.has_previous %}
-            <li class="mr-1">
-              <a href="?page={{ barters.previous_page_number }}" class="px-3 py-2 bg-blue-500 text-white rounded-l-md hover:bg-blue-600">&laquo;</a>
-            </li>
-            {% else %}
-            <li class="mr-1 opacity-50 cursor-not-allowed">
-              <span class="px-3 py-2 bg-blue-300 text-white rounded-l-md">&laquo;</span>
-            </li>
-            {% endif %}
-            
-            {% for i in barters.paginator.page_range %}
-              {% if barters.number == i %}
+        {% if barters.has_other_pages %}
+          <div class="flex justify-center mt-5">
+            <ul class="flex">
+              {% if barters.has_previous %}
+              <li class="mr-1">
+                <a href="?page={{ barters.previous_page_number }}" class="px-3 py-2 bg-blue-500 text-white rounded-l-md hover:bg-blue-600">&laquo;</a>
+              </li>
+              {% else %}
+              <li class="mr-1 opacity-50 cursor-not-allowed">
+                <span class="px-3 py-2 bg-blue-300 text-white rounded-l-md">&laquo;</span>
+              </li>
+              {% endif %}
+              
+              {% for i in barters.paginator.page_range %}
+                {% if barters.number == i %}
+                  <li class="mr-1">
+                    <span class="px-3 py-2 bg-blue-700 text-white">{{ i }}</span>
+                  </li>
+                {% else %}
+                  <li class="mr-1">
+                    <a href="?page={{ i }}" class="px-3 py-2 bg-blue-500 text-white hover:bg-blue-600">{{ i }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+                  
+              {% if barters.has_next %}
                 <li class="mr-1">
-                  <span class="px-3 py-2 bg-blue-700 text-white">{{ i }}</span>
+                  <a href="?page={{ barters.next_page_number }}" class="px-3 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600">&raquo;</a>
                 </li>
               {% else %}
-                <li class="mr-1">
-                  <a href="?page={{ i }}" class="px-3 py-2 bg-blue-500 text-white hover:bg-blue-600">{{ i }}</a>
+                <li class="mr-1 opacity-50 cursor-not-allowed">
+                  <span class="px-3 py-2 bg-blue-300 text-white rounded-r-md">&raquo;</span>
                 </li>
               {% endif %}
-            {% endfor %}
-                
-            {% if barters.has_next %}
-              <li class="mr-1">
-                <a href="?page={{ barters.next_page_number }}" class="px-3 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600">&raquo;</a>
-              </li>
-            {% else %}
-              <li class="mr-1 opacity-50 cursor-not-allowed">
-                <span class="px-3 py-2 bg-blue-300 text-white rounded-r-md">&raquo;</span>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
+            </ul>
+          </div>
+        {% endif %}
         <!-- end pagination -->
       </div>
     </div>

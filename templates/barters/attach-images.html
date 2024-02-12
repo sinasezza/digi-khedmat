@@ -3,12 +3,12 @@
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <h3 class="flex content-center">حداقل ۴ و حداکثر ۹ تصویر بارگزاری کنید.</h3>
+  <h3 class="flex content-center">حداقل 1 و حداکثر 9 تصویر بارگزاری کنید.</h3>
   <form action="" method="post" id="formData" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif" multiple>
 
-    {% if barter_images|length >= 4  and barter_images|length <= 9 %}
+    {% if barter_images|length >= 1  and barter_images|length <= 9 %}
       <button type="button" id="register" class="border border-green-600 text-black py-2 px-4 rounded">ثبت</button>
       <input id="ok" type="text" hidden name="ok" value="False">
     {% else %}
@@ -18,10 +18,10 @@
 
   <div id="custom-controls-gallery" class="relative w-full" data-carousel="slide">
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-      {% for image in barter_images %}
+      {% for image_obj in barter_images %}
         <div class="relative duration-700 ease-in-out transition-opacity" data-carousel-item>
-          <img class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" src="{{ image.url }}" alt="image-{{ forloop.counter }}">
-          <button type="button" class="opacity-0 group-hover:opacity-100 duration-300 w-full absolute inset-x-0 top-0 flex justify-center items-end text-xl bg-zinc-400 font-bold text-black delete-button" data-image-index="{{ forloop.counter }}">حذف</button>
+          <img class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
+          <button type="button" class="opacity-0 group-hover:opacity-100 duration-300 w-full absolute inset-x-0 top-0 flex justify-center items-end text-xl bg-zinc-400 font-bold text-black delete-button" data-image-id="{{ image_obj.id }}">حذف</button>
         </div>
       {% endfor %}
     </div>
@@ -47,34 +47,32 @@
 {% endblock content %}
 
 {% block custom_js %}
-  <script>
-    const input = $("#imagesInput");
-    const form = $("#formData");
-    const registerBtn = $("#register");
-    const imageCount = {{barter_images|length}};
 
-    input.on('change', (e) => {
-      form.submit();
-    });
-
-    registerBtn.on('click', (e) => {
-      e.preventDefault();
-
-      if (imageCount >= 4 && imageCount <= 9) {
-        $('#ok').val("True");
-        form.submit();
-      }
-    });
-
-    function deleteImage(image) {
-      console.log(`image is ${image}`);
-      console.log(`image value is ${image.val()}`);
-    }
-  </script>
-
-  <!-- script for handling gallery -->
   <script>
     $(document).ready(function () {
+      const input = $("#imagesInput");
+      const form = $("#formData");
+      const registerBtn = $("#register");
+      const imageCount = {{barter_images|length}};
+  
+      input.on('change', (e) => {
+        form.submit();
+      });
+  
+      registerBtn.on('click', (e) => {
+        e.preventDefault();
+  
+        if (imageCount >= 1 && imageCount <= 9) {
+          $('#ok').val("True");
+          form.submit();
+        }
+      });
+  
+      function deleteImage(image) {
+        console.log(`image is ${image}`);
+        console.log(`image value is ${image.val()}`);
+      }
+
       let $carouselItems = $('[data-carousel-item]');
       let currentIndex = 0;
     
@@ -97,8 +95,8 @@
     
       // Handle delete button click
       $('.delete-button').on('click', function () {
-        let imageIndex = $(this).closest('[data-carousel-item]').index();
-        deleteImage(imageIndex);
+        let imageId = $(this).data('image-id');
+        deleteImage(imageId);
       });
     
       // Initial show
@@ -108,12 +106,29 @@
         $carouselItems.hide().eq(index).show();
       }
     
-      function deleteImage(index) {
+      function deleteImage(imageId) {
         // Perform delete action or show a confirmation modal
-        console.log('Delete image with index:', index + 1);
+        console.log('Delete image with id:', imageId);
         // Add your delete logic here, e.g., AJAX request to server
+        fetch(`/api/barters/delete-barter-image/${imageId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+              throw new Error('Error deleting image');
+            }
+            // Image deleted successfully
+            $(`[data-image-id="${imageId}"]`).closest('[data-carousel-item]').remove();
+            window.location.reload();
+        })
+        .catch(error => {
+            // Error occurred while deleting the image
+            console.error('Error deleting image:', error);
+        });
       }
     });
-    
   </script>
 {% endblock custom_js %}

@@ -16,7 +16,7 @@
       
       
       <p class="text-gray-600 my-4">{{ barter.summary }}</p>
-      <p class="text-sm text-gray-500 my-4">{{ barter.JaliliDatePublished }}</p>
+      <p class="text-sm text-gray-500 my-4">{{ barter.date_created | to_Jdate }}</p>
       <img src="{{ barter.qrcode_image.url }}" alt="QR Code" class="w-40 h-40 my-4">
 
       <div class="mb-4">
