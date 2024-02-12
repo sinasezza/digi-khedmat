@@ -6,11 +6,11 @@ from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
-from . import models, forms
+from . import models, forms, decorators
 
 
 logger = logging.getLogger("barters.views")
@@ -93,14 +93,10 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.owner_required
 def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResponse:
     """Add an image to existing ad."""
-    try:
-        barter = models.BarterAdvertising.objects.get(slug=barter_slug)
-        if not barter.owner == request.user:
-            return render(request, 'common/404.html', status=404)
-    except models.BarterAdvertising.DoesNotExist:
-        return render(request, 'common/404.html', status=404)
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     
     if request.method == 'POST':
         ok = request.POST.get('ok', None)
@@ -115,7 +111,8 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
             barter.images.add(image_obj)
         return redirect('barters:attach-images',  barter_slug=barter.slug)
     
-    barter_images = [image_obj.image for image_obj in barter.images.all()]
+    barter_images = barter.images.all()
+    
     context = {
         'barter': barter,
         'barter_images': barter_images,
@@ -127,6 +124,7 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.owner_required
 def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
     try:
         barter = models.BarterAdvertising.objects.get(id=barter_id)
@@ -145,6 +143,7 @@ def barter_update_view(request: HttpRequest, barter_id: str, barter_slug: str):
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.owner_required
 def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
     barter = models.BarterAdvertising.objects.get(id=barter_id)
     

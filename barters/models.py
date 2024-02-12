@@ -43,6 +43,7 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     
     class Meta:
+        ordering = ("-date_published",)
         default_related_name = "barters"
 
     # --------------------------------------
