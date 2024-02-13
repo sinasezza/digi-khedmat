@@ -44,6 +44,8 @@ def login_view(request):
             if user:
                 login(request, user)    
                 return redirect('generics:main-page')
+        else:
+            print(f"error : {form.errors.as_data()}")
     else:
         form = forms.UserLoginForm()
     context = {'form': form,}
