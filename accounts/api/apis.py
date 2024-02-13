@@ -4,7 +4,7 @@ from rest_framework import authentication as rest_authentications
 from rest_framework import permissions as rest_permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status as rest_status
-from .. import models, permissions
+from .. import models, permissions, utils
 
 def handle_api_response(success_message: str, error_message: str, status_code: int):
     def decorator(func):
@@ -95,5 +95,28 @@ def add_favorite_api(request: HttpRequest) -> Response:
             return Response(data={"message": "Favorite Object Created successfully"}, status=rest_status.HTTP_201_CREATED)
         except Exception as e:
             return Response(data={"message": str(e)}, status=rest_status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+
+# --------------------------------------------------------------------------------
+
+@api_view(http_method_names=('POST',))
+@permission_classes([rest_permissions.AllowAny])
+def send_otp_api(request):
+    if request.method == 'POST':
+        phone_number = request.data.get('phone_number')
+        user = utils.find_phone_number_owner(phone_number)
+        
+        if user is not None:
+            check = utils.check_last_otp(user)
+            if check:
+                otp = utils.generate_otp()
+                utils.send_otp_phone_number(phone_number, otp)
+                models.OneTimePassword.objects.create(user=user, code=otp)
+                return Response(data={"message": "کد تایید برای شما ارسال شد و پس از 2 دقیقه منقضی میشود."}, status=rest_status.HTTP_200_OK)
+            else:
+                return Response(data={"message": "از ارسال کد قبلی بیش از 2 دقیقه نگذشته است."}, status=rest_status.HTTP_403_FORBIDDEN)
+        else:
+            return Response(data={"message": "این شماره تلفن در سامانه موجود نیست."}, status=rest_status.HTTP_404_NOT_FOUND)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
