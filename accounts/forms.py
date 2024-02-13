@@ -1,5 +1,6 @@
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
+from captcha.fields import CaptchaField
 from . import models
 
 
@@ -77,3 +78,6 @@ class UserRegisterForm(forms.ModelForm):
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+    captcha = CaptchaField()
+    
+    

@@ -122,6 +122,8 @@ TEMPLATES = [
     },
 ]
 
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 WSGI_APPLICATION = "digi_kedmat.wsgi.application"
 ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
@@ -443,10 +445,10 @@ PHONENUMBER_DEFAULT_FORMAT = os.environ.get('PHONENUMBER_DEFAULT_FORMAT')
 CAPTCHA_LENGTH = 6
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
 # CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.word_challenge'
-CAPTCHA_BACKGROUND_COLOR = "#ffffff"
+CAPTCHA_BACKGROUND_COLOR = "#fffcff"
 CAPTCHA_FOREGROUND_COLOR = "#000000"
 CAPTCHA_LETTER_ROTATION = (-10,20)
-CAPTCHA_IMAGE_SIZE = (200,60)
+CAPTCHA_IMAGE_SIZE = (400,60)
 CAPTCHA_FONT_SIZE = 25
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_arcs','captcha.helpers.noise_dots',)
 # CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',)
