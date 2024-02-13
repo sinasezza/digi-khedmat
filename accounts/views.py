@@ -7,7 +7,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 # from django.views.generic.edit import CreateView
 # from django.contrib.auth.views import LoginView
-from . import models, forms
+from django.utils import timezone
+from . import models, forms, utils
 
 
 def register_view(request):
@@ -47,6 +48,28 @@ def login_view(request):
         form = forms.UserLoginForm()
     context = {'form': form,}
     return render(request, 'accounts/login.html', context)
+
+# ---------------------------------------------------
+
+def login_otp_view(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        otp = request.POST.get('otp')
+                
+        user = utils.find_phone_number_owner(phone_number)
+        
+        if user is not None:
+            otp_obj = models.OneTimePassword.objects.filter(user=user, code=otp, created_at__gt=timezone.now() - timezone.timedelta(minutes=2)).last()            
+            if otp_obj and otp_obj.code == otp:
+                login(request, otp_obj.user)
+                return redirect('generics:main-page')
+            else:
+                messages.error(request, 'کد نادرست است و یا منقضی شده است.')             
+        else:
+            messages.error(request, 'کد نادرست است و یا منقضی شده است.')             
+            
+    
+    return render(request, 'accounts/login-otp.html')
 
 # ---------------------------------------------------
 

@@ -454,3 +454,8 @@ CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_arcs','captcha.helpers.noise_d
 
 #### WATCHMAN SETTINGS
 WATCHMAN_AUTH_DECORATOR = 'django.contrib.admin.views.decorators.staff_member_required'
+
+#### SMS.ir SETTINGS
+SMS_API_KEY = os.environ.get('SMS_API_KEY')
+SMS_LINE_NUMBER = os.environ.get('SMS_LINE_NUMBER') 
+SMS_TEMPLATE = os.environ.get('SMS_TEMPLATE')
