@@ -1,5 +1,7 @@
 import random
 import string
+import threading
+import time
 import datetime
 from django.utils import timezone
 from django.conf import settings
@@ -22,8 +24,6 @@ def generate_otp(length=7):
     return otp
 
 # ----------------------------------------------------------
-
-import pytz
 
 def check_last_otp(user):
     last_otp = user.otp.last()
@@ -53,3 +53,24 @@ def send_otp_phone_number(phone_number, otp):
     #         },
     #     ],
     # )
+
+# ----------------------------------------------------------
+
+def delete_otp_after_2_minutes(otp_obj):
+    time.sleep(120)         # sleep for 2 minutes
+    # try to delete the code
+    try:
+        otp_obj.delete()           
+    except:
+        pass
+
+# ----------------------------------------------------------
+
+def create_otp(phone_number, user):
+    
+    otp = generate_otp()
+    # send_otp_phone_number(phone_number, otp)
+    
+    otp_obj = models.OneTimePassword.objects.create(user=user, code=otp)
+    delete_thread = threading.Thread(target=delete_otp_after_2_minutes, kwargs={"otp_obj": otp_obj})
+    delete_thread.start()
