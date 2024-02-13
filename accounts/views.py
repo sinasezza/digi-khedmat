@@ -64,6 +64,7 @@ def login_otp_view(request):
             otp_obj = models.OneTimePassword.objects.filter(user=user, code=otp, created_at__gt=timezone.now() - timezone.timedelta(minutes=2)).last()            
             if otp_obj and otp_obj.code == otp:
                 login(request, otp_obj.user)
+                otp_obj.delete()
                 return redirect('generics:main-page')
             else:
                 messages.error(request, 'کد نادرست است و یا منقضی شده است.')             
