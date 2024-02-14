@@ -1,26 +1,54 @@
 {% extends 'base/base.html' %}
-{% block title %} ورود به حساب {% endblock title%} 
+
+{% block title %}
+  ورود به حساب 
+{% endblock title%} 
+
 {% block content %}
-<div class="max-w-md mx-auto">
-  <form method="post" id="otp-form" class="mt-8">
+<div class="max-w-md mx-auto font-vazir">
+  <form method="post" id="otp-form" style="margin-top: 70px;">
     {% csrf_token %}
-    <div>
-      <label for="otp" class="block text-sm font-medium text-gray-700">شماره تلفن خود را وارد کنید.</label>
-      <input type="text" name="phone_number" id="otp-input" class="mt-1 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md">
+
+    <h2 class="text-center text-2xl font-bold tracking-wide text-gray-800" style="font-size: 40px;">
+      رمز یک‌بار مصرف
+    </h2>
+
+    <div class="mt-10">
+      <label for="otp">
+        شماره تلفن خود را وارد کنید:
+      </label>
+      <input type="text" name="phone_number" id="otp-input" 
+            style="text-align: center;"
+            required class="mt-2 w-full rounded-md placeholder:text-gray-400"
+            placeholder="مثال: 09909900000">
     </div>
     <div class="hidden" id="otp-code-section">
-      <label for="otp" class="block text-sm font-medium text-gray-700">کد ارسال شده را وارد کنید.</label>
-      <input type="text" name="otp" id="otp-code-input" class="mt-1 block w-full shadow-sm focus:ring-yello-500 focus:border-yello-500 sm:text-sm border-gray-300 rounded-md">
+      <label for="otp">
+        کد ارسال شده را وارد کنید
+      .</label>
+      <input type="text" name="otp" id="otp-code-input" 
+            required class="mt-2 w-full rounded-md placeholder:text-gray-400">
     </div>
+
     <div class="mt-4">
-      <button type="button" id="otp-btn" class="w-full inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">ارسال کد</button>
-      <button type="submit" id="submit-btn" class="hidden w-full inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">ورود</button>
+      <button type="button" id="otp-btn" class="w-full py-1.5 rounded-md
+                                                dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
+                                                dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+        ارسال کد
+      </button>
+      <button type="submit" id="submit-btn" class="hidden w-full py-1.5 rounded-md
+                                                dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
+                                                dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+        ورود
+      </button>
     </div>
   </form>
+
   <div id="otp-message" class="mt-4 text-red-500"></div>
-</div>
+  </div>
 {% endblock content %}
 {% block custom_js %}
+
 <script>
   $(document).ready(function () {
     $('#otp-btn').on('click', async function () {
