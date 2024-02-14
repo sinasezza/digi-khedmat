@@ -1,4 +1,5 @@
 import uuid
+import pathlib
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db import models
@@ -27,7 +28,7 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------------------------------------------
     
     class Meta:
-        ordering = ('date_published',)
+        pass
     
     # --------------------------------------------------------------------------
     
@@ -47,4 +48,30 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
         super().save(*args, **kwargs)
     
     # --------------------------------------------------------------------------
-    
+
+# ==============================================================
+
+class BusinessImage(models.Model):
+    def business_image_path(instance, filename):
+        file_path = pathlib.Path(filename)
+        new_filename = str(uuid.uuid1())
+        return f"ads/business/imgs/{new_filename}{file_path.suffix}"
+    # ----------------------------------------------------------
+    title = models.CharField(max_length=100, null=True, blank=True, verbose_name="عنوان")
+    # ----------------------------------------------------------
+    image = models.ImageField(upload_to=business_image_path, verbose_name="عکس")
+
+# ==============================================================
+
+class BusinessAdvertising():
+    name = models.CharField(max_length=100, verbose_name="نام کسب و کار")
+    # ----------------------------------------------------------
+    images = models.ManyToManyField(to=BusinessImage, blank=True, verbose_name="تصاویر")
+    # ----------------------------------------------------------
+    web_address = models.CharField(max_length=200, null=True, blank=True)
+    social_network = models.CharField(max_length=200, null=True, blank=True)
+    shop_address = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=300, null=True, blank=True)
+    B_phone = models.CharField(max_length=13, verbose_name="تلفن")
+
+# ==============================================================
