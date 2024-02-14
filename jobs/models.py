@@ -1,6 +1,9 @@
+import uuid
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from generics import models as generics_models
 from accounts.models import Account
 
@@ -103,3 +106,191 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
 
 # =======================================================================
 
+class Resume(models.Model):
+    def resume_image_path(instance, filename):
+        new_filename = str(uuid.uuid1())
+        return f"jobs/cvs/images/{new_filename}.png"
+    
+    # --------------------------------------
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # --------------------------------------
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="کاربر")
+    # --------------------------------------
+    fname = models.CharField(max_length=255, verbose_name="نام")
+    # --------------------------------------
+    lname = models.CharField(max_length=255, verbose_name="نام خانوادگی")
+    # --------------------------------------
+    title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
+    # --------------------------------------
+    description = models.TextField(max_length=255, blank=True, verbose_name="توضیحات")
+    # --------------------------------------
+    image = models.ImageField(upload_to=resume_image_path, null=True, blank=True, verbose_name="عکس")
+    # --------------------------------------
+    telephone = models.CharField(max_length=20, null=True, blank=True, verbose_name="شماره تلفن")
+    # --------------------------------------
+    email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="ایمیل")
+    # --------------------------------------
+    linkedin = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس لینکدین")
+    # --------------------------------------
+    github = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس گیتهاب")
+    # --------------------------------------
+    website = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس وبسایت")
+    # --------------------------------------
+
+
+    class Meta:
+        pass
+
+    # --------------------------------------
+
+    def __str__(self):
+        return f"{self.full_name} - {self.title}"
+
+    # --------------------------------------
+    
+    @property
+    def full_name(self):
+        return f"{self.fname} {self.lname}"
+
+    # --------------------------------------
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    # --------------------------------------
+
+
+# =======================================================================
+
+class ResumeFile(models.Model):
+    def resume_pdf_file_path(instance, filename):
+        new_filename = str(uuid.uuid1())
+        return f"jobs/cvs/pdfs/{new_filename}.pdf"
+    # --------------------------------------
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # --------------------------------------
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="کاربر")
+    # --------------------------------------
+    pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
+    # --------------------------------------
+    advertisement_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name="نوع آگهی")
+    # -----------------------------------------
+    object_id = models.UUIDField(verbose_name="شناسه آگهی")
+    # -----------------------------------------
+    advertisement = GenericForeignKey("advertisement_type", "object_id")
+    # -----------------------------------------
+    date_sent = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ ارسال')
+    # -----------------------------------------
+
+# =======================================================================
+
+class Experience(models.Model):
+    title = models.CharField(max_length=255)
+    # --------------------------------------
+    company = models.CharField(max_length=255)
+    # --------------------------------------
+    start_date = models.DateField(null=True, blank=True, verbose_name="تاریخ شروع")
+    # --------------------------------------
+    end_date = models.DateField(null=True, blank=True, verbose_name="تاریخ پایان")
+    # --------------------------------------
+    description = models.CharField(max_length=255, null=True, blank=True, verbose_name="توضیحات")    
+    # --------------------------------------
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='experiences')
+    # --------------------------------------
+    order = models.IntegerField(blank=False, default=100_000)
+    # --------------------------------------
+
+    def tech_as_list(self):
+        tech_list = ""
+        if not self.tech == "":
+            tech_list = self.tech.replace(", ", ",").split(',')
+            tech_list = [x[0].upper() + x[1:] for x in tech_list]
+        return tech_list
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        pass
+
+# =======================================================================
+
+
+class Skill(models.Model):
+    title = models.CharField(max_length=80, verbose_name="عنوان")
+    # --------------------------------------
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='skills')
+    # --------------------------------------
+    order = models.IntegerField(blank=False, default=100_000)
+    # --------------------------------------
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        pass
+
+# =======================================================================
+
+class Education(models.Model):
+    title = models.CharField(max_length=255, verbose_name="عنوان")
+    # --------------------------------------
+    description = models.CharField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
+    # --------------------------------------
+    start_date = models.DateField(null=True, blank=True, verbose_name="تاریخ شروع")
+    # --------------------------------------
+    end_date = models.DateField(null=True, blank=True, verbose_name="تاریخ پایان")
+    # --------------------------------------
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='educations')
+    # --------------------------------------
+    order = models.IntegerField(blank=False, default=100_000)
+    # --------------------------------------
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        pass
+
+# =======================================================================
+
+class Achievement(models.Model):
+    title = models.CharField(max_length=255, verbose_name="عنوان")
+    # --------------------------------------
+    description = models.TextField(blank=True, verbose_name="توضیحات")
+    # --------------------------------------
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='achievements')
+    # --------------------------------------
+    order = models.IntegerField(blank=False, default=100_000)
+    # --------------------------------------
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        pass
+
+# =======================================================================
+
+class Language(models.Model):
+    LEVELS = (
+        ('beginner', "مبتدی"),
+        ('intermediate', "متوسط"),
+        ('professional', "حرفه ای"),
+    )
+    name = models.CharField(max_length=255, verbose_name="نام")
+    # --------------------------------------
+    level = models.CharField(max_length=255, choices=LEVELS, default='beginner', verbose_name="سطح")
+    # --------------------------------------
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='languages')
+    # --------------------------------------
+    order = models.IntegerField(blank=False, default=100_000)
+    # --------------------------------------
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        pass
+
+# =======================================================================

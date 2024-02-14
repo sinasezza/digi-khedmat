@@ -29,3 +29,45 @@ class StudyFieldAdmin(admin.ModelAdmin):
 @admin.register(models.StudyGrade)
 class StudyGradeAdmin(admin.ModelAdmin):
     list_display = ('id', 'grade',)
+
+# =================================================
+
+@admin.register(models.Resume)
+class ResumeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'full_name', 'title')
+
+# =================================================
+
+@admin.register(models.Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'resume', 'company', 'start_date', 'end_date',)
+
+# =================================================
+
+@admin.register(models.ResumeFile)
+class ResumeFileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'advertisement_type', 'advertisement', 'date_sent')
+
+# =================================================
+
+@admin.register(models.Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('title', 'resume',)
+
+# =================================================
+
+@admin.register(models.Education)
+class EducationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'resume',)
+
+# =================================================
+
+@admin.register(models.Achievement)
+class AchivementAdmin(admin.ModelAdmin):
+    list_display = ('title', 'resume')
+
+# =================================================
+
+@admin.register(models.Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name','resume', 'level',)
