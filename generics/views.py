@@ -5,13 +5,19 @@ from django.views.decorators.cache import cache_page
 
 @cache_page(60 * 1440)  # 1 day
 def handler404(request, *args, **argv):
-    return render(request, 'common/404.html', status=404)
+    return render(request, 'generics/404.html', status=404)
 
 # ---------------------------------------------------------
 
 @cache_page(60 * 1440)  # 1 day
 def handler500(request, *args, **argv):
-    return render(request, 'common/500.html', status=500)
+    return render(request, 'generics/500.html', status=500)
+
+# ---------------------------------------------------------
+
+@cache_page(60 * 1440)  # 1 day
+def handler403(request, *args, **argv):
+    return render(request, 'generics/403.html', status=403)
 
 # ---------------------------------------------------------
 
