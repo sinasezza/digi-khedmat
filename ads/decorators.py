@@ -8,7 +8,7 @@ def owner_required(view_func):
                 
         # Check if the user is a owner of the advertisement
         if request.user != barter.owner:
-            return redirect('generics:not-found')
+            return redirect('generics:forbidden')
         
         return view_func(request, *args, **kwargs)
     
