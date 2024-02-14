@@ -4,5 +4,6 @@ from . import apis
 app_name = "barters-api"
 
 urlpatterns = [
-    path('delete-barter-image/<int:id>/', apis.delete_barter_image_api, name='delete-barter-image'),
+    path('barter-delete/<str:barter_slug>/', apis.barter_delete_api, name='barter-delete'),
+    path('barter-delete-image/<int:id>/', apis.barter_image_delete_api, name='barter-delete-image'),
 ]
