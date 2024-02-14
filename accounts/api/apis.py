@@ -110,9 +110,7 @@ def send_otp_api(request):
         if user is not None:
             check = utils.check_last_otp(user)
             if check:
-                otp = utils.generate_otp()
-                utils.send_otp_phone_number(phone_number, otp)
-                models.OneTimePassword.objects.create(user=user, code=otp)
+                utils.create_otp(phone_number, user)
                 return Response(data={"message": "کد تایید برای شما ارسال شد و پس از 2 دقیقه منقضی میشود."}, status=rest_status.HTTP_200_OK)
             else:
                 return Response(data={"message": "از ارسال کد قبلی بیش از 2 دقیقه نگذشته است."}, status=rest_status.HTTP_403_FORBIDDEN)
