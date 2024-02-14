@@ -68,7 +68,6 @@ class BaseAdvertisingModel(models.Model):
     
     class Meta:
         abstract = True
-        ordering = ("-date_published",)
 
     # --------------------------------------
     

@@ -18,7 +18,7 @@ class BarterImage(models.Model):
     def barter_image_path(instance, filename):
         file_path = pathlib.Path(filename)
         new_filename = str(uuid.uuid1())
-        return f"barter/imgs/{new_filename}{file_path.suffix}"
+        return f"barters/imgs/{new_filename}{file_path.suffix}"
     
     title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
     image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
