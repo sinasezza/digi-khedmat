@@ -1,22 +1,41 @@
-<footer class="bg-gray-800 shadow p-4">
-  <div class="w-full mx-auto max-w-screen-xl md:flex md:items-center md:justify-between">
-    <span class="text-sm sm:text-center text-gray-400">
-      © 2024 
-      <a href="#" class="hover:underline"> دیجی خدمت™ </a>  تمامی حقوق محفوظ است.
-    </span>
-    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-0">
-        <li>
-            <a href="{% url 'generics:about-us' %}" class="hover:underline me-4 md:me-6">درباره ما</a>
-        </li>
-        <li>
-            <a href="{% url 'generics:privacy-policy' %}" class="hover:underline me-4 md:me-6">قوانین و سیاست ها</a>
-        </li>
-        <li>
-            <a href="{% url 'generics:certificates' %}" class="hover:underline me-4 md:me-6">اعتبار نامه ها</a>
-        </li>
-        <li>
-            <a href="{% url 'generics:contact-us' %}" class="hover:underline">ارتباط با ما</a>
-        </li>
-    </ul>
-  </div>
+<!-- partials/footer.html -->
+
+<footer class="bg-white">
+    <nav class="flex justify-between p-6" aria-label="Global">
+
+        <!-- CopyRight -->
+        <div
+            style="padding-top: 4px; padding-right: 7px;"
+            class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+            <span style=" padding-top: 2px;">&#169;</span>
+            <p style="padding-top: 10px; padding-right: 10px;"
+               class="-m-1.5 inline-block px-6 font-vazir">
+            دیجی‌خدمت<span>&#8482;</span> تمامی حقوق محفوظ است
+            </p>
+        </div>
+      
+        <div class=" rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+             role="group">
+            <a href="{% url 'generics:about-us' %}" type="button"
+                class="px-6 font-vazir"
+                data-te-ripple-init data-te-ripple-color="light">
+                درباره ما
+            </a>
+            <a href="{% url 'generics:privacy-policy' %}" type="button"
+                class="px-6 font-vazir"
+                data-te-ripple-init data-te-ripple-color="light">
+                قوانین و سیاست‌ها
+            </a>
+            <a href="{% url 'generics:certificates' %}" type="button"
+                class="px-6 font-vazir"
+                data-te-ripple-init data-te-ripple-color="light">
+                اعتبارنامه‌ها
+            </a>
+            <a href="{% url 'generics:contact-us' %}" type="button"
+                class="inline-block px-6 pb-2 pt-2.5 font-vazir"
+                data-te-ripple-init data-te-ripple-color="light">
+                ارتباط با ما
+            </a>
+        </div>
+    </nav>
 </footer>
