@@ -26,6 +26,8 @@ module.exports = {
          */
         '../../**/templates/**/*.html',
 
+        './node_modules/flowbite/**/*.js'
+
         /**
          * JS: If you use Tailwind CSS in JavaScript, uncomment the following lines and make sure
          * patterns match your project structure.
@@ -57,5 +59,6 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
         require('tailwind-animatecss'),
+        require('flowbite/plugin'),
     ],
 }

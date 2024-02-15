@@ -286,7 +286,7 @@ USE_TZ = os.environ.get('USE_TZ')
 
 #### Static files (CSS, JavaScript, Images)
 STATIC_URL = os.environ.get('STATIC_URL')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATICFILES_DIRS = [BASE_DIR / 'static', BASE_DIR / 'theme/static_src']
 if DEBUG:
     STATIC_ROOT = eval(os.environ.get('STATIC_ROOT_DEV'))
 else:

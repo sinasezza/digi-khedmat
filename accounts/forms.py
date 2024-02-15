@@ -49,26 +49,18 @@ class UserRegisterForm(forms.ModelForm):
     
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
-        print(f"phone number is {phone_number}")
         matching_phone_numbers = models.Account.objects.filter(phone_number=phone_number)
-        print(f"matching phone numbers is : {matching_phone_numbers}")
-        print(f"\n\n\n i am here \n\n\n")
+
         if matching_phone_numbers.exists():
-            print(f"it exists")
             raise forms.ValidationError('این شماره تلفن وجود دارد.')
-        else:
-            print("it does not exitst")
         
         return phone_number
 
     # ---------------------------------------------------
 
-    def save(self, commit=True):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        
-        new_account = models.Account.objects.create(username=username)
-        new_account.set_password(password)
+    def save(self, commit=True, *args, **kwargs):
+        new_account = super().save(commit=False, *args, **kwargs)
+        new_account.set_password(self.cleaned_data.get('password'))
         
         if commit:
             new_account.save()

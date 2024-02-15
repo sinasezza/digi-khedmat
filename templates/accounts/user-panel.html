@@ -3,6 +3,8 @@
 
 {% block title %}پنل کاربری{% endblock title %}
 
+
+
 {% block content %}
   <!-- start modal -->
   <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
@@ -27,87 +29,112 @@
   </div>
   <!-- end modal -->
 
-  <div class="grid grid-cols-3 gap-8">
-    <!-- First column for barters -->
-    <div class="col-span-1">
-      <!-- Display user's created barters -->
-      <div class="max-w-4xl mx-auto py-8 px-4">
-        <div class="mb-8">
-          <a href="{% url 'barters:barter-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی مبادله کالا</a>
+  <!-- Tabs for small screens -->
+  <div class="sm:hidden">
+    <label for="tabs" class="sr-only">Select your country</label>
+    <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option>آگهی های مبادله کالا</option>
+        <option>آگهی های کاریابی</option>
+        <option>آگهی های تبلیغاتی</option>
+        <option>Invoice</option>
+    </select>
+  </div>
+
+  <!-- Content tabs -->
+  <div class="hidden sm:block">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <div x-data="{showTab: 'barters',}"
+        class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
+      >
+        <div class="border-b border-gray-200 dark:border-gray-700">
+          <nav id="tabs" class="-mb-px flex" aria-label="Tabs">
+            <a href="#" x-on:click="showTab = 'barters'" :class="{ 'border-b-2 border-blue-500': showTab === 'barters' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="page">آگهی‌های مبادله کالا</a>
+            <a href="#" x-on:click="showTab = 'jobs'" :class="{ 'border-b-2 border-blue-500': showTab === 'jobs' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">آگهی‌های کاریابی</a>
+            <a href="#" x-on:click="showTab = 'ads'" :class="{ 'border-b-2 border-blue-500': showTab === 'ads' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">آگهی‌های تبلیغاتی</a>
+            <a href="#" x-on:click="showTab = 'invoice'" :class="{ 'border-b-2 border-blue-500': showTab === 'invoice' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">Invoice</a>
+          </nav>
         </div>
-        <h2 class="text-xl font-semibold mb-4">آگهی‌های شما | تهاتر کالا:</h2>
-        {% if barters %}
-          <ul>
-            {% for barter in barters %}
-              <li id="{{ barter.slug }}" class="border-b border-gray-300 py-4">
-                <div class="flex items-center justify-start">
-                    <p class="text-lg font-medium">{{ barter.title }}</p>
-                    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="window.location.href='{% url 'barters:barter-update' barter_slug=barter.slug %}'">ویرایش</button>
-                    <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onclick="window.location.href='{% url 'barters:barter-detail' barter_slug=barter.slug %}'">مشاهده</button>
-                    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-barter-slug="{{ barter.slug }}" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" type="button">
+        <div>
+          <div id="barters" x-show="showTab === 'barters'" class="p-4">
+            <!-- Content for barters tab -->
+            <div class="mb-8">
+              <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی کاریابی</a>
+            </div>
+            
+            {% if barters %}
+            
+              <ul>
+                {% for barter in barters %}
+                  <li id="{{ barter.slug }}" class="border-b border-gray-300 py-4">
+                    <div class="flex items-center justify-start">
+                      <p class="text-lg font-medium">{{ barter.title }}</p>
+                      <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="window.location.href='{% url 'barters:barter-update' barter_slug=barter.slug %}'">ویرایش</button>
+                      <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onclick="window.location.href='{% url 'barters:barter-detail' barter_slug=barter.slug %}'">مشاهده</button>
+                      <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-barter-slug="{{ barter.slug }}" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" type="button">
                         حذف
-                    </button>                    
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-lg">شما هیچ آگهی‌ای مبادله کالا ندارید.</p>
-        {% endif %}
-      </div>
-    </div>
+                      </button>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-lg">شما هیچ آگهی‌ای مبادله کالا ندارید.</p>
+            {% endif %}
+          </div>
+          
+          <div id="jobs" x-show="showTab === 'jobs'" class="p-4 ">
+            <!-- Content for jobs tab -->
+            <div class="mb-8">
+              <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی کاریابی</a>
+            </div>
 
-    <!-- Second column for jobs -->
-    <div class="col-span-1">
-      <!-- Display user's created jobs -->
-      <div class="max-w-4xl mx-auto py-8 px-4">
-        <div class="mb-8">
-          <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی کاریابی</a>
+            {% if jobs %}
+              <ul>
+                {% for job in jobs %}
+                  <li class="border-b border-gray-300 py-4">
+                    <div class="flex items-center justify-start">
+                      <p class="text-lg font-medium">{{ job.title }}</p>
+                      <div>
+                        <a href="{% url 'jobs:job-update' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600 mr-2">ویرایش</a>
+                        |
+                        <a href="{% url 'jobs:job-detail' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">مشاهده</a>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-lg">شما هیچ آگهی کاریابی ندارید.</p>
+            {% endif %}
+          </div>
+          
+          <div id="ads" x-show="showTab === 'ads'" class="p-4">
+            <!-- Content for ads tab -->
+            <div class="mb-8">
+              <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی تبلیغاتی</a>
+            </div>
+            
+            {% if ads %}
+              <ul>
+                {% for ad in ads %}
+                  <li class="border-b border-gray-300 py-4">
+                    <div class="flex items-center justify-start">
+                      <p class="text-lg font-medium">{{ ad.title }}</p>
+                      <!-- Add links or other actions for ads if needed -->
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-lg">شما هیچ آگهی تبلیغاتی ندارید.</p>
+            {% endif %}
+          </div>
+          
+          <div id="invoice" x-show="showTab === 'invoice'" class="p-4">
+            <!-- Content for invoice tab -->
+            <p>Invoice content goes here.</p>
+          </div>
         </div>
-        <h2 class="text-xl font-semibold mb-4">آگهی های شما | کاریابی:</h2>
-        {% if jobs %}
-          <ul>
-            {% for job in jobs %}
-              <li class="border-b border-gray-300 py-4">
-                <div class="flex items-center justify-start">
-                  <p class="text-lg font-medium">{{ job.title }}</p>
-                  <div>
-                    <a href="{% url 'jobs:job-update' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600 mr-2">ویرایش</a>
-                    |
-                    <a href="{% url 'jobs:job-detail' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">مشاهده</a>
-                  </div>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-lg">شما هیچ آگهی کاریابی ندارید.</p>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Third column for ads -->
-    <div class="col-span-1">
-      <!-- Display user's created ads -->
-      <div class="max-w-4xl mx-auto py-8 px-4">
-        <div class="mb-8">
-          <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی تبلیغاتی</a>
-        </div>
-        <h2 class="text-xl font-semibold mb-4">آگهی‌های شما | تبلیغات :</h2>
-        {% if ads %}
-          <ul>
-            {% for ad in ads %}
-              <li class="border-b border-gray-300 py-4">
-                <div class="flex items-center justify-start">
-                  <p class="text-lg font-medium">{{ ad.title }}</p>
-                  <!-- Add links or other actions for ads if needed -->
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-lg">شما هیچ آگهی تبلیغاتی ندارید.</p>
-        {% endif %}
       </div>
     </div>
   </div>
