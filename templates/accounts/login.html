@@ -37,27 +37,23 @@
                 style="text-align: center;"
                 required class="w-full rounded-md border-0 py-1.5 ring-1">
         </div>
-        <button type="submit" class="font-vazir w-full py-1.5 rounded-md
-                                      dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
-                                      dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"> 
-          <div style="margin-top: 15px; cursor: pointer;" >
-            ورود
-          </div>
-        </button>
         <div>
           <div class="my-3"> 
             {{ form.captcha }}
           </div>
+          <button type="submit" class="font-vazir w-full py-1.5 rounded-md
+                                        dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
+                                        dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"> 
+            <div style="margin-top: 15px; cursor: pointer;" >
+              ورود
+            </div>
+          </button>
           <div class="">
             <a href="{% url 'accounts:login-otp' %}" 
                 class="font-semibold text-indigo-600 hover:text-indigo-500">
                   ورود با رمز یک‌بار مصرف
             </a>
           </div>
-        </div>
-  
-        <div>
-          <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">ورود</button>
         </div>
       </form>
     </div>
