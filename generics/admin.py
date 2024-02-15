@@ -1,4 +1,6 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportActionModelAdmin
 from . import models
 
 
@@ -14,8 +16,20 @@ class TagAdmin(admin.ModelAdmin):
 
 # ================================================
 
-@admin.register(models.Location)
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ('province', 'city', 'address',)
+class RegionResource(resources.ModelResource):
+    class Meta:
+        model = models.Region
 
 # ================================================
+
+@admin.register(models.Region)
+class RegionAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
+    list_display = ('state', 'city',)
+    
+    resource_classes = [RegionResource,]
+
+# ================================================
+
+@admin.register(models.Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('region', 'address',)

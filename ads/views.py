@@ -15,7 +15,7 @@ from . import models, forms, decorators
 
 
 def advertise_list_view(request):
-    ads = models.StuffAdvertising.objects.filter(status='published')
+    ads = models.Advertise.objects.filter(status='published')
     
     # logger.info(f"advertise list fetched by  user {request.user}")
     
@@ -29,7 +29,7 @@ def advertise_list_view(request):
         )
     
     # Pagination
-    paginated = Paginator(ads, 6) 
+    paginated = Paginator(ads, 10) 
     page_number = request.GET.get("page")  
     paginated_ads = paginated.get_page(page_number)
         
@@ -53,8 +53,11 @@ def advertise_detail_view(request: HttpRequest, advertise_slug: str):
     
 # ---------------------------------------------------------
 
+@login_required(login_url='accounts:login')
 def advertise_create_view(request: HttpRequest) -> HttpResponse:
-    pass
+    
+    context = {}
+    return render(request, 'ads/adv-create.html', context)
 
 # ---------------------------------------------------------
 

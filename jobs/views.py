@@ -1,19 +1,31 @@
 import uuid
 import logging
 from typing import Any
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views import generic
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+
 from . import models, forms, decorators
 
 
 logger = logging.getLogger("jobs.views")
+
+
+# ************************************** JOB ADVERTISING VIEWS **************************************
+
 
 def job_list_view(request):
     jobs = models.JobAdvertising.objects.filter(status='published')
@@ -141,4 +153,80 @@ def job_delete_view(request: HttpRequest, job_id: str, job_slug: str):
         messages.success(request, f"{job} has been deleted.")
         return reverse_lazy("jobs:job-list")
     
+# ---------------------------------------------------------
+
+
+# ************************************** RESUME VIEWS **************************************
+
+
+@login_required(login_url="accounts:login")
+def  resume_upload_view(request: HttpRequest) -> HttpResponseRedirect:
+    """View for uploading a user's CV."""
+    if request.method == "POST":
+        form = forms.ResumeUploadForm(data=request.POST, files=request.FILES or None)
+        
+        if not form.is_valid():
+            messages.error(request, "Please correct the errors below.")
+            
+        else:
+            # Save the file to MEDIA_ROOT directory and create Resume object with it
+            pass
+
+# ---------------------------------------------------------
+
+def resume_detail_view(request, id):
+    resume = models.Resume.objects.get(id=id)
+    
+    context = {
+        'resume': resume,
+    }
+    
+    return  render(request, 'jobs/resumes/resume-details.html', context)
+
+
+# def write_pdf_view(request):
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
+
+#     buffer = BytesIO()
+#     p = canvas.Canvas(buffer)
+
+#     # Start writing the PDF here
+#     p.drawString(100, 100, 'resume and title')
+#     resume = models.Resume.objects.first()
+#     p.drawString(100, 200, f"Title: {resume.title}")
+#     p.drawString(100, 300, f"Author: {resume.fname}")
+#     p.drawString(100, 400, f"Year: {resume.lname}")
+#     # End writing
+
+#     p.showPage()
+#     p.save()
+
+#     pdf = buffer.getvalue()
+#     buffer.close()
+#     response.write(pdf)
+
+#     return response
+
+
+# def write_pdf_view2(request):
+#     doc = SimpleDocTemplate("/tmp/somefilename.pdf")
+#     styles = getSampleStyleSheet()
+#     Story = [Spacer(1,2*inch)]
+#     style = styles["Normal"]
+#     for i in range(100):
+#        bogustext = ("This is Paragraph number %s.  " % i) * 20
+#        p = Paragraph(bogustext, style)
+#        Story.append(p)
+#        Story.append(Spacer(1,0.2*inch))
+#     doc.build(Story)
+
+#     fs = FileSystemStorage("/tmp")
+#     with fs.open("somefilename.pdf") as pdf:
+#         response = HttpResponse(pdf, content_type='application/pdf')
+#         response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+#         return response
+
+#     return response
+
 # ---------------------------------------------------------
