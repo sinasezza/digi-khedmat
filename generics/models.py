@@ -24,13 +24,16 @@ class Tag(models.Model):
     
 # ================================================
 
-class Location(models.Model):
-    province        = models.CharField(max_length=80, verbose_name="استان")
-    city            = models.CharField(max_length=100, verbose_name="شهر")
-    address         = models.CharField(max_length=255, verbose_name="آدرس")
+class Region(models.Model):
+    state = models.CharField(max_length=80, verbose_name="استان")
+    city     = models.CharField(max_length=100, verbose_name="شهر")
+
+# ================================================
+
+class Address(models.Model):
+    region  = models.ForeignKey(to=Region, on_delete=models.CASCADE, verbose_name="منطقه")
+    address = models.CharField(max_length=255, verbose_name="آدرس")
     
-    class Meta:
-        verbose_name = 'Location'
 
 # ================================================
 
@@ -62,7 +65,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="تگ")
     # --------------------------------------
-    locations = models.ManyToManyField(to=Location, blank=True, verbose_name="موقعیت(های) مکانی")
+    addresses = models.ManyToManyField(to=Address, blank=True, verbose_name="موقعیت(های) مکانی")
     # --------------------------------------
     views = models.PositiveIntegerField(default=0, verbose_name="تعداد بازدید")
     

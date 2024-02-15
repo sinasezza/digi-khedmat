@@ -40,17 +40,11 @@ class Account(AbstractUser):
     # -----------------------------------------
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # -----------------------------------------
-    phone_number = models.CharField(
-        max_length=20,
-        # region=settings.PHONENUMBER_DEFAULT_REGION,
-        null=False,
-        blank=False,
-        verbose_name="تلفن"
-    )
+    phone_number = models.CharField(max_length=20, unique=True, verbose_name="تلفن")
     # -----------------------------------------
     profile_photo   = models.ImageField(upload_to=user_profile_image_path, null=True, blank=True, verbose_name="عکس پروفایل")
     # -----------------------------------------
-    bio             = models.TextField(max_length=1000,null=True,blank=True, verbose_name="بیوگرافی")
+    bio             = models.TextField(max_length=1000, null=True, blank=True, verbose_name="بیوگرافی")
     # -----------------------------------------
     age             = models.PositiveSmallIntegerField(default=0 , null=True,blank=True, verbose_name="سن")
     # -----------------------------------------
@@ -61,6 +55,10 @@ class Account(AbstractUser):
     address = models.CharField(max_length=400, null=True, blank=True, verbose_name="آدرس")
     # -----------------------------------------
     objects = AccountManager()
+    # -----------------------------------------
+    
+    REQUIRED_FIELDS = ["phone_number","email"]
+
 
 # ==================================================================================
 

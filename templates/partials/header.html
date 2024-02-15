@@ -2,67 +2,87 @@
 {% load static %}
 
 <header class="bg-white">
-    <nav class="flex justify-between p-6" aria-label="Global">
-        <div class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-            role="group">
-            <a href="{% url 'accounts:register' %}" type="button"
-                class="px-6 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                ثبت‌نام
-            </a>
-            <a href="{% url 'accounts:login' %}" type="button"
-                class="inline-block px-6 pt-2 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                ورود
-            </a>
-        </div>  
+  <nav class="flex justify-between p-6" aria-label="Global">
+      <div class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          role="group">
+          <a href="{% url 'accounts:register' %}" type="button"
+              class="px-6 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              ثبت‌نام
+          </a>
+          <a href="{% url 'accounts:login' %}" type="button"
+              class="inline-block px-6 pt-2 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              ورود
+          </a>
+      </div>  
 
-        <div style="margin-left: 448px" class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-            role="group">
-            <a href="{% url 'generics:main-page' %}" type="button"
-                class="inline-block px-6 pt-2 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                دیجی‌خدمت
-            </a>
-            <a href="{% url 'barters:barter-list' %}" type="button"
-                class="inline-block px-6 pb-2 pt-2 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                تهاتر کالا
-            </a>
-            <a href="{% url 'ads:adv-list' %}" type="button"
-                class="inline-block px-6 pb-2 pt-2 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                تبلیغات
-            </a>
-            <a href="{% url 'jobs:job-list' %}" type="button"
-                class="inline-block px-6 pb-2 pt-2 font-vazir"
-                data-te-ripple-init data-te-ripple-color="light">
-                کاریابی
-            </a>
+      <div style="margin-left: 448px" class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          role="group">
+          <a href="{% url 'generics:main-page' %}" type="button"
+              class="inline-block px-6 pt-2 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              دیجی‌خدمت
+          </a>
+          <a href="{% url 'barters:barter-list' %}" type="button"
+              class="inline-block px-6 pb-2 pt-2 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              تهاتر کالا
+          </a>
+          <a href="{% url 'ads:adv-list' %}" type="button"
+              class="inline-block px-6 pb-2 pt-2 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              تبلیغات
+          </a>
+          <a href="{% url 'jobs:job-list' %}" type="button"
+              class="inline-block px-6 pb-2 pt-2 font-vazir"
+              data-te-ripple-init data-te-ripple-color="light">
+              کاریابی
+          </a>
+      </div>
+      <!-- Start Search Box -->
+      <form method="get">
+        <div class="dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+            <div class="flex">
+              <!--Search button-->
+              <button
+              class="border-2 px-6 py-2  hover:bg-black hover:bg-opacity-5"
+              type="submit" id="button-addon3" data-te-ripple-init>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 border-black" >
+                <path fill-rule="evenodd"
+                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                clip-rule="evenodd" />
+              </svg>
+            </button>
+            <input 
+                name="search-area" 
+                value="{{ search_input }}"
+                action="{{request.resolver_match.app_name}}/list/" 
+                type="text"
+                style="border-color: inherit; text-align: center; color: black"
+                class="font-vazir leading-[1.6]  dark:placeholder:text-neutral-200"
+                placeholder="جستجو"  aria-label="Search" aria-describedby="button-addon3"/>
+            </div>
         </div>
-        <!-- Start Search Box -->
-        <form method="get">
-          <div class="dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-              <div class="flex">
-                <!--Search button-->
-                <button
-                class="border-2 px-6 py-2  hover:bg-black hover:bg-opacity-5"
-                type="submit" id="button-addon3" data-te-ripple-init>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 border-black" >
-                  <path fill-rule="evenodd"
-                  d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                  clip-rule="evenodd" />
-                </svg>
-              </button>
-              <input 
-                  name="search-area" 
-                  value="{{ search_input }}"
-                  action="{{request.resolver_match.app_name}}/list/" 
-                  type="text"
-                  style="border-color: inherit; text-align: center; color: black"
-                  class="font-vazir leading-[1.6]  dark:placeholder:text-neutral-200"
-                  placeholder="جستجو"  aria-label="Search" aria-describedby="button-addon3"/>
-              </div>
+      </form>
+      <!-- Logo -->
+      <div class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+          <a href="{% url 'generics:main-page' %}" class="-m-1.5 p-1.5 inline-block rounded-l bg-primary px-6 pb-2 pt-2 font-vazir">
+              <span class="sr-only">Your Company</span>
+              <img class="h-8" style="margin-bottom: -18px;" src="{% static 'global/images/DigiKhedmatLogo.png' %}" alt="">
+          </a>
+      </div>
+  </nav>
+  <!-- Mobile menu, show/hide based on menu open state. -->
+  <div class="lg:hidden" role="dialog" aria-modal="true">
+      <!-- Background backdrop, show/hide based on slide-over state. -->
+      <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div class="flex items-center justify-between">
+              <a href="#" class="-m-1.5 p-1.5">
+                  <span class="sr-only">Your Company</span>
+                  <img class="h-8 w-auto" src="{% static 'global/images/DigiKhedmatLogo.png' %}"
+                      alt="">
+              </a>
           </div>
         </form>
         <!-- Logo -->
@@ -73,4 +93,5 @@
             </a>
         </div>
     </nav>
+
 </header>

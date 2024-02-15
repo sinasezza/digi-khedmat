@@ -14,7 +14,6 @@ class BarterForm(forms.ModelForm):
             "title",
             "summary",
             "description",
-            "status",
             
             # "categories",
             # "tags",

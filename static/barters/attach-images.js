@@ -53,7 +53,7 @@ $(document).ready(function () {
     // Perform delete action or show a confirmation modal
     console.log('Delete image with id:', imageId);
     // Add your delete logic here, e.g., AJAX request to server
-    fetch(`/api/barters/delete-barter-image/${imageId}/`, {
+    fetch(`/api/barters/barter-delete-image/${imageId}/`, {
         method: 'DELETE',
         headers: {
             'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()

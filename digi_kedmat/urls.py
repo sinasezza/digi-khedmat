@@ -38,3 +38,4 @@ if settings.DEBUG:
 
 handler404 = 'generics.views.handler404'
 handler500 = 'generics.views.handler500'
+handler403 = 'generics.views.handler403'

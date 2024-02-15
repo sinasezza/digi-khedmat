@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block title %}ثبت نام{% endblock title %}
+
+
+{% block content %}
+  <form x-data="{ formStep: 1 }" class="space-y-2">
+    <button x-cloak x-show="formStep > 1" @click="formStep -= 1" type="button" class="underline">
+      Back
+    </button>
+
+    <div x-cloak x-show="formStep === 1">Step 1</div>
+    <div x-cloak x-show="formStep === 2">Step 2</div>
+    <div x-cloak x-show="formStep === 3">Step 3</div>
+    <div x-cloak x-show="formStep === 4">Final Step</div>
+
+    <button x-cloak x-show="formStep < 4" @click="formStep += 1" type="button" class="underline">
+      Next Step
+    </button>
+
+    <button x-cloak x-show="formStep === 4" type="submit" class="underline">Submit</button>
+  </form>
+
+  <div x-data="{show: false}" 
+    class="bg-white text-black m-8"
+  >
+
+    <button 
+      class="outline-2 bg-fuchsia-300"
+      @click="show = !show"
+    >
+      Toggle Show
+    </button>
+
+    <h1 x-show="show">AAA BBB CCC</h1>
+
+  </div>
+
+  </div>
+
+{% endblock content %}

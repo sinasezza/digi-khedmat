@@ -3,7 +3,7 @@
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <form action="" method="post" class="max-w-lg mx-auto mt-8">
+  <form action="" method="post" class="max-w-lg mx-auto mt-8 mb-10">
     {% csrf_token %}
     
     <div class="mb-4">
@@ -20,14 +20,6 @@
       <label for="id_description" class="block text-sm font-medium text-gray-700">توضیحات</label>
       {{ form.description }}
     </div>
-
-    <div class="mb-4">
-      <label for="id_status" class="block text-sm font-medium text-gray-700">وضعیت</label>
-      {{ form.status }}
-    </div>
-
-    <!-- Add more fields as needed -->
-
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition duration-300">ثبت</button>
   </form>
 {% endblock content %}
