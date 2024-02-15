@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alpinejs": "^3.13.5",
     "async": "^3.2.5",
     "axios": "^1.6.7",
     "colors": "^1.4.0",
