@@ -60,7 +60,7 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
         ("unknown", "فرقی نمیکند"),
     )
     # ---------------------------------------------------------------------
-    owner = models.ForeignKey(to=Account, related_name="jobs", on_delete=models.CASCADE, verbose_name="مالک")
+    owner = models.ForeignKey(to=Account, on_delete=models.CASCADE, null=True, blank=True, related_name="jobs", verbose_name="مالک")
     # ---------------------------------------------------------------------
     cooperation_types = models.ManyToManyField(to=CooperationType, blank=True, verbose_name="نوع همکاری")
     # ---------------------------------------------------------------------
