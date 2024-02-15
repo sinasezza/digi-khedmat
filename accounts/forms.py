@@ -51,6 +51,7 @@ class UserRegisterForm(forms.ModelForm):
         phone_number = self.cleaned_data.get('phone_number')
         print(f"phone number is {phone_number}")
         matching_phone_numbers = models.Account.objects.filter(phone_number=phone_number)
+        print(f"matching phone numbers is : {matching_phone_numbers}")
         print(f"\n\n\n i am here \n\n\n")
         if matching_phone_numbers.exists():
             print(f"it exists")
