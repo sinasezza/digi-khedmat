@@ -2,6 +2,7 @@ import uuid
 import pathlib
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -54,10 +55,31 @@ class Account(AbstractUser):
     # -----------------------------------------
     address = models.CharField(max_length=400, null=True, blank=True, verbose_name="آدرس")
     # -----------------------------------------
+    education = models.CharField(max_length=70, null=True, blank=True, verbose_name="تحصیلات")
+    # -----------------------------------------
+    occupation = models.CharField(max_length=100, null=True, blank=True, verbose_name="شغل")
+    # -----------------------------------------
+    company_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="نام شرکت")
+    # -----------------------------------------
+    
+    
     objects = AccountManager()
     # -----------------------------------------
     
     REQUIRED_FIELDS = ["phone_number","email"]
+    
+    # -----------------------------------------
+    
+    def get_user_profile(self):
+        return reverse("accounts:user-profile", kwargs={"id":self.id,})
+    
+    @property
+    def advertising_count(self):
+        barters_count = self.barters.count()
+        jobs_count = self.jobs.count()
+        # ads_count = self.ads.all().count()
+        
+        return  barters_count + jobs_count # + ads_count
 
 
 # ==================================================================================

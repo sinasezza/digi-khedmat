@@ -83,3 +83,24 @@ class BaseAdvertisingModel(models.Model):
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)       
     #     super().save(*args, **kwargs)
+    
+    
+# ================================================
+
+
+class Contact(models.Model):
+    fname = models.CharField(max_length=100)
+    # --------------------------------------
+    lname = models.CharField(max_length=100)
+    # --------------------------------------
+    company_name = models.CharField(max_length=150)
+    # --------------------------------------
+    email = models.EmailField()
+    # --------------------------------------
+    phone_number = models.CharField(max_length=20)
+    # --------------------------------------
+    message = models.TextField(max_length=3000)
+    # --------------------------------------
+
+    def __str__(self):
+        return f"{self.fname} {self.lname} - {self.company_name}"

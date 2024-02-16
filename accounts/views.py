@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 # from django.contrib.messages.views import SuccessMessageMixin
@@ -102,10 +102,20 @@ def user_panel_view(request):
 # ---------------------------------------------------
 
 @login_required(login_url='accounts:login')
-def user_profile_view(request: HttpRequest) -> HttpResponse:
+def my_profile_view(request: HttpRequest) -> HttpResponse:
     """View for the user profile page."""
     
     context = {}
+    return render(request, 'accounts/my-profile.html', context)
+
+# ---------------------------------------------------
+
+def user_profile_view(request: HttpRequest, id: str) -> HttpResponse:
+    user = get_object_or_404(models.Account, id=id)
+    
+    context = {
+        'user': user,
+    }
     return render(request, 'accounts/user-profile.html', context)
 
 # ---------------------------------------------------

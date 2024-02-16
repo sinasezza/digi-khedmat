@@ -13,35 +13,33 @@
 
   {% compress css %} 
       <link rel="icon" type="image/x-icon" href="{% static 'global/images/digi-khedmat-favicon.png' %}">
+      
+      <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
       <link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
       {% tailwind_css %}
 
       {% block custom_assets %}{% endblock custom_assets %}
   {% endcompress css %} 
 
+  <!-- Start scripts part -->
   <script src="{% static  'global/js/jquery-3.7.1.min.js' %}"></script>
-
-
-  {% comment %} <script src="{% static 'node_packages/node_modules/moment/min/moment.min.js' %}"></script>
-  <script src="{% static 'node_packages/node_modules/moment-jalaali/build/moment-jalaali.js' %}"></script> {% endcomment %}
   
   <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.js' %}"></script>
   <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js' %}"></script>
-  {% comment %} <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js.map' %}"></script> {% endcomment %}
 
   <script type="text/javascript" src="{% static 'node_packages/node_modules/alpinejs/dist/cdn.min.js' %}" defer></script>
-
   <script type="text/javascript" src="{% static 'node_modules/flowbite/dist/flowbite.min.js' %}" ></script>
-
 
   <script src="{% static  'global/js/scripts.js' %}"></script>
 
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+  <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+
 
   {% block custom_js %}{% endblock custom_js %}
-
-  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-  <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- End scripts part -->
   
   <title>{% block title %}دیجی خدمت{% endblock title %}</title>
 </head>
