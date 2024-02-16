@@ -1,63 +1,42 @@
 {% load static %}
 
 <!-- partials/navbar.html -->
-<nav class="bg-gray-800">
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
-      <!-- Mobile menu button -->
-      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-        <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-          <!-- ... (your mobile menu icon code) ... -->
-        </button>
-      </div>
+<nav class="bg-white" style="margin-top: -72px">
+  <div class="flex justify-between p-6">
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {% if request.user.is_authenticated %}
+                <!-- Notifications button -->
+                <button style="margin-top: -7px;" type="button" class="px-6 pb-2 pt-2 dark:bg-white rounded-md
+                                                    dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
+                                                    dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                    <img src="{% static 'global/icons/notification.png' %}" alt="sidebar" class="w-[30px] h-[30px]">
+                </button>
+                
+                <!-- Profile dropdown (if needed) -->
+                <button style="margin-top: -7px;" id="toggleSidebarBtn" class="px-6 pb-2 pt-2 dark:bg-white rounded-md
+                                                    dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
+                                                    dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                    <img src="{% static 'global/icons/add-profile-image.png' %}" alt="sidebar" class="w-[30px] h-[30px]">
+                </button>
 
-      <!-- Logo -->
-      <div class="flex flex-shrink-0 items-center">
-        <a class="flex flex-shrink-0 items-center" href="/">
-          <img class="h-8 w-auto" src="{% static 'global/images/digi-khedmat-logo.png' %}" alt="DIGI-KHEDMAT">
-          
-        </a>
-      </div>
-
-      <!-- Navbar items -->
-      <div class="hidden sm:ml-6 sm:block">
-        <div class="flex space-x-4">
-          <a href="{% url 'barters:barter-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">تهاتر کالا</a>
-          <a href="{% url 'ads:adv-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">تبلیغات</a>
-          <a href="{% url 'jobs:job-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">کاریابی</a>
+            {% else %}
+                <!-- Register and Login buttons (if needed) -->
+                <div style="padding-bottom: 6.4px" class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                    role="group">
+                    <a href="{% url 'accounts:register' %}" type="button"
+                        class="px-6 pt-2 font-vazir"
+                        aria-current="page"
+                        data-te-ripple-init data-te-ripple-color="light">
+                        ثبت‌نام
+                    </a>
+                    <a href="{% url 'accounts:login' %}" type="button"
+                        class="inline-block px-6 pt-2 font-vazir"
+                        aria-current="page"
+                        data-te-ripple-init data-te-ripple-color="light">
+                        ورود
+                    </a>
+                </div> 
+            {% endif %}
         </div>
-      </div>
-
-      <!-- Right-aligned items -->
-      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        {% if request.user.is_authenticated %}
-          <!-- Notifications button -->
-          <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <img src="{% static 'global/icons/notification.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-gray-500">
-         </button>
-         
-          <!-- Profile dropdown (if needed) -->
-          <button id="toggleSidebarBtn" class="flex items-center mx-2 text-gray-300 hover:text-white text-sm font-medium">
-            <img src="{% static 'global/icons/settings.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-slate-300">
-          </button>
-
-        {% else %}
-          <!-- Register and Login buttons (if needed) -->
-          <a href="{% url 'accounts:register' %}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">ثبت نام</a>
-          <a href="{% url 'accounts:login' %}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">ورود</a>
-        {% endif %}
-      </div>
-
-      </div>
     </div>
-  </div>
-
-  <!-- Mobile menu -->
-  <div class="sm:hidden" id="mobile-menu">
-    <div class="space-y-1 px-2 pb-3 pt-2">
-      <a href="{% url 'barters:barter-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">تهاتر کالا</a>
-      <a href="{% url 'ads:adv-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">تبلیغات</a>
-      <a href="{% url 'jobs:job-list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">کاریابی</a>
-    </div>
-  </div>
 </nav>
