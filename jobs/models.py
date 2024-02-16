@@ -98,7 +98,7 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = f"{self.id}-{slugify(self.title)}"
+        self.slug = f"{self.id}-{slugify(value=self.title, allow_unicode=True)}"
         super().save(*args, **kwargs)
     
     # --------------------------------------

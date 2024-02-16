@@ -47,3 +47,9 @@ class ContactAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'user', 'fname', 'lname', 'company_name', 'phone_number', 'email',)
     
     resource_classes = [ContactResource,]
+
+# ================================================
+
+@admin.register(models.SocialNetwork)
+class SocialNetworkAdmin(admin.ModelAdmin):
+    list_display = ('id', 'media_type', 'link')

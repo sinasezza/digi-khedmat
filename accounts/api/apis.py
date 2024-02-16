@@ -4,6 +4,7 @@ from rest_framework import authentication as rest_authentications
 from rest_framework import permissions as rest_permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status as rest_status
+from django.contrib.contenttypes.models import ContentType
 from .. import models, permissions, utils
 
 def handle_api_response(success_message: str, error_message: str, status_code: int):
@@ -63,12 +64,6 @@ def delete_favorite_api(request: HttpRequest, id: str) -> Response:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
 
 # --------------------------------------------------------------------------------
-
-from barters.models import BarterAdvertising
-from ads.models import Advertise
-from jobs.models import JobAdvertising
-
-from django.contrib.contenttypes.models import ContentType
 
 @api_view(http_method_names=('POST',))
 @authentication_classes([rest_authentications.SessionAuthentication,])

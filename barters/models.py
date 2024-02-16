@@ -77,7 +77,7 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        self.slug = f"{self.id}-{slugify(self.title)}"
+        self.slug = f"{self.id}-{slugify(value=self.title, allow_unicode=True)}"
         
         # generate url address of barter object
         current_site = Site.objects.get_current()

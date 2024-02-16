@@ -1,5 +1,7 @@
 import uuid
 import jdatetime
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from accounts.models import Account
@@ -21,6 +23,9 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+    
+    def __str__(self) -> str:
+        return self.name
 
     
 # ================================================
@@ -28,12 +33,19 @@ class Tag(models.Model):
 class Region(models.Model):
     state = models.CharField(max_length=80, verbose_name="استان")
     city     = models.CharField(max_length=100, verbose_name="شهر")
+    
+    def __str__(self):
+        return f"{self.state}- {self.city}"
+    
 
 # ================================================
 
 class Address(models.Model):
     region  = models.ForeignKey(to=Region, on_delete=models.CASCADE, verbose_name="منطقه")
     address = models.CharField(max_length=255, verbose_name="آدرس")
+    
+    def __str__(self) -> str:
+        return f"{self.region} <-> {self.address}"
     
 
 # ================================================
@@ -48,7 +60,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     title = models.CharField(max_length=120, verbose_name="عنوان")
     # --------------------------------------
-    slug = models.SlugField(max_length=256, unique=True)
+    slug = models.SlugField(max_length=256, blank=True, unique=True)
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد آگهی")
     # --------------------------------------
@@ -107,3 +119,26 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.fname} {self.lname} - {self.company_name}"
+    
+# ================================================
+
+class SocialNetwork(models.Model):
+    MEDIA_TYPES = (
+        ('instagram', "instagram"),
+        ('telegram', "telegram"),
+        ('twitter(x)', "twitter"),
+        ('facebook', "facebook"),
+        ('linkedin', "linkedin"),
+        ('others', "دیگر"),
+    )
+    # --------------------------------------
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # -----------------------------------------
+    media_type  = models.CharField(max_length=15, choices=MEDIA_TYPES, default='instagram', verbose_name="نوع شبکه")
+    # -----------------------------------------
+    link = models.CharField(max_length=200, verbose_name="لینک")
+    # --------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.id} - {self.media_type}: {self.link}"
+    
