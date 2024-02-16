@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_page
+from django.contrib import messages
+from . import models, forms
 
 
 @cache_page(60 * 1440)  # 1 day
@@ -21,6 +23,7 @@ def handler403(request, *args, **argv):
 
 # ---------------------------------------------------------
 
+@cache_page(60 * 1440)  # 1 day
 def main_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'generics/home-page.html')
 
@@ -49,7 +52,24 @@ def certificates_view(request: HttpRequest) -> HttpResponse:
 
 @cache_page(60 * 1440)  # 1 day
 def contact_us_view(request: HttpRequest) -> HttpResponse:
-    context = {}
+    if request.method == "POST":
+        form = forms.ContactForm(request.POST)
+        if form.is_valid():
+            new_message = form.save()
+            if request.user.is_authenticated:
+                new_message.user = request.user
+                new_message.save()
+            messages.success(request, 'پیام شما توسط ما دریافت شد. به زودی با شما تماس میگیریم.')
+            return redirect('generics:main-page')
+        else:
+            messages.error(request, 'مشکلی پیش آمده. دوباره تلاش کنید.')
+            form = forms.ContactForm(request.POST)
+    else:
+        form = forms.ContactForm()
+    
+    context = {
+        'form': form,
+    }
     return render(request, 'generics/contact-us.html', context)
 
 # ---------------------------------------------------------

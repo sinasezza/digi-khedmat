@@ -2,6 +2,7 @@ import uuid
 import jdatetime
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from accounts.models import Account
 from django.db import models
   
 
@@ -89,17 +90,19 @@ class BaseAdvertisingModel(models.Model):
 
 
 class Contact(models.Model):
-    fname = models.CharField(max_length=100)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
     # --------------------------------------
-    lname = models.CharField(max_length=100)
+    fname = models.CharField(max_length=100, null=True, blank=True, verbose_name="نام")
     # --------------------------------------
-    company_name = models.CharField(max_length=150)
+    lname = models.CharField(max_length=100, null=True, blank=True, verbose_name="نام خانوادگی")
     # --------------------------------------
-    email = models.EmailField()
+    company_name = models.CharField(max_length=150, null=True, blank=True, verbose_name="شرکت")
     # --------------------------------------
-    phone_number = models.CharField(max_length=20)
+    email = models.EmailField(max_length=150, null=True, blank=True, verbose_name="ایمیل")
     # --------------------------------------
-    message = models.TextField(max_length=3000)
+    phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="شماره تلفن")
+    # --------------------------------------
+    message = models.TextField(max_length=3000, verbose_name="نام")
     # --------------------------------------
 
     def __str__(self):
