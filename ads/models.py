@@ -2,16 +2,11 @@ import uuid
 import pathlib
 from django.urls import reverse
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
 from django.db import models
 from generics import models as generics_models
+from accounts import models as accounts_models
 
-
-class Advertise(generics_models.BaseAdvertisingModel):
-    class Meta:
-        default_related_name = "ads"
-        verbose_name_plural = "ads(s)"
-
-# ==============================================================
 
 class StuffAdvertising(generics_models.BaseAdvertisingModel):
     STUFF_STATUSES = (
@@ -22,9 +17,11 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
         ('defective', "معیوب"),
     )
     # --------------------------------------------------------------------------
+    owner = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='stuff_ads', null=True, blank=True, verbose_name="مالک")
+    # --------------------------------------------------------------------------
     stuff_status = models.CharField(max_length=60, default='unknown', choices=STUFF_STATUSES, verbose_name="وضعیت کالا")
     # --------------------------------------------------------------------------
-    price = models.CharField(max_length=10, null=True, default="رایگان" , verbose_name="قیمت")
+    price = models.CharField(max_length=25, null=True, default="رایگان" , verbose_name="قیمت")
     # --------------------------------------------------------------------------
     
     class Meta:
@@ -44,7 +41,7 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = f"{self.id}-{slugify(self.title)}"
+        self.slug = f"{self.id}-{slugify(value=self.title, allow_unicode=True)}"
         super().save(*args, **kwargs)
     
     # --------------------------------------------------------------------------
@@ -63,15 +60,36 @@ class BusinessImage(models.Model):
 
 # ==============================================================
 
-class BusinessAdvertising():
+class BusinessAdvertising(models.Model):
+    BUSINESS_TYPES = (
+        ('unknown', "نامشخص"),
+        ('offline', "آفلاین"),
+        ('online', "آنلاین"),
+        ('hybrid', "ترکیبی"),
+    )
+    # ----------------------------------------------------------
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # ----------------------------------------------------------
+    business_type = models.CharField(max_length=10, choices=BUSINESS_TYPES, default="unknown" ,verbose_name="نوع کسب و کار")
+    # ----------------------------------------------------------
     name = models.CharField(max_length=100, verbose_name="نام کسب و کار")
     # ----------------------------------------------------------
     images = models.ManyToManyField(to=BusinessImage, blank=True, verbose_name="تصاویر")
     # ----------------------------------------------------------
-    web_address = models.CharField(max_length=200, null=True, blank=True)
-    social_network = models.CharField(max_length=200, null=True, blank=True)
-    shop_address = models.CharField(max_length=200, null=True, blank=True)
-    description = models.CharField(max_length=300, null=True, blank=True)
-    B_phone = models.CharField(max_length=13, verbose_name="تلفن")
+    web_address = models.CharField(max_length=200, null=True, blank=True, verbose_name="آدرس وبسایت")
+    # ----------------------------------------------------------
+    social_networks = models.ManyToManyField(to=generics_models.SocialNetwork, blank=True, verbose_name="شبکه های اجتماعی")
+    # ----------------------------------------------------------
+    business_address = models.CharField(max_length=300, null=True, blank=True, verbose_name="آدرس کسب و کار")
+    # ----------------------------------------------------------
+    description = models.TextField(max_length=800, null=True, blank=True, verbose_name="توضیحات")
+    # ----------------------------------------------------------
+    phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="تلفن")
+    # ----------------------------------------------------------
+    
+    
+    class Meta:
+        pass
+    
 
 # ==============================================================
