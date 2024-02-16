@@ -8,8 +8,12 @@
     
     <div class="flex items-center space-x-2  w-full max-w-xl bg-gray-900">
       <img src="{% if receiver.profile_photo %} {{receiver.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" class="h-10 w-10 rounded-full bg-white" alt="{{ receiver.username }}">
-      <h2 class="text-xl font-bold text-white">{{ receiver.username }}</h2>
+      <div class="text-xl font-bold text-white">
+          <div>{{ receiver.username }}</div>
+          <a href="{{receiver.get_user_profile}}" class="text-sm text-gray-500 dark:text-gray-400">مشاهده مشخصات</a>
+      </div>
     </div>
+
     
     <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
       <div id="message-list" class="flex flex-col flex-grow h-0 p-4 overflow-auto">

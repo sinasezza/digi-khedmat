@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     # 'debug_toolbar',
     'channels',
     'watchman',
+    'fontawesomefree',
     
     
     # self apps
