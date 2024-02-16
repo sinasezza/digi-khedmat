@@ -3,46 +3,6 @@
 
 <header class="bg-white">
   <nav class="flex justify-between p-6" aria-label="Global">
-        {% comment %} <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {% if request.user.is_authenticated %}
-                <!-- Notifications button -->
-                <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <img src="{% static 'global/icons/notification.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-gray-500">
-                </button>
-                
-                <!-- Profile dropdown (if needed) -->
-                <button id="toggleSidebarBtn" class="flex items-center mx-2 text-gray-300 hover:text-white text-sm font-medium">
-                    <img src="{% static 'global/icons/settings.png' %}" alt="sidebar" class="w-[30px] h-[30px] bg-slate-300">
-                </button>
-
-                <a id="toggleSidebarBtn" href="" class="items-center pl-6 text-sm font-semibold lg:flex dark:text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" alt="sidebar"
-                        class="mr-1 bi bi-person" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z">
-                        </path>
-                    </svg>
-                </a>
-
-            {% else %}
-                <!-- Register and Login buttons (if needed) -->
-                <div class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                    role="group">
-                    <a href="{% url 'accounts:register' %}" type="button"
-                        class="px-6 font-vazir"
-                        aria-current="page"
-                        data-te-ripple-init data-te-ripple-color="light">
-                        ثبت‌نام
-                    </a>
-                    <a href="{% url 'accounts:login' %}" type="button"
-                        class="inline-block px-6 pt-2 font-vazir"
-                        aria-current="page"
-                        data-te-ripple-init data-te-ripple-color="light">
-                        ورود
-                    </a>
-                </div> 
-            {% endif %}
-        </div> {% endcomment %}
-
       <div style="margin-left: 448px; margin-right: 170px" class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
           role="group">
           <a href="{% url 'generics:main-page' %}" type="button"
