@@ -43,16 +43,16 @@ def check_last_otp(user):
 def send_otp_phone_number(phone_number, otp):
     """Send OTP to the given phone number using sms.ir API."""
     sms_ir = SmsIr(settings.SMS_API_KEY, settings.SMS_LINE_NUMBER)
-    # result = sms_ir.send_verify_code(
-    #     number=phone_number,
-    #     template_id=settings.SMS_TEMPLATE,
-    #     parameters=[
-    #         {
-    #             "name" : "code",
-    #             "value": otp,
-    #         },
-    #     ],
-    # )
+    result = sms_ir.send_verify_code(
+        number=phone_number,
+        template_id=settings.SMS_TEMPLATE,
+        parameters=[
+            {
+                "name" : "code",
+                "value": otp,
+            },
+        ],
+    )
 
 # ----------------------------------------------------------
 
