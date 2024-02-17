@@ -3,23 +3,221 @@
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <form action="" method="post" class="max-w-lg mx-auto mt-8 mb-10">
-    {% csrf_token %}
-    
-    <div class="mb-4">
-      <label for="id_title" class="block text-sm font-medium text-gray-700">عنوان</label>
-      {{ form.title }}
-    </div>
 
-    <div class="mb-4">
-      <label for="id_summary" class="block text-sm font-medium text-gray-700">خلاصه</label>
-      {{ form.summary }}
-    </div>
+<div>
+    <section class="dark:bg-gray-300 font-vazir">
+        <div class="lg:w-1/3 mx-auto lg:py-6">
+            <div>
+                <div class="place-items-center">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <div>
+                                <label for="id_title"> عنوان آگهی: </label>
+                                {% comment %} {{ form.title }} {% endcomment %}
+                                <div class="mt-2">
+                                    <input maxlength="20"
+                                            type="text"
+                                            name="fname"
+                                            id="id_title"
+                                            autocomplete="given-name"
+                                            style="text-align: center"
+                                            class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                            placeholder="حداکثر ۲۰ کاراکتر"
+                                            />
+                                </div>
+                            </div>
+                            <div>
+                                <label for="id_summary"> خلاصه آگهی: </label>
+                                <div class="mt-2">
+                                    {% comment %} {{ form.summary }} {% endcomment %}
+                                    <input maxlength="40"
+                                            type="text"
+                                            name="lname"
+                                            id="id_summary"
+                                            autocomplete="family-name"
+                                            style="text-align: center"
+                                            class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                            placeholder="حداکثر ۴۰ کاراکتر"
+                                            />
+                                </div>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="id_description">
+                                    توضیحات آگهی: 
+                                </label>
+                                <div class="mt-2">
+                                    {% comment %} {{ form.description }} {% endcomment %}
+                                    <textarea name="id_description"
+                                            id="id_description"
+                                            rows="4"
+                                            class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="photos">
+                                   بارگزاری عکس‌ها:
+                                </label>
+                            </div>
+                            <div class="flex mt-6">
+                                <div class="ml-1 mt-2 -mr-72 flex justify-center rounded-lg border border-dashed border-gray-900">
+                                    <div>
+                                        <div class="mt-4 mr-2 flex text-sm">
+                                            <label for="file-upload" class="cursor-pointer font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                <span>   
+                                                    انتخاب عکس شماره ۱
+                                                </span>
+                                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                            </label>
+                                        </div>
+                                        <p class="text-xs">
+                                            PNG, JPG up to 10MB
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="ml-1 mt-2 flex justify-center rounded-lg border border-dashed border-gray-900">
+                                    <div>
+                                        <div class="mt-4 mr-2 flex text-sm leading-6 text-gray-600">
+                                            <label for="file-upload" class="cursor-pointer font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                <span>
+                                                    انتخاب عکس شماره ۲
+                                                </span>
+                                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                            </label>
+                                        </div>
+                                        <p class="text-xs">
+                                            PNG, JPG up to 10MB
+                                        </p>
+                                    </div>
+                                </div>
+                                    <div class="ml-1 mt-2 flex justify-center rounded-lg border border-dashed border-gray-900">
+                                        <div>
+                                            <div class="mt-4 mr-2 flex text-sm">
+                                                <label for="file-upload" class="cursor-pointer font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                    <span>   
+                                                        انتخاب عکس شماره ۳
+                                                    </span>
+                                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                                </label>
+                                            </div>
+                                            <p class="text-xs">
+                                                PNG, JPG up to 10MB
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="ml-1 mt-2 flex justify-center rounded-lg border border-dashed border-gray-900">
+                                        <div>
+                                            <div class="mt-4 mr-2 flex text-sm leading-6 text-gray-600">
+                                                <label for="file-upload" class="cursor-pointer font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                    <span>
+                                                        انتخاب عکس شماره ۴
+                                                    </span>
+                                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                                </label>
+                                            </div>
+                                            <p class="text-xs">
+                                                PNG, JPG up to 10MB
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-    <div class="mb-4">
-      <label for="id_description" class="block text-sm font-medium text-gray-700">توضیحات</label>
-      {{ form.description }}
-    </div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition duration-300">ثبت</button>
-  </form>
+                            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                                <div class="mt-6 ">
+                                    <label for="country" class="block leading-6">
+                                        استان:
+                                    </label>
+                                    <div class="mt-2 ">
+                                        <select id="country" name="country" autocomplete="country-name" 
+                                                class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                                            <option>تهران</option>
+                                            <option>همدان</option>
+                                            <option>البرز</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 ">
+                                    <label for="city" class="block leading-6">
+                                        شهر:
+                                    </label>
+                                    <div class="mt-2 ">
+                                        <select id="city" name="city" autocomplete="city-name" 
+                                                class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                                            <option>تهران</option>
+                                            <option>همدان</option>
+                                            <option>البرز</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                                <div class="mt-6">
+                                    <label for="category" class="block leading-6">
+                                        دسته‌بندی:
+                                    </label>
+                                    <div class="mt-2">
+                                        <select id="category" name="category" autocomplete="category-name" 
+                                                class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                                            <option>ماشین</option>
+                                            <option>لوازم خانگی</option>
+                                            <option>لباس</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="mt-6">
+                                        <label for="tags"> تگ‌ها: </label>
+                                        <div class="mt-2">
+                                            <input maxlength="30"
+                                                    type="text"
+                                                    name="fname"
+                                                    id="tags"
+                                                    autocomplete="given-name"
+                                                    style="text-align: center"
+                                                    class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                                    placeholder="حداکثر ۳ تگ"
+                                                    />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <fieldset>
+                                <legend class="mt-6">
+                                    وضعیت انتشار آگهی:
+                                </legend>
+                                <div class="mt-4 space-y-2">
+                                    <div class="flex items-center gap-x-3">
+                                        <input id="publish" name="push-notifications" type="radio">
+                                        <label for="publish" class="text-sm">
+                                            انتشار
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center gap-x-3">
+                                        <input id="draft-email" name="push-notifications" type="radio">
+                                        <label for="draft-email" class="text-sm">
+                                            پیش‌نویس
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <button class="mt-4 mb-2 dark:bg-white w-full py-1.5 rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                    role="group">
+                                ثبت آگهی
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
 {% endblock content %}
