@@ -1,5 +1,5 @@
-from typing import Any
 from django import forms
+from django.contrib.auth.hashers import make_password
 from phonenumber_field.formfields import PhoneNumberField
 from captcha.fields import CaptchaField
 from . import models
@@ -87,7 +87,7 @@ class UserRegisterInfoForm(forms.ModelForm):
             'address': 'آدرس', 
         }
     
-    def save(self, commit=True, *args, **kwargs) -> Any:
+    def save(self, commit=True, *args, **kwargs) -> models.Account:
         info_complete = kwargs.pop('info_complete', None)
         user = super().save(commit=False, *args, **kwargs)
         
@@ -95,6 +95,8 @@ class UserRegisterInfoForm(forms.ModelForm):
             user.info_complete = True
         
         user.save()
+        
+        return user
 
 
 # ======================================================
@@ -104,4 +106,38 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     captcha = CaptchaField()
     
+
+# ======================================================
+
+class UserProfileForm(forms.ModelForm):
     
+    class Meta:
+        model = models.Account
+        fields = ('username', 'profile_photo', 'first_name', 'last_name', 'phone_number', 'email')
+
+# ======================================================
+
+class ChangePasswordForm(forms.Form):
+    def __init__(self, user=None, *args, **kwargs):
+        self.user : models.Account = user
+        super().__init__(*args, **kwargs)
+
+    old_pass =  forms.CharField(label="گذرواژه قبل", widget=forms.PasswordInput())
+    new_pass1 = forms.CharField(label="گذرواژه جدید", widget=forms.PasswordInput())
+    new_pass2 = forms.CharField(label="تکرار گذرواژه جدید", widget=forms.PasswordInput())
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        old_pass = cleaned_data.get('old_pass')
+        new_pass1 = cleaned_data.get("new_pass1")
+        new_pass2 = cleaned_data.get("new_pass2")
+        
+        print(f"old pass is {old_pass}")
+        if not self.user.check_password(old_pass):
+            raise forms.ValidationError("گذرواژه قبل  اشتباه است.")
+        
+        if new_pass1 and new_pass2:
+            if new_pass1 != new_pass2:
+                raise forms.ValidationError("گذرواژه جدید و تکرار آن مطابقت ندارن.")
+                
+        return cleaned_data 
