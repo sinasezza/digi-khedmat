@@ -61,7 +61,8 @@ class Account(AbstractUser):
     # -----------------------------------------
     company_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="نام شرکت")
     # -----------------------------------------
-    
+    info_complete = models.BooleanField(default=False, verbose_name="اطلاعات کامل است؟")
+    # -----------------------------------------
     
     objects = AccountManager()
     # -----------------------------------------
@@ -72,6 +73,8 @@ class Account(AbstractUser):
     
     def get_user_profile(self):
         return reverse("accounts:user-profile", kwargs={"id":self.id,})
+    
+    # -----------------------------------------
     
     @property
     def advertising_count(self):

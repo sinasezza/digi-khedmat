@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 from captcha.fields import CaptchaField
@@ -65,6 +66,36 @@ class UserRegisterForm(forms.ModelForm):
         if commit:
             new_account.save()
         return new_account
+
+# ======================================================
+
+class UserRegisterInfoForm(forms.ModelForm):    
+    
+    class Meta:
+        model = models.Account
+        fields = ('profile_photo', 'age', 'gender', 'national_code', 'bio', 'education', 'occupation', 'company_name', 'address')
+        
+        labels = {
+            'profile_photo': 'عکس پروفایل',
+            'age': 'سن',
+            'gender': 'جنسیت',
+            'national_code': 'کد ملی',
+            'bio': 'درباره شما',
+            'education': 'تحصیلات', 
+            'occupation': 'شغل', 
+            'company_name': 'نام شرکت', 
+            'address': 'آدرس', 
+        }
+    
+    def save(self, commit=True, *args, **kwargs) -> Any:
+        info_complete = kwargs.pop('info_complete', None)
+        user = super().save(commit=False, *args, **kwargs)
+        
+        if info_complete:
+            user.info_complete = True
+        
+        user.save()
+
 
 # ======================================================
 

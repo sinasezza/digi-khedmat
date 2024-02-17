@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 # from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -11,13 +11,14 @@ from django.utils import timezone
 from . import models, forms, utils
 
 
-def register_view(request):
+def register_view(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
     if request.method == 'POST':
         form = forms.UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
             messages.info(request, f"حساب کاربری با موفقیت ایجاد شد.")
-            return redirect('accounts:login')
+            login(request, new_user)
+            return redirect('accounts:register-info')
         else:
             print(f"error {form.errors.as_data}")
             messages.warning(request, 'لطفا فرم را صحیح تر پر کنید.')
@@ -31,9 +32,31 @@ def register_view(request):
     return render(request, 'accounts/register.html',context)
             
 
+# ---------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def register_info_view(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
+    if request.method == 'POST':
+        form = forms.UserRegisterInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save(info_complete=True)
+            
+            messages.info(request, f"اطلاعات شما ثبت شد.")
+            return redirect('generics:main-page')
+        else:
+            print(f"error {form.errors.as_data}")
+            messages.warning(request, 'لطفا فرم را صحیح تر پر کنید.')
+            form = forms.UserRegisterInfoForm(request.POST, instance=request.user)
+    else:
+        form = forms.UserRegisterInfoForm(instance=request.user)
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/register-info.html',context) 
 
 # ---------------------------------------------------
- 
+
 def login_view(request):
     if request.method == 'POST':
         form = forms.UserLoginForm(request.POST)
@@ -44,7 +67,8 @@ def login_view(request):
             if user:
                 login(request, user)    
                 messages.success(request, f"{user.first_name} عزیز خوش آمدی")
-                return redirect('generics:main-page')
+
+                return redirect('accounts:register_info') if user.info_complete else redirect('generics:main-page')
             else:
                 messages.error(request, 'نام کاربری یا رمز ورود نادرست است.')
         else:

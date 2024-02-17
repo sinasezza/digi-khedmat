@@ -88,6 +88,29 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+def barter_create_view2(request: HttpRequest, barter_slug: str) -> HttpResponse:
+    """View to create a new ad."""
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
+    
+    if request.method == 'POST':
+        form = forms.BarterForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            new_barter = form.save(commit=False)
+            new_barter.owner = request.user
+            new_barter.save()
+            
+            return redirect('accounts:user-panel')
+    else:
+        context = {
+            'form': forms.BarterForm(),
+        }        
+    
+    return render(request, 'barters/barter-create.html', context)
+
+# ---------------------------------------------------------
+
+@login_required(login_url='accounts:login')
 @decorators.owner_required
 def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResponse:
     """Add an image to existing ad."""
