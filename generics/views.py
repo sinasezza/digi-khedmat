@@ -23,7 +23,6 @@ def handler403(request, *args, **argv):
 
 # ---------------------------------------------------------
 
-@cache_page(60 * 900)  # 15 min
 def main_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'generics/home-page.html')
 
@@ -50,7 +49,6 @@ def certificates_view(request: HttpRequest) -> HttpResponse:
 
 # ---------------------------------------------------------
 
-@cache_page(60 * 900)  # 15 min
 def contact_us_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = forms.ContactForm(request.POST)

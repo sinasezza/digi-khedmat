@@ -19,9 +19,11 @@ class BarterImage(models.Model):
         file_path = pathlib.Path(filename)
         new_filename = str(uuid.uuid1())
         return f"barters/imgs/{new_filename}{file_path.suffix}"
-    
+    # --------------------------------------------
     title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
+    # --------------------------------------------
     image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
+    # --------------------------------------------
     
     def __str__(self):
         return f"{self.id}>{self.title}"
@@ -58,7 +60,7 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     
     # --------------------------------------
     
-    def get_update_url(self):
+    def get_edit_url(self):
         return reverse("barters:barter-update", kwargs={"barter_slug": self.slug})
     
     # --------------------------------------

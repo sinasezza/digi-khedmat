@@ -1,6 +1,81 @@
 {% extends "base/base.html" %}
-
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
 
 {% block content %}
-    به دیجی خدمت خوش آمدید.
+<div class="container mx-auto mt-24 px-4">
+  <h1 class="text-3xl font-bold mb-6">ویرایش آگهی تبلیغاتی</h1>
+  <div class="flex justify-between">
+    <div class="w-3/5">
+      <form method="post" id="stuffForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form | crispy }}
+
+        <div class="grid grid-cols-4 gap-4 mt-6">
+          {% for image_obj in existing_images %}
+          <div class="relative">
+            <img src="{{ image_obj.image.url }}" alt="" class="w-full h-auto" />
+            <span class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1 rounded-lg delete-btn hover:cursor-pointer" data-image-id="{{ image_obj.id }}">حذف عکس</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        {{ formset.management_form }}
+        <div id="formset" class="mt-6 space-y-4">
+          {% for inline_form in formset %}
+          {{ inline_form | crispy }}
+          {% endfor %}
+        </div>
+        <button type="submit"
+          class="mt-6 mb-40 flex justify-end px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+          ثبت
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}
+
+{% block custom_css %}
+<style>
+  .relative {
+    position: relative;
+  }
+
+  .delete-btn {
+    display: none;
+  }
+
+  .relative:hover .delete-btn {
+    display: block;
+  }
+</style>
+{% endblock custom_css %}
+
+{% block custom_js %}
+<script>
+  $(document).ready(function () {
+    $(".delete-btn").click(function () {
+      var csrftoken = getCookie('csrftoken');
+      var imageId = $(this).data("image-id");
+      var deleteButton = $(this);
+      if (confirm("آیا می‌خواهید این عکس را حذف کنید؟")) {
+        $.ajax({
+          url: `/api/ads/stuff-image-delete/${imageId}/`,
+          method: "DELETE",
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          success: function (data) {
+            // Remove the parent element containing both the image and the delete button
+            deleteButton.closest('.relative').remove();
+          },
+          error: function (xhr, errmsg, err) {
+            console.log(errmsg);
+          }
+        });
+      }
+    });
+  });
+</script>
+{% endblock custom_js %}

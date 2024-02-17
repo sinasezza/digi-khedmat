@@ -8,6 +8,12 @@ class StuffAdvertisingAdmin(admin.ModelAdmin):
     
 # ==================================================================
 
+@admin.register(models.StuffImage)
+class StuffImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'stuff_advertising','image')
+
+# ==================================================================
+
 @admin.register(models.BusinessAdvertising)
 class BusinessAdvertisingAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'business_type')

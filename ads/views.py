@@ -54,9 +54,27 @@ def advertise_detail_view(request: HttpRequest, advertise_slug: str):
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
-def advertise_create_view(request: HttpRequest) -> HttpResponse:
+def advertise_create_view(request):
+    if request.method == 'POST':
+        form = forms.StuffAdvertisingForm(data=request.POST, files=request.FILES)
+        formset = forms.StuffImagesFormSet(request.POST, request.FILES)
+        if form.is_valid() and formset.is_valid():
+            new_adv = form.save()
+            new_adv.owner = request.user
+            new_adv.save()
+            
+            formset.instance = new_adv
+            formset.save()
+            messages.success(request, 'آگهی تبلیغاتی شما ایجاد شد.')
+            return redirect('accounts:user-panel')
+    else:
+        form = forms.StuffAdvertisingForm()
+        formset = forms.StuffImagesFormSet()
     
-    context = {}
+    context = {
+        'form': form,
+        'formset': formset,
+    }
     return render(request, 'ads/adv-create.html', context)
 
 # ---------------------------------------------------------
@@ -64,21 +82,39 @@ def advertise_create_view(request: HttpRequest) -> HttpResponse:
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
-def advertise_update_view(request: HttpRequest, advertise_slug: str):
-    advertise = get_object_or_404(models.BarterAdvertising, slug=advertise_slug)
+def advertise_update_view(request: HttpRequest, adv_slug: str):
+    advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
+    
+    # Get existing images related to the advertising
+    existing_images = advertise.images.all()
     
     if request.method == "POST":
         form = forms.StuffAdvertisingForm(request.POST, request.FILES, instance=advertise)
-        if form.is_valid():
+        formset = forms.StuffImagesFormSet(request.POST, request.FILES, instance=advertise)
+        
+        if form.is_valid() and formset.is_valid():
             updated_advertise = form.save()
-            return redirect('ads:attach-images', advertise_slug=updated_advertise.slug)
+            formset.save()
+            
+            # Process deleted images
+            for form in formset.deleted_forms:
+                instance = form.instance
+                instance.delete()
+                
+            messages.success(request, 'آگهی تبلیغاتی شما به‌روزرسانی شد.')
+            return redirect('accounts:user-panel')
     else:
-        form = forms.StuffAdvertisingForm(instance=advertise) 
+        form = forms.StuffAdvertisingForm(instance=advertise)
+        formset = forms.StuffImagesFormSet()
     
     context = {
         'form': form,
+        'formset': formset,
+        'existing_images': existing_images,
     }
     
     return render(request, 'ads/adv-update.html', context)
+
+
 
 # ---------------------------------------------------------
