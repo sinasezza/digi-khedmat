@@ -43,8 +43,12 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
+                messages.success(request, f"{user.first_name} عزیز خوش آمدی")
                 return redirect('generics:main-page')
+            else:
+                messages.error(request, 'نام کاربری یا رمز ورود نادرست است.')
         else:
+            messages.error(request, 'لطفا کپچا را به درستی وارد کنید.')
             print(f"error : {form.errors.as_data()}")
     else:
         form = forms.UserLoginForm()
