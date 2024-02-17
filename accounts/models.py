@@ -77,9 +77,9 @@ class Account(AbstractUser):
     def advertising_count(self):
         barters_count = self.barters.count()
         jobs_count = self.jobs.count()
-        # ads_count = self.ads.all().count()
+        stuff_ads = self.stuff_ads.all().count()
         
-        return  barters_count + jobs_count # + ads_count
+        return  barters_count + jobs_count  + stuff_ads
 
 
 # ==================================================================================

@@ -68,11 +68,13 @@
                   <li id="{{ barter.slug }}" class="border-b border-gray-300 py-4">
                     <div class="flex items-center justify-start">
                       <p class="text-lg font-medium">{{ barter.title }}</p>
-                      <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="window.location.href='{% url 'barters:barter-update' barter_slug=barter.slug %}'">ویرایش</button>
-                      <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onclick="window.location.href='{% url 'barters:barter-detail' barter_slug=barter.slug %}'">مشاهده</button>
-                      <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-barter-slug="{{ barter.slug }}" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" type="button">
-                        حذف
-                      </button>
+                      <div>
+                        <a href="{{barter.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
+                        |
+                        <a href="{{barter.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                        |
+                        <button id="delete-barter" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
+                      </div>
                     </div>
                   </li>
                 {% endfor %}
@@ -95,9 +97,11 @@
                     <div class="flex items-center justify-start">
                       <p class="text-lg font-medium">{{ job.title }}</p>
                       <div>
-                        <a href="{% url 'jobs:job-update' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600 mr-2">ویرایش</a>
+                        <a href="{{job.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
                         |
-                        <a href="{% url 'jobs:job-detail' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">مشاهده</a>
+                        <a href="{{job.get_edit_url}}' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                        |
+                        <button id="delete-job" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                       </div>
                     </div>
                   </li>
@@ -114,13 +118,19 @@
               <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی تبلیغاتی</a>
             </div>
             
-            {% if ads %}
+            {% if stuff_ads %}
               <ul>
-                {% for ad in ads %}
+                {% for stuff_adv in stuff_ads %}
                   <li class="border-b border-gray-300 py-4">
                     <div class="flex items-center justify-start">
-                      <p class="text-lg font-medium">{{ ad.title }}</p>
-                      <!-- Add links or other actions for ads if needed -->
+                      <p class="text-lg font-medium">{{ stuff_adv.title }}</p>
+                      <div>
+                        <a href="{{stuff_adv.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
+                        |
+                        <a href="{{stuff_adv.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                        |
+                        <button id="delete-stuff_adv" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
+                      </div>
                     </div>
                   </li>
                 {% endfor %}

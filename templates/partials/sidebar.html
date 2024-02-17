@@ -4,15 +4,16 @@
 <div id="sidebar" class="font-vazir hidden">
     <div class="fixed flex flex-col top-0 left-0 bg-white h-full" style="width: 18.7rem">
         <div class="flex flex-col items-center">
-        <!-- User avatar -->
-        <img class="mt-4 w-20 h-20 rounded-full dark:opacity-70"
-             src="{% if request.user.profile_photo %} {{ request.user.profile_photo.url }} {% else %}  {% static 'global/icons/add-profile-image.png' %} {% endif %}"
-             alt="PROFILE"
-        />
-        <h2 class="text-xl text-gray-600">
-            {{ request.user.username }}
-        </h2>
-    </div>
+          <!-- User avatar -->
+          <img class="mt-4 w-20 h-20 rounded-full dark:opacity-70"
+              src="{% if request.user.profile_photo %} {{ request.user.profile_photo.url }} {% else %}  {% static 'global/icons/add-profile-image.png' %} {% endif %}"
+              alt="PROFILE"
+          />
+          <h2 class="text-xl text-gray-600">
+            {{ user.username }}
+          </h2>
+          
+        </div>
     <div>
       <ul>
         <li>

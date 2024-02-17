@@ -13,5 +13,14 @@ def load_sidebar(request):
     context = {
         'unseen_notifications_count': unseen_notifications_count,
         'favorites_count': favorites_count,
+        'user': request.user,
     }
     return context
+
+# -----------------------------------------------------------------------
+
+@register.simple_tag
+def get_notifications_count(request):
+    return request.user.notifications.unseen_notifications().count()
+
+# -----------------------------------------------------------------------

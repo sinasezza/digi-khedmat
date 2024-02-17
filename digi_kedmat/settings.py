@@ -34,7 +34,11 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 # installed Apps for Application
 INSTALLED_APPS = [
+    # privileged third party apps
     'daphne',
+    'jazzmin',
+    
+    # django's builtin apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,6 +71,8 @@ INSTALLED_APPS = [
     'watchman',
     'fontawesomefree',
     'django_extensions',
+    'crispy_forms',
+    'crispy_tailwind',
     
     
     # self apps
@@ -413,8 +419,8 @@ CKEDITOR_CONFIGS = {
         "toolbarGroups": [
             {"name": "document", "groups": ["mode", "document", "doctools"]}
         ],
-        "height": 400,
-        # 'width': '100%',
+        "height": 300,
+        'width': 'full',
         "tabSpaces": 4,
         "extraPlugins": ",".join(
             [
@@ -470,3 +476,14 @@ SMS_TEMPLATE = os.environ.get('SMS_TEMPLATE')
 
 #### DJANGO EXTENSIONS SETTINGS
 SHELL_PLUS = "ipython"
+
+
+#### JAZZMIN SETTINGS
+# JAZZMIN_UI_TWEAKS = {
+#     "theme": "materia",
+# }
+
+
+#### DJANGO CRISPY-TAILWIND SETTINGS
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"

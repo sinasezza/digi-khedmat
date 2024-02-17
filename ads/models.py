@@ -35,7 +35,12 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------------------------------------------
     
     def get_absolute_url(self):
-        return reverse("ads:adv_detail", kwargs={"adv_slug": self.slug})
+        return reverse("ads:adv-detail", kwargs={"adv_slug": self.slug})
+    
+    # --------------------------------------------------------------------------
+    
+    def get_edit_url(self):
+        return reverse("ads:adv-update", kwargs={"adv_slug": self.slug})
     
     # --------------------------------------------------------------------------
     
@@ -45,6 +50,21 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
         super().save(*args, **kwargs)
     
     # --------------------------------------------------------------------------
+
+# ==============================================================
+    
+class StuffImage(models.Model):
+    def stuff_image_path(instance, filename):
+        file_path = pathlib.Path(filename)
+        new_filename = str(uuid.uuid1())
+        return f"barters/imgs/{new_filename}{file_path.suffix}"
+    
+    title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
+    image = models.ImageField(max_length=255, upload_to=stuff_image_path, verbose_name="تصویر")
+    stuff_advertising = models.ForeignKey(StuffAdvertising, on_delete=models.CASCADE, related_name='images', verbose_name="تبلیغات کالا")
+
+    def __str__(self):
+        return f"{self.id}>{self.title}"
 
 # ==============================================================
 
