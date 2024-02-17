@@ -41,8 +41,8 @@ def advertise_list_view(request):
 
 # ---------------------------------------------------------
 
-def advertise_detail_view(request: HttpRequest, advertise_slug: str):
-    advertise = get_object_or_404(models.StuffAdvertising, slug=advertise_slug, status='published')
+def advertise_detail_view(request: HttpRequest, adv_slug: str):
+    advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug, status='published')
     advertise.increment_views()
     
     context = {
