@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 # from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 # from django.views.generic.edit import CreateView
 # from django.contrib.auth.views import LoginView
@@ -68,7 +68,7 @@ def login_view(request):
                 login(request, user)    
                 messages.success(request, f"{user.first_name} عزیز خوش آمدی")
 
-                return redirect('accounts:register_info') if user.info_complete else redirect('generics:main-page')
+                return redirect('accounts:register-info') if user.info_complete else redirect('generics:main-page')
             else:
                 messages.error(request, 'نام کاربری یا رمز ورود نادرست است.')
         else:
@@ -111,6 +111,30 @@ def logout_view(request):
 
 # ---------------------------------------------------
 
+@login_required(login_url='accounts:login')
+def change_password_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = forms.ChangePasswordForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            new_pass = form.cleaned_data.get('new_pass1')
+            request.user.set_password(new_pass)
+            request.user.save()
+            # Update the user's session with the new password
+            update_session_auth_hash(request, request.user)
+            
+            messages.success(request, 'رمز عبور شما تغییر کرد.')
+            return redirect('accounts:my-profile')
+        else:
+            messages.warning(request, 'خطایی رخ داده')
+    else:
+        form = forms.ChangePasswordForm(request.user)
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/change-password.html', context)
+
+# ---------------------------------------------------
 
 @login_required(login_url='accounts:login')
 def user_panel_view(request):
@@ -132,8 +156,22 @@ def user_panel_view(request):
 @login_required(login_url='accounts:login')
 def my_profile_view(request: HttpRequest) -> HttpResponse:
     """View for the user profile page."""
+    if request.method == "POST":
+        form = forms.UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'اطلاعات کاربری شما با موفقیت ذخیره سازی گردید')
+            return redirect('accounts:my-profile')
+        else:
+            print(f"error : {form.errors.as_data()}")
+            messages.error(request, 'خطایی رخ داد')
+    else:
+        form = forms.UserProfileForm(instance=request.user)
     
-    context = {}
+    context = {
+        'form': form,
+    }
     return render(request, 'accounts/my-profile.html', context)
 
 # ---------------------------------------------------
