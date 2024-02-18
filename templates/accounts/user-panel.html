@@ -60,17 +60,33 @@
         <div>
           <div id="barters" x-show="showTab === 'barters'" class="p-4">
             <!-- Content for barters tab -->
-            <div class="mb-8">
-              <a href="{% url 'barters:barter-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی مبادله کالا</a>
+            <div class="mb-8 text-center">
+              <a href="{% url 'barters:barter-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">
+                ساخت آگهی مبادله کالا
+              </a>
             </div>
             
             {% if barters %}
-              <ul>
+              <li>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                 {% for barter in barters %}
-                  <li id="{{ barter.slug }}" class="border-b border-gray-300 py-4">
-                    <div class="flex items-center justify-start">
-                      <p class="text-lg font-medium">{{ barter.title }}</p>
-                      <div>
+                <ol class="border-b border-gray-300 py-4">
+                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                      <img src="{{ barter.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
+                      <div class="p-6 flex flex-col flex-1">
+                        <h3 class="mt-3 mb-2 font-bold text-lg">
+                          {{ barter.title }} - 
+                          {{ barter.summary }}
+                        </h3>
+                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
+                          <span class="text-sm">
+                            استان: {{ barter.country }}
+                             | 
+                             دسته‌بندی: {{ barter.category }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="mr-11">
                         <a href="{{barter.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
                         |
                         <a href="{{barter.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
@@ -78,55 +94,91 @@
                         <button id="delete-barter" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                       </div>
                     </div>
-                  </li>
-                {% endfor %}
-              </ul>
+                  </ol>
+                  {% endfor %}
+                </div>
+                </li>
             {% else %}
-              <p class="text-lg">شما هیچ آگهی‌ مبادله کالایی ندارید.</p>
+              <p class="text-lg text-center">
+                شما هیچ آگهی‌ مبادله کالایی ندارید.
+              </p>
             {% endif %}
           </div>
           
           <div id="jobs" x-show="showTab === 'jobs'" class="p-4 ">
             <!-- Content for jobs tab -->
-            <div class="mb-8">
-              <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی کاریابی</a>
+            <div class="mb-8 text-center">
+              <a href="{% url 'jobs:job-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">
+                ساخت آگهی کاریابی
+              </a>
             </div>
 
             {% if jobs %}
-              <ul>
+              <li>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                 {% for job in jobs %}
-                  <li class="border-b border-gray-300 py-4">
-                    <div class="flex items-center justify-start">
-                      <p class="text-lg font-medium">{{ job.title }}</p>
-                      <div>
+                <ol class="border-b border-gray-300 py-4">
+                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                      <img src="{{ job.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
+                      <div class="p-6 flex flex-col flex-1">
+                        <h3 class="mt-3 mb-2 font-bold text-lg">
+                          {{ job.title }} - 
+                          {{ job.summary }}
+                        </h3>
+                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
+                          <span class="text-sm">
+                            استان: {{ job.country }}
+                            |
+                            {{ job.price }} ریال
+                          </span>
+                        </div>
+                      </div>
+                      <div class="mr-11">
                         <a href="{{job.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
                         |
-                        <a href="{{job.get_edit_url}}' job_slug=job.slug %}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                        <a href="{{job.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
                         |
                         <button id="delete-job" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                       </div>
                     </div>
-                  </li>
-                {% endfor %}
-              </ul>
+                  </ol>
+                  {% endfor %}
+                </div>
+                </li>
             {% else %}
-              <p class="text-lg">شما هیچ آگهی کاریابی ندارید.</p>
+              <p class="text-lg text-center">شما هیچ آگهی کاریابی ندارید.</p>
             {% endif %}
           </div>
           
           <div id="ads" x-show="showTab === 'ads'" class="p-4">
             <!-- Content for ads tab -->
-            <div class="mb-8">
-              <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">ساخت آگهی تبلیغاتی</a>
+            <div class="mb-8 text-center">
+              <a href="{% url 'ads:adv-create' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 inline-block">
+                ساخت آگهی تبلیغاتی
+              </a>
             </div>
             
             {% if stuff_ads %}
-              <ul>
+              <li>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                 {% for stuff_adv in stuff_ads %}
-                  <li class="border-b border-gray-300 py-4">
-                    <div class="flex items-center justify-start">
-                      <p class="text-lg font-medium">{{ stuff_adv.title }}</p>
-                      <div>
+                <ol class="border-b border-gray-300 py-4">
+                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                      <img src="{{ stuff_adv.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
+                      <div class="p-6 flex flex-col flex-1">
+                        <h3 class="mt-3 mb-2 font-bold text-lg">
+                          {{ stuff_adv.title }} - 
+                          {{ stuff_adv.summary }}
+                        </h3>
+                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
+                          <span class="text-sm">
+                            وضعیت آگهی: {{ stuff_adv.stuff_status }}
+                            |
+                            {{ stuff_adv.price }} ریال
+                          </span>
+                        </div>
+                      </div>
+                      <div class="mr-11">
                         <a href="{{stuff_adv.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
                         |
                         <a href="{{stuff_adv.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
@@ -134,11 +186,14 @@
                         <button id="delete-stuff_adv" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                       </div>
                     </div>
-                  </li>
-                {% endfor %}
-              </ul>
+                  </ol>
+                  {% endfor %}
+                </div>
+                </li>
             {% else %}
-              <p class="text-lg">شما هیچ آگهی تبلیغاتی ندارید.</p>
+              <p class="text-lg text-center">
+                شما هیچ آگهی تبلیغاتی ندارید.
+              </p>
             {% endif %}
           </div>
           
