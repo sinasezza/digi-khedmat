@@ -6,7 +6,7 @@
         <div class="flex flex-col items-center">
           <!-- User avatar -->
           <img class="mt-4 w-20 h-20 rounded-full dark:opacity-70"
-              src="{% if request.user.profile_photo %} {{ request.user.profile_photo.url }} {% else %}  {% static 'global/icons/add-profile-image.png' %} {% endif %}"
+              src="{% if user.profile_photo %} {{ user.profile_photo.url }} {% else %}  {% static 'global/icons/add-profile-image.png' %} {% endif %}"
               alt="PROFILE"
           />
           <h2 class="text-xl text-gray-600">
@@ -65,12 +65,12 @@
           </a>
         </li>
         <li>
-          <a href="#" class="flex items-center h-11 hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 hover:border-indigo-500 pr-6">
+          <a href="{% url 'accounts:customers' %}" class="flex items-center h-11 hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 hover:border-indigo-500 pr-6">
             <span class="ml-4">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             </span>
-            <span class="ml-2 text-sm">مشتریان</span>
-            <span class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">15</span>
+            <span class="ml-2 text-sm">مشتریان/کارجویان</span>
+            <span class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">{{ customers_count }}</span>
           </a>
         </li>
           <div>

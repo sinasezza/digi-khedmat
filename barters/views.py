@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
+from generics import models as generics_models
 from . import models, forms, decorators
 
 
@@ -67,45 +68,43 @@ def barter_detail_view(request: HttpRequest, barter_slug: str):
 
 @login_required(login_url='accounts:login')
 def barter_create_view(request: HttpRequest) -> HttpResponse:
-    """View to create a new ad."""
-    # If the request is not from POST method then display blank form
+    """View to create a new barter advertisement."""
     if request.method == 'POST':
+        # If the request is POST, process the form data
         form = forms.BarterForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
             new_barter = form.save(commit=False)
             new_barter.owner = request.user
             new_barter.save()
             
-            return redirect('barters:attach-images', barter_slug=new_barter.slug)
-    else:
-        context = {
-            'form': forms.BarterForm(),
-        }        
-    
-    return render(request, 'barters/barter-create.html', context)
+            # update tags and categories
+            tags = request.POST.getlist('tags')
+            new_barter.update_tags(tags)
 
-# ---------------------------------------------------------
+            cats = request.POST.getlist('categories')
+            new_barter.update_categories(cats)
 
-@login_required(login_url='accounts:login')
-def barter_create_view2(request: HttpRequest, barter_slug: str) -> HttpResponse:
-    """View to create a new ad."""
-    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
-    
-    if request.method == 'POST':
-        form = forms.BarterForm(request.POST, request.FILES)
-        
-        if form.is_valid():
-            new_barter = form.save(commit=False)
-            new_barter.owner = request.user
-            new_barter.save()
+            messages.success(request, f"آگهی شما ثبت شد.")
+
+            return redirect('barters:attach-images', new_barter.slug)
+        else:
+            print(f"form : error : {form.errors.as_data()}")
             
-            return redirect('accounts:user-panel')
+            
     else:
-        context = {
-            'form': forms.BarterForm(),
-        }        
+        form = forms.BarterForm()
+
+    regions = generics_models.Region.objects.all()
+    categories = generics_models.StuffCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
     
+    context = {
+        'form': form,
+        'regions': regions,
+        'categories': categories,
+        'tags': tags,
+    }
     return render(request, 'barters/barter-create.html', context)
 
 # ---------------------------------------------------------
@@ -153,9 +152,20 @@ def barter_update_view(request: HttpRequest, barter_slug: str):
             return redirect('barters:attach-images', barter_slug=updated_barter.slug)
     else:
         form = forms.BarterForm(instance=barter) 
+        
+    regions = generics_models.Region.objects.all()
+    categories = generics_models.StuffCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
+    
+    print(f"barter tags is {barter.tags.all()}")
+    print(f"barter categories is {barter.categories.all()}")
     
     context = {
         'form': form,
+        'regions': regions,
+        'categories': categories,
+        'tags': tags,
+        'barter': barter,
     }
     
     return render(request, 'barters/barter-update.html', context)

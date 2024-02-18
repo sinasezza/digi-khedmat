@@ -20,6 +20,6 @@ class BarterAdvertisingAdmin(admin.ModelAdmin):
     
 @admin.register(models.BarterImage)
 class BarterImageAdmin(admin.ModelAdmin):
-    list_display = ('title','image')
+    list_display = ('title','image', 'barter_advertising')
 
 # ================================================

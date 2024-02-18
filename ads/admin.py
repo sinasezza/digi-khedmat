@@ -22,4 +22,4 @@ class BusinessAdvertisingAdmin(admin.ModelAdmin):
 
 @admin.register(models.BusinessImage)
 class BusinessImageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image',)
+    list_display = ('title', 'image', 'business_advertising')

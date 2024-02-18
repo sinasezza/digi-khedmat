@@ -16,13 +16,13 @@ class CooperationTypeAdmin(admin.ModelAdmin):
 
 @admin.register(models.JobGroup)
 class JobGroupAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name',)
+    list_display = ('id', 'name', 'job_advertising')
 
 # =================================================
 
 @admin.register(models.StudyField)
 class StudyFieldAdmin(admin.ModelAdmin):
-    list_display = ('id', 'field',)
+    list_display = ('id', 'field', 'job_advertising')
 
 # =================================================
 

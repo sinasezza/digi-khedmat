@@ -15,4 +15,5 @@ urlpatterns = [
     path('user-profile/<str:id>/', views.user_profile_view, name='user-profile'),
     path('notifications/', views.notifications_view, name='notifications'),
     path('favorites/', views.favorites_view, name='favorites'),
+    path('customers/', views.customers_view, name='customers'),
 ]

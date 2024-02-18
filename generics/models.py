@@ -8,13 +8,22 @@ from accounts.models import Account
 from django.db import models
   
 
-class Category(models.Model):
-    CATEGORY_LIST   = (("shop", "فروشگاهی"), ("services", "خدماتی"), ("productive", "تولیدی"))
+class JobCategory(models.Model):
     title           = models.CharField(max_length=30, verbose_name="نام دسته بندی")
-    category_type   = models.CharField(max_length=20, choices=CATEGORY_LIST, verbose_name="نوع کسب و کار", default="shop",)
     
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'Job Categories'
+
+    def __str__(self):
+        return self.title
+
+# ================================================
+
+class StuffCategory(models.Model):
+    title           = models.CharField(max_length=30, verbose_name="نام دسته بندی")
+    
+    class Meta:
+        verbose_name_plural = 'Stuff Categories'
 
     def __str__(self):
         return self.title
@@ -35,17 +44,7 @@ class Region(models.Model):
     city     = models.CharField(max_length=100, verbose_name="شهر")
     
     def __str__(self):
-        return f"{self.state}- {self.city}"
-    
-
-# ================================================
-
-class Address(models.Model):
-    region  = models.ForeignKey(to=Region, on_delete=models.CASCADE, verbose_name="منطقه")
-    address = models.CharField(max_length=255, verbose_name="آدرس")
-    
-    def __str__(self) -> str:
-        return f"{self.region} <-> {self.address}"
+        return f"{self.state}-{self.city}"
     
 
 # ================================================
@@ -74,13 +73,11 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     description = RichTextField(max_length=2000, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
-    categories = models.ManyToManyField(Category, blank=True, verbose_name='دسته بندی')
-    # --------------------------------------
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="تگ")
     # --------------------------------------
-    addresses = models.ManyToManyField(to=Address, blank=True, verbose_name="موقعیت(های) مکانی")
-    # --------------------------------------
     views = models.PositiveIntegerField(default=0, verbose_name="تعداد بازدید")
+    # --------------------------------------
+    
     
     class Meta:
         abstract = True
@@ -93,13 +90,18 @@ class BaseAdvertisingModel(models.Model):
     
     # --------------------------------------
     
+    def update_tags(self, tags):
+        self.tags.set(tags)
+        super().save()
+    
+    # --------------------------------------
+    
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)       
     #     super().save(*args, **kwargs)
     
     
 # ================================================
-
 
 class Contact(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
