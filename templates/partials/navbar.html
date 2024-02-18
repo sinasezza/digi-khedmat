@@ -1,7 +1,7 @@
 {% load static %}
 
 <!-- partials/navbar.html -->
-<nav class="bg-white" style="margin-top: -72px">
+<nav class="bg-white mt-[-72px]">
   <div class="flex justify-between p-6">
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {% if request.user.is_authenticated %}
@@ -22,7 +22,10 @@
                 <button id="toggleSidebarBtn" class="mt-[-7px] px-6 pb-2 pt-2 dark:bg-white rounded-md
                                                     dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)]
                                                     dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-                    <img src="{% static 'global/icons/add-profile-image.png' %}" alt="sidebar" class="w-[30px] h-[30px]">
+                    <img src="{% static 'global/icons/add-profile-image.png' %}" 
+                    alt="sidebar" 
+                    class="w-[30px] h-[30px]"
+                    >
                 </button>
 
             {% else %}

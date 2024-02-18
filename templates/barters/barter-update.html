@@ -1,31 +1,130 @@
 {% extends "base/base.html" %}
+{% load barters_filters %}
 
 {% block title %}ویرایش آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <form action="" method="post" class="max-w-lg mx-auto mt-8">
-    {% csrf_token %}
-    
-    <div class="mb-4">
-      <label for="id_title" class="block text-sm font-medium text-gray-700">عنوان</label>
-      {{ form.title }}
-    </div>
 
-    <div class="mb-4">
-      <label for="id_summary" class="block text-sm font-medium text-gray-700">خلاصه</label>
-      {{ form.summary }}
-    </div>
+<div>
+  <section class="dark:bg-gray-300 font-vazir">
+    <div class="lg:w-1/3 mx-auto lg:py-6">
+      <div>
+        <div class="place-items-center">
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div>
+                <label for="id_title"> عنوان آگهی: </label>
+                <div class="mt-2">
+                  <input maxlength="120" type="text" name="title" id="id_title" autocomplete="given-name"
+                    style="text-align: center"
+                    class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                    placeholder="حداکثر 120 کاراکتر" value="{{ form.title.value }}" />
+                </div>
+              </div>
+              <div>
+                <label for="id_summary"> خلاصه آگهی: </label>
+                <div class="mt-2">
+                  <input maxlength="400" type="text" name="summary" id="id_summary" autocomplete="family-name"
+                    style="text-align: center"
+                    class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                    placeholder="حداکثر 400 کاراکتر" value="{{ form.summary.value }}">
+                </div>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="id_description">
+                  توضیحات آگهی:
+                </label>
+                <div class="mt-2">
+                  {{ form.description }}
+                </div>
+              </div>
+              
+            </div>
 
-    <div class="mb-4">
-      <label for="id_description" class="block text-sm font-medium text-gray-700">توضیحات</label>
-      {{ form.description }}
-    </div>
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="region" class="block leading-6">
+                  منطقه:
+                </label>
+                <div class="mt-2 ">
+                  <select id="region" name="region" autocomplete="region-name" required
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for region in regions %}
+                      <option value="{{ region.id }}" {% if region.id == form.region.value %} selected {% endif %}>{{ region }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="region" class="block leading-6">
+                  آدرس:
+                </label>
+                <div class="mt-2 ">
+                  <input type="text" name="address" id="" class="min-w-max" value="{{ form.address.value }}">
+                </div>
+              </div>
+            </div>
 
-    <div class="mb-4">
-      <label for="id_status" class="block text-sm font-medium text-gray-700">وضعیت</label>
-      {{ form.status }}
-    </div>
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6">
+                <label for="category" class="block leading-6">
+                  دسته‌بندی:
+                </label>
+                <div class="mt-2">
+                  <select id="category" name="category" autocomplete="category-name" multiple class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id in barter.categories.all|values_list:"id" %} selected {% endif %}>{{ category.title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            
+              <div>
+                <div class="mt-6">
+                  <label for="tags"> تگ‌ها: </label>
+                  <div class="mt-2">
+                    <select id="tags" name="tags" autocomplete="given-name" multiple class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                      {% for tag in tags %}
+                          <option value="{{ tag.id }}" {% if tag.id in barter.tags.all|values_list:"id" %} selected {% endif %}>{{ tag.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
 
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition duration-300">ثبت</button>
-  </form>
+
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="status" class="block leading-6">
+                  وضعیت انتشار آگهی:
+                </label>
+                <div class="mt-2 ">
+                  <select id="status" name="status" autocomplete="status-name" required
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                      <option value="published" {% if form.status.value == 'published' %} selected {% endif %}>انتشار</option>
+                      <option value="draft" {% if form.status.value == 'draft' %} selected {% endif %}>پیش نویس</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="mt-4 mb-2 dark:bg-white w-full py-1.5 rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              role="group">
+              ثبت آگهی
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 {% endblock content %}

@@ -14,23 +14,6 @@ from generics import models as generics_models
 from accounts.models import Account
 
 
-class BarterImage(models.Model):
-    def barter_image_path(instance, filename):
-        file_path = pathlib.Path(filename)
-        new_filename = str(uuid.uuid1())
-        return f"barters/imgs/{new_filename}{file_path.suffix}"
-    # --------------------------------------------
-    title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
-    # --------------------------------------------
-    image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
-    # --------------------------------------------
-    
-    def __str__(self):
-        return f"{self.id}>{self.title}"
-    
-    
-# ================================================
-
 class BarterAdvertising(generics_models.BaseAdvertisingModel):  
     def barter_qrcode_path(instance, filename):
         new_filename = str(uuid.uuid1())
@@ -39,9 +22,13 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     owner = models.ForeignKey(to=Account, related_name="barters", on_delete=models.CASCADE, verbose_name="مالک")
     # --------------------------------------
-    images = models.ManyToManyField(BarterImage, related_name="barters", blank=True, verbose_name="تصاویر")
-    # --------------------------------------
     qrcode_image = models.ImageField(max_length=255, upload_to=barter_qrcode_path, blank=True, null=True, verbose_name="بارکد آگهی")
+    # --------------------------------------
+    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='barters', verbose_name="منطقه")
+    # --------------------------------------
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
+    # --------------------------------------
+    categories = models.ManyToManyField(to=generics_models.StuffCategory, blank=True, related_name='barters', verbose_name='دسته بندی')
     # --------------------------------------
     
     class Meta:
@@ -75,6 +62,11 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     
     # --------------------------------------
     
+    def update_categories(self, categories):
+        self.categories.set(categories)
+        super().save()
+    
+    # --------------------------------------
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -97,4 +89,21 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
         super().save(*args, **kwargs)
     
     # --------------------------------------
+
+# ================================================
+class BarterImage(models.Model):
+    def barter_image_path(instance, filename):
+        file_path = pathlib.Path(filename)
+        new_filename = str(uuid.uuid1())
+        return f"barters/imgs/{new_filename}{file_path.suffix}"
+    # --------------------------------------------
+    title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
+    # --------------------------------------------
+    image = models.ImageField(max_length=255, upload_to=barter_image_path, verbose_name="تصویر")
+    # --------------------------------------------
+    barter_advertising = models.ForeignKey(to=BarterAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='images', verbose_name="آگهی تهاتر کالا")
+
+    
+    def __str__(self):
+        return f"{self.id}> {self.barter_advertising}>{self.title}"
     

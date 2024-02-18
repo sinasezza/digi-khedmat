@@ -23,26 +23,6 @@ class CooperationType(models.Model):
 
 # =======================================================================
 
-class JobGroup(models.Model):
-    name = models.CharField(max_length=255, unique=True, verbose_name="نام")
-    
-    class Meta:
-        verbose_name = "گروه شغلی"
-        verbose_name_plural = "گروه های شغلی"
-        
-
-# =======================================================================
-
-class StudyField(models.Model):
-    field = models.CharField(max_length=100, verbose_name="نام رشته")
-    
-    class Meta:
-        verbose_name = "رشته تحصیلی"
-        verbose_name_plural = "رشته های تحصیلی"
-        
-
-# =======================================================================
-
 class StudyGrade(models.Model):
     grade = models.CharField(max_length=100, verbose_name="نام مقطع")
     
@@ -64,10 +44,6 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # ---------------------------------------------------------------------
     cooperation_types = models.ManyToManyField(to=CooperationType, blank=True, verbose_name="نوع همکاری")
     # ---------------------------------------------------------------------
-    group = models.ForeignKey(to=JobGroup, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="گروه شعلی")
-    # ---------------------------------------------------------------------
-    study_field = models.ForeignKey(to=StudyField, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="رشته تحصیلی")
-    # ---------------------------------------------------------------------
     study_grade = models.ForeignKey(to=StudyGrade, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="مقطع تحصیلی")
     # ---------------------------------------------------------------------
     gender = models.CharField(max_length=15, default="unknown", choices=GENDERS, verbose_name="جنسیت")
@@ -80,6 +56,11 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # ---------------------------------------------------------------------
     work_time = models.CharField(max_length=150, null=True, blank=True, verbose_name="ساعات کاری")
     # ---------------------------------------------------------------------
+    military_service = models.CharField(max_length=50, null=True, blank=True, verbose_name="وضعیت سربازی")
+    # --------------------------------------
+    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='jobs', verbose_name="منطقه")
+    # --------------------------------------
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     
     class Meta:
         default_related_name = "jobs"
@@ -102,7 +83,27 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
         super().save(*args, **kwargs)
     
     # --------------------------------------
+
+# =======================================================================
+
+class JobGroup(models.Model):
+    name = models.CharField(max_length=255, unique=True, verbose_name="نام")
+    job_advertising = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='job_groups', verbose_name="آگهی کاریابی")
     
+    class Meta:
+        verbose_name = "گروه شغلی"
+        verbose_name_plural = "گروه های شغلی"
+        
+
+# =======================================================================
+
+class StudyField(models.Model):
+    field = models.CharField(max_length=100, verbose_name="نام رشته")
+    job_advertising = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='study_fields', verbose_name="آگهی کاریابی")
+    
+    class Meta:
+        verbose_name = "رشته تحصیلی"
+        verbose_name_plural = "رشته های تحصیلی"
 
 # =======================================================================
 

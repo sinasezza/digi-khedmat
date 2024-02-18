@@ -23,6 +23,9 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------------------------------------------
     price = models.CharField(max_length=25, null=True, default="رایگان" , verbose_name="قیمت")
     # --------------------------------------------------------------------------
+    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='stuffs', verbose_name="منطقه")
+    # --------------------------------------
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     
     class Meta:
         pass
@@ -68,18 +71,6 @@ class StuffImage(models.Model):
 
 # ==============================================================
 
-class BusinessImage(models.Model):
-    def business_image_path(instance, filename):
-        file_path = pathlib.Path(filename)
-        new_filename = str(uuid.uuid1())
-        return f"ads/business/imgs/{new_filename}{file_path.suffix}"
-    # ----------------------------------------------------------
-    title = models.CharField(max_length=100, null=True, blank=True, verbose_name="عنوان")
-    # ----------------------------------------------------------
-    image = models.ImageField(upload_to=business_image_path, verbose_name="عکس")
-
-# ==============================================================
-
 class BusinessAdvertising(models.Model):
     BUSINESS_TYPES = (
         ('unknown', "نامشخص"),
@@ -94,8 +85,6 @@ class BusinessAdvertising(models.Model):
     # ----------------------------------------------------------
     name = models.CharField(max_length=100, verbose_name="نام کسب و کار")
     # ----------------------------------------------------------
-    images = models.ManyToManyField(to=BusinessImage, blank=True, verbose_name="تصاویر")
-    # ----------------------------------------------------------
     web_address = models.CharField(max_length=200, null=True, blank=True, verbose_name="آدرس وبسایت")
     # ----------------------------------------------------------
     social_networks = models.ManyToManyField(to=generics_models.SocialNetwork, blank=True, verbose_name="شبکه های اجتماعی")
@@ -106,10 +95,27 @@ class BusinessAdvertising(models.Model):
     # ----------------------------------------------------------
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="تلفن")
     # ----------------------------------------------------------
+    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='businesses', verbose_name="منطقه")
+    # --------------------------------------
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     
     
     class Meta:
         pass
     
+
+# ==============================================================
+
+class BusinessImage(models.Model):
+    def business_image_path(instance, filename):
+        file_path = pathlib.Path(filename)
+        new_filename = str(uuid.uuid1())
+        return f"ads/business/imgs/{new_filename}{file_path.suffix}"
+    # ----------------------------------------------------------
+    title = models.CharField(max_length=100, null=True, blank=True, verbose_name="عنوان")
+    # ----------------------------------------------------------
+    image = models.ImageField(upload_to=business_image_path, verbose_name="عکس")
+    # ----------------------------------------------------------
+    business_advertising = models.ForeignKey(to=BusinessAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='images', verbose_name="آگهی کسب و کار")
 
 # ==============================================================

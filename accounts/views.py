@@ -205,3 +205,13 @@ def favorites_view(request: HttpRequest) -> HttpResponse:
         'favorites': favorites
     }
     return render(request, 'accounts/favorites.html', context)
+
+# ---------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def customers_view(request: HttpRequest) -> HttpResponse:
+    
+    context = {
+        
+    }
+    return render(request, 'accounts/customers.html', context)

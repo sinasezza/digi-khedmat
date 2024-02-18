@@ -4,15 +4,21 @@ from import_export.admin import ImportExportActionModelAdmin
 from . import models
 
 
-@admin.register(models.Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category_type')
+@admin.register(models.JobCategory)
+class JobCategoryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'title',)
+
+# ================================================
+
+@admin.register(models.StuffCategory)
+class StuffCategoryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'title',)
 
 # ================================================
 
 @admin.register(models.Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+class TagAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'name',)
 
 # ================================================
 
@@ -27,12 +33,6 @@ class RegionAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ('state', 'city',)
     
     resource_classes = [RegionResource,]
-
-# ================================================
-
-@admin.register(models.Address)
-class AddressAdmin(admin.ModelAdmin):
-    list_display = ('region', 'address',)
 
 # ================================================
 
