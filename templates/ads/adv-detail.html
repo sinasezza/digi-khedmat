@@ -7,5 +7,66 @@
 {% endblock custom_assets %}
 
 {% block content %}
-	<li><a href="{{ adv.get_absolute_url }}">{{ adv }}</a></li>
+	{% comment %} <li><a href="{{ adv.get_absolute_url }}">{{ adv}} </a></li> {% endcomment %}
+<div class="dark:bg-gray-300 font-vazir">
+  <div class="pt-6">
+    <nav aria-label="Breadcrumb">
+      <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div class="flex items-center">
+            <a href="#" class="mr-2 text-sm font-medium text-gray-900">
+				دسته‌بندی: {adv}
+			</a>
+          </div>
+      </ol>
+    </nav>
+
+    <!-- Image gallery -->
+    <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+      <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+        <img src="{{ adv.images.first.image.url }}"alt="Two each of gray, white, and black shirts laying flat." class="h-full w-full object-cover object-center">
+      </div>
+      <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+          <img src="{{ adv.images.second.image.url }}" alt="Model wearing plain black basic tee." class="h-full w-full object-cover object-center">
+        </div>
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+          <img src="{{ adv.images.third.image.url }}" alt="Model wearing plain gray basic tee." class="h-full w-full object-cover object-center">
+        </div>
+      </div>
+      <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+        <img src="{{ adv.images.forth.image.url }}"alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
+      </div>
+    </div>
+
+    <!-- Product info -->
+    <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+      <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+			{{ adv.title }}</h1>
+      </div>
+
+      <!-- Options -->
+      <div class="mt-4 lg:row-span-3 lg:mt-0">
+        <p class="text-3xl tracking-tight text-gray-900">
+			{{ ads.price }} ریال
+		</p>
+
+		<h3 class="mt-10 text-sm font-medium text-gray-900">
+			وضعیت آگهی: {{ adv.stuff_status }}
+		</h3>
+	</div>
+	<div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+        <!-- Description and details -->
+        <div>
+          <div class="space-y-6">
+            <p class="text-base text-gray-900">
+				{{ adv.description }}				
+			</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
