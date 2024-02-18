@@ -7,7 +7,7 @@
 
 {% block content %}
   <!-- start modal -->
-  <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+  <div id="popup-modal" tabindex="-1" class="font-vazir hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center bg-black bg-opacity-50">
     <div class="relative w-full max-w-md mx-auto bg-white rounded-lg shadow-lg">
         <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -19,11 +19,13 @@
             <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
             </svg>
-            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">آیا میخواهید این آگهی را حذف کنید؟</h3>
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">آیا می‌خواهید این آگهی را حذف کنید؟</h3>
             <button id="confirm-delete" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
               بله, حذف کن
             </button>
-            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">نه, دست نگه دار</button>
+            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              نه, دست نگه دار
+            </button>
         </div>
     </div>
   </div>
@@ -33,25 +35,26 @@
   <div class="sm:hidden">
     <label for="tabs" class="sr-only">Select your country</label>
     <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option>آگهی های مبادله کالا</option>
-        <option>آگهی های کاریابی</option>
-        <option>آگهی های تبلیغاتی</option>
+        <option>آگهی‌های مبادله کالا</option>
+        <option>آگهی‌های کاریابی</option>
+        <option>آگهی‌های تبلیغاتی</option>
         <option>Invoice</option>
     </select>
   </div>
 
   <!-- Content tabs -->
-  <div class="hidden sm:block">
+  <div class="font-vazir dark:bg-gray-300 hidden sm:block" style="padding-bottom: 355px">
     <div class="max-w-7xl mx-auto py-8 px-4">
       <div x-data="{showTab: 'barters',}"
-        class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
-      >
+        class="bg-white overflow-hidden shadow sm:rounded-lg">
         <div class="border-b border-gray-200 dark:border-gray-700">
           <nav id="tabs" class="-mb-px flex" aria-label="Tabs">
-            <a href="#" x-on:click="showTab = 'barters'" :class="{ 'border-b-2 border-blue-500': showTab === 'barters' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="page">آگهی‌های مبادله کالا</a>
+            <a href="#" x-on:click="showTab = 'barters'" :class="{ 'border-b-2 border-blue-500': showTab === 'barters' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="page">
+              آگهی‌های مبادله کالا
+            </a>
             <a href="#" x-on:click="showTab = 'jobs'" :class="{ 'border-b-2 border-blue-500': showTab === 'jobs' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">آگهی‌های کاریابی</a>
             <a href="#" x-on:click="showTab = 'ads'" :class="{ 'border-b-2 border-blue-500': showTab === 'ads' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">آگهی‌های تبلیغاتی</a>
-            <a href="#" x-on:click="showTab = 'invoice'" :class="{ 'border-b-2 border-blue-500': showTab === 'invoice' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">Invoice</a>
+            <a href="#" x-on:click="showTab = 'invoice'" :class="{ 'border-b-2 border-blue-500': showTab === 'invoice' }" class="w-1/4 py-4 px-1 text-center font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-gray-700" aria-current="false">سایر</a>
           </nav>
         </div>
         <div>
@@ -62,7 +65,6 @@
             </div>
             
             {% if barters %}
-            
               <ul>
                 {% for barter in barters %}
                   <li id="{{ barter.slug }}" class="border-b border-gray-300 py-4">
@@ -80,7 +82,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p class="text-lg">شما هیچ آگهی‌ای مبادله کالا ندارید.</p>
+              <p class="text-lg">شما هیچ آگهی‌ مبادله کالایی ندارید.</p>
             {% endif %}
           </div>
           
@@ -142,7 +144,7 @@
           
           <div id="invoice" x-show="showTab === 'invoice'" class="p-4">
             <!-- Content for invoice tab -->
-            <p>Invoice content goes here.</p>
+            <p>به زودی...</p>
           </div>
         </div>
       </div>
