@@ -63,8 +63,8 @@
                 <label for="region" class="block leading-6">
                   آدرس:
                 </label>
-                <div class="mt-2 ">
-                  <input type="text" name="address" id="" class="min-w-max" value="{{ form.address.value }}">
+                <div class="mt-2 min-w-max">
+                  <input type="text" name="address" id="" class="" value="{{ form.address.value }}">
                 </div>
               </div>
             </div>
@@ -75,9 +75,9 @@
                   دسته‌بندی:
                 </label>
                 <div class="mt-2">
-                  <select id="category" name="category" autocomplete="category-name" multiple class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                  <select id="category" name="categories" autocomplete="category-name" multiple class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                     {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id in barter.categories.all|values_list:"id" %} selected {% endif %}>{{ category.title }}</option>
+                        <option value="{{ category.id }}" {% if category in barter.categories.all %} selected {% endif %}>{{ category.title }}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -89,16 +89,13 @@
                   <div class="mt-2">
                     <select id="tags" name="tags" autocomplete="given-name" multiple class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                       {% for tag in tags %}
-                          <option value="{{ tag.id }}" {% if tag.id in barter.tags.all|values_list:"id" %} selected {% endif %}>{{ tag.name }}</option>
+                          <option value="{{ tag.id }}" {% if tag in barter.tags.all %} selected {% endif %}>{{ tag.name }}</option>
                       {% endfor %}
                     </select>
                   </div>
                 </div>
               </div>
             </div>
-            
-
-
 
             <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
               <div class="mt-6 ">

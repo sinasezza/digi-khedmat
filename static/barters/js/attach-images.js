@@ -1,36 +1,13 @@
 $(document).ready(function () {
   const input = $("#imagesInput");
   const form = $("#formData");
-  const registerBtn = $("#register");
 
   input.on('change', (e) => {
     form.submit();
   });
 
-  registerBtn.on('click', (e) => {
-    e.preventDefault();
-    form.submit();
-  });
-
-  function deleteImage(image) {
-    console.log(`image is ${image}`);
-    console.log(`image value is ${image.val()}`);
-  }
-
-  let $carouselItems = $('[data-carousel-item]');
-
-  $('[data-carousel-prev]').on('click', function () {
-    currentIndex = (currentIndex - 1 + $carouselItems.length) % $carouselItems.length;
-    showImage(currentIndex);
-  });
-
-  $('[data-carousel-next]').on('click', function () {
-    currentIndex = (currentIndex + 1) % $carouselItems.length;
-    showImage(currentIndex);
-  });
-
   // Show delete button on hover
-  $carouselItems.on('mouseenter', function () {
+  $('.relative').on('mouseenter', function () {
     $(this).find('.delete-button').css('opacity', 1);
   }).on('mouseleave', function () {
     $(this).find('.delete-button').css('opacity', 0);
@@ -42,12 +19,19 @@ $(document).ready(function () {
     deleteImage(imageId);
   });
 
-  // Initial show
-  showImage(currentIndex);
+  // Handle image click to show in modal
+  $('.relative img').on('click', function () {
+    const imageUrl = $(this).attr('src');
+    $('#fullSizeImage').attr('src', imageUrl);
+    $('#imageModal').removeClass('hidden');
+  });
 
-  function showImage(index) {
-    $carouselItems.hide().eq(index).show();
-  }
+  // Close modal when clicking outside the image
+  $('#imageModal').on('click', function (e) {
+    if (e.target === this) {
+      $(this).addClass('hidden');
+    }
+  });
 
   function deleteImage(imageId) {
     // Perform delete action or show a confirmation modal
@@ -64,8 +48,9 @@ $(document).ready(function () {
           throw new Error('Error deleting image');
         }
         // Image deleted successfully
-        $(`[data-image-id="${imageId}"]`).closest('[data-carousel-item]').remove();
-        window.location.reload();
+        $(`[data-image-id="${imageId}"]`).closest('.relative').remove();
+        // Optionally, you can reload the page to reflect changes
+        // window.location.reload();
     })
     .catch(error => {
         // Error occurred while deleting the image

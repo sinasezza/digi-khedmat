@@ -116,12 +116,10 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     
     if request.method == 'POST':
-        ok = request.POST.get('ok', None)
-        if ok is not None and ok == 'True':
+        images = request.FILES.getlist("images")
+        if len(images) < 1:
             messages.success(request, "آگهی شما با موفقیت ساخته شد")
             return redirect('accounts:user-panel')
-        
-        images = request.FILES.getlist("images")
         
         for image in images: 
             image_obj = models.BarterImage.objects.create(image=image)
@@ -149,6 +147,14 @@ def barter_update_view(request: HttpRequest, barter_slug: str):
         form = forms.BarterForm(request.POST, request.FILES, instance=barter)
         if form.is_valid():
             updated_barter = form.save()
+            
+            # update tags and categories
+            tags = request.POST.getlist('tags')
+            updated_barter.update_tags(tags)
+
+            cats = request.POST.getlist('categories')
+            updated_barter.update_categories(cats)
+            
             return redirect('barters:attach-images', barter_slug=updated_barter.slug)
     else:
         form = forms.BarterForm(instance=barter) 
@@ -156,10 +162,7 @@ def barter_update_view(request: HttpRequest, barter_slug: str):
     regions = generics_models.Region.objects.all()
     categories = generics_models.StuffCategory.objects.all()
     tags = generics_models.Tag.objects.all()
-    
-    print(f"barter tags is {barter.tags.all()}")
-    print(f"barter categories is {barter.categories.all()}")
-    
+        
     context = {
         'form': form,
         'regions': regions,
