@@ -4,53 +4,36 @@
 {% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-  <h3 class="flex content-center">حداقل 1 و حداکثر 9 تصویر بارگزاری کنید.</h3>
-  <form action="" method="post" id="formData" enctype="multipart/form-data">
+  <h3 class="text-center my-6 text-lg font-semibold">حداقل 1 و حداکثر 9 تصویر بارگزاری کنید</h3>
+  <form action="" method="post" id="formData" enctype="multipart/form-data" class="flex flex-col items-center">
     {% csrf_token %}
-    <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif">
-
+    <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif" class="my-4">
     {% if barter_images|length >= 1  and barter_images|length <= 9 %}
-      <button type="button" id="register" class="border border-green-600 text-black py-2 px-4 rounded">ثبت</button>
-      <input id="ok" type="text" hidden name="ok" value="True">
+      <button type="submit" id="register" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 disabled:opacity-50" {% if barter_images|length < 1 %}disabled{% endif %}>ثبت</button>
     {% else %}
-      <span class="border border-black text-black py-2 px-4 rounded opacity-50 cursor-not-allowed">ثبت</span>
+      <button type="button" class="bg-gray-300 text-black font-bold py-2 px-4 rounded cursor-not-allowed opacity-50" disabled>حداقل یک تصویر بارگزاری کنید.</button>
     {% endif %}
   </form>
 
-  <div id="custom-controls-gallery" class="relative w-full" data-carousel="slide">
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+  <!-- Modal for displaying image in full size -->
+  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+    <div class="max-w-4xl mx-auto">
+      <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+    </div>
+  </div>
+
+  <div id="custom-controls-gallery" class="w-full mt-8 mb-4" data-carousel="slide">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {% for image_obj in barter_images %}
-        <div class="relative duration-700 ease-in-out transition-opacity" data-carousel-item>
-          <img class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
-          <button type="button" class="opacity-0 group-hover:opacity-100 duration-300 w-full absolute inset-x-0 top-0 flex justify-center items-end text-xl bg-zinc-400 font-bold text-black delete-button" data-image-id="{{ image_obj.id }}">حذف</button>
+        <div class="relative group">
+          <img class="w-full h-auto rounded-lg" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
+          <button type="button" class="absolute top-2 right-2 bg-red-500 text-white font-semibold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 delete-button" data-image-id="{{ image_obj.id }}">حذف</button>
         </div>
       {% endfor %}
-    </div>
-    <div class="flex justify-center items-center pt-4">
-      <button type="button" class="flex justify-center items-center me-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="text-gray-400 hover:text-gray-900 dark:hover:text-white group-focus:text-gray-900 dark:group-focus:text-white">
-          <svg class="rtl:rotate-180 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-          </svg>
-          <span class="sr-only">Previous</span>
-        </span>
-      </button>
-      <button type="button" class="flex justify-center items-center h-full cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="text-gray-400 hover:text-gray-900 dark:hover:text-white group-focus:text-gray-900 dark:group-focus:text-white">
-          <svg class="rtl:rotate-180 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-          </svg>
-          <span class="sr-only">Next</span>
-        </span>
-      </button>
     </div>
   </div>
 {% endblock content %}
 
 {% block custom_js %}
-  <script>
-    let currentIndex = {% if barter_images|length >= 1 %} {{barter_images|length}}-1 {% else %} 0 {% endif %};
-  </script>
-  
-  <script src="{% static 'barters/attach-images.js' %}"></script>
+  <script src="{% static 'barters/js/attach-images.js' %}"></script>
 {% endblock custom_js %}
