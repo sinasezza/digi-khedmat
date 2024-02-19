@@ -23,33 +23,32 @@ $(document).ready(function () {
         const created_at = message.fields.created_at;
         const from_user = message.fields.from_user;
 
+        // Determine the profile photo based on the sender
+        const profilePhoto = from_user == currentUser ? senderProfilePhoto : receiverProfilePhoto;
+
         // Create HTML elements to display the message
         let messageElement;
         if (currentUser == from_user) {
           messageElement = $('<div>').html(`
-            <div class="flex w-full mt-2 space-x-3 max-w-xs">
+            <div class="flex w-full mt-2 space-x-3 max-w-full justify-start">
               <div class="flex-shrink-0 h-10 w-10 rounded-full">
-                <img src=${senderProfilePhoto} class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
+                <img src="${profilePhoto}" class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
               </div>
-              <div>
-                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
-                  <p class="text-sm">${content}</p>
-                </div>
+              <div class="bg-gray-200 p-3 rounded-lg text-right">
+                <p class="text-sm text-gray-800">${content}</p>
                 <span class="text-xs text-gray-500 leading-none">${gregorianToJalali(created_at)}</span>
               </div>
-            </div>  
+            </div> 
           `);
         } else {
           messageElement = $('<div>').html(`
-            <div class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
-              <div>
-                <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
-                  <p class="text-sm">${content}</p>
-                </div>
-                <span class="text-xs text-gray-500 leading-none">${gregorianToJalali(created_at)}</span>
+            <div class="flex w-full mt-2 space-x-3 max-w-full justify-end">
+              <div class="bg-blue-600 text-white p-3 rounded-lg text-left">
+                <p class="text-sm">${content}</p>
+                <span class="text-xs text-gray-300 leading-none">${gregorianToJalali(created_at)}</span>
               </div>
               <div class="flex-shrink-0 h-10 w-10 rounded-full">
-                <img src=${receiverProfilePhoto} class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
+                <img src="${profilePhoto}" class="flex-shrink-0 h-10 w-10 rounded-full" alt="O">
               </div>
             </div>
           `);
