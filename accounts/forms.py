@@ -73,10 +73,9 @@ class UserRegisterInfoForm(forms.ModelForm):
     
     class Meta:
         model = models.Account
-        fields = ('profile_photo', 'age', 'gender', 'national_code', 'bio', 'education', 'occupation', 'company_name', 'address')
+        fields = ('age', 'gender', 'national_code', 'bio', 'education', 'occupation', 'company_name', 'address')
         
         labels = {
-            'profile_photo': 'عکس پروفایل',
             'age': 'سن',
             'gender': 'جنسیت',
             'national_code': 'کد ملی',

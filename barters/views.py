@@ -122,8 +122,7 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
             return redirect('accounts:user-panel')
         
         for image in images: 
-            image_obj = models.BarterImage.objects.create(image=image)
-            barter.images.add(image_obj)
+            image_obj = models.BarterImage.objects.create(barter_advertising=barter, image=image)
         return redirect('barters:attach-images',  barter_slug=barter.slug)
     
     barter_images = barter.images.all()

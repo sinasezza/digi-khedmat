@@ -23,15 +23,8 @@ class BarterForm(forms.ModelForm):
 
 # =====================================================
 
-BarterImagesFormSet = inlineformset_factory(
-    models.BarterAdvertising,
-    models.BarterImage,
-    fields=('image',),  # Adjust fields as needed
-    extra=4,  # No additional empty forms
-    can_delete=False,  # Allow deletion of existing forms
-    widgets={
-        'title': forms.TextInput(attrs={'class': 'form-control'}),
-        'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-    }
-)
-
+class BarterImageForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.BarterImage 
+        fields = ('image' ,)
