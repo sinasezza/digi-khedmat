@@ -20,11 +20,25 @@ class CooperationType(models.Model):
     class Meta:
         verbose_name = "نوع همکاری"
         verbose_name_plural = "انواع همکاری"
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    @property
+    def name(self):
+        # Iterate over COOPERATION_TYPES to find the label for the current type
+        for choice in self.COOPERATION_TYPES:
+            if choice[0] == self.type:
+                return choice[1]
+        return '-'  # Return an empty string if the type is not found
 
 # =======================================================================
 
 class StudyGrade(models.Model):
     grade = models.CharField(max_length=100, verbose_name="نام مقطع")
+    
+    def  __str__(self) -> str:
+        return  self.grade
     
     class Meta:
         verbose_name = "مقطع تحصیلی"
@@ -42,7 +56,7 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # ---------------------------------------------------------------------
     owner = models.ForeignKey(to=Account, on_delete=models.CASCADE, null=True, blank=True, related_name="jobs", verbose_name="مالک")
     # ---------------------------------------------------------------------
-    cooperation_types = models.ManyToManyField(to=CooperationType, blank=True, verbose_name="نوع همکاری")
+    cooperation_types = models.ManyToManyField(to=CooperationType, blank=True, related_name='jobs', verbose_name="نوع همکاری")
     # ---------------------------------------------------------------------
     study_grade = models.ForeignKey(to=StudyGrade, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="مقطع تحصیلی")
     # ---------------------------------------------------------------------

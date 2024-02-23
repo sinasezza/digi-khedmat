@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}ساخت آگهی | تبلیغات{% endblock title %}
+
+{% block content %}
+  <h3 class="text-center my-6 text-lg font-semibold">حداقل 1 و حداکثر 9 تصویر بارگزاری کنید</h3>
+  <form action="" method="post" id="formData" enctype="multipart/form-data" class="flex flex-col items-center">
+    {% csrf_token %}
+    <input type="file" name="images" id="imagesInput" accept=".jpg,.jpeg,.png,.gif" class="my-4">
+    {% if advertise_images|length >= 1  and advertise_images|length <= 9 %}
+      <button type="submit" id="register" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 disabled:opacity-50" {% if advertise_images|length < 1 %}disabled{% endif %}>ثبت</button>
+    {% else %}
+      <button type="button" class="bg-gray-300 text-black font-bold py-2 px-4 rounded cursor-not-allowed opacity-50" disabled>حداقل یک تصویر بارگزاری کنید.</button>
+    {% endif %}
+  </form>
+
+  <!-- Modal for displaying image in full size -->
+  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+    <div class="max-w-4xl mx-auto">
+      <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+    </div>
+  </div>
+
+  <div id="custom-controls-gallery" class="w-full mt-8 mb-4" data-carousel="slide">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {% for image_obj in advertise_images %}
+        <div class="relative group">
+          <img class="w-9/12 h-9/12 rounded-lg" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
+          <button type="button" class="absolute top-2 right-2 bg-red-500 text-white font-semibold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 delete-button" data-image-id="{{ image_obj.id }}">حذف</button>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block custom_js %}
+  <script src="{% static 'ads/js/adv-attach-images.js' %}"></script>
+{% endblock custom_js %}

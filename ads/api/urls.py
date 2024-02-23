@@ -6,5 +6,5 @@ app_name = "ads-api"
 
 
 urlpatterns = [
-    path('stuff-image-delete/<int:id>/', apis.stuff_image_delete_api, name='stuff-image-delete'),
+    path('stuff-ads-image-delete/<int:id>/', apis.stuff_image_delete_api, name='stuff-image-delete'),
 ]

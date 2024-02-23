@@ -3,8 +3,6 @@
 {% block title %}ساخت آگهی کاریابی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-
-<div>
   <section class="dark:bg-gray-300 font-vazir">
     <div class="lg:w-1/3 mx-auto lg:py-6">
       <div>
@@ -55,50 +53,46 @@
             <div>
               <label for="age_range">بازه سنی:</label>
               <div class="mt-2">
-                <input maxlength="120" type="text" name="age_range" id="age_range" autocomplete="given-name"
-                  style="text-align: center"
-                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  placeholder="حداکثر 120 کاراکتر" />
+                <input maxlength="30" type="text" name="age_range" id="age_range" autocomplete="age_range"
+                  class="w-full text-center rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 30 کاراکتر" />
               </div>
             </div>
 
             <div>
               <label for="skills">الزامات/مهارت ها:</label>
               <div class="mt-2">
-                <input maxlength="120" type="text" name="skills" id="skills" autocomplete="given-name"
-                  style="text-align: center"
-                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  placeholder="حداکثر 120 کاراکتر" />
+                <textarea maxlength="1000" type="text" name="skills" id="skills" autocomplete="skills"
+                  class="w-full text-rigth rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6 placeholder:text-center"
+                  placeholder="حداکثر 1000 کاراکتر" ></textarea>
               </div>
             </div>
 
             <div>
               <label for="benefits">مزایا</label>
               <div class="mt-2">
-                <input maxlength="120" type="text" name="benefits" id="benefits" autocomplete="given-name"
-                  style="text-align: center"
-                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  placeholder="حداکثر 120 کاراکتر" />
+                <textarea maxlength="1000" type="text" name="benefits" id="benefits" autocomplete="benefits"
+                  class="w-full text-right rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6 text-blue-gray-700 placeholder:text-center"
+                  placeholder="حداکثر 1000 کاراکتر" ></textarea>
               </div>
             </div>
 
             <div>
               <label for="work_time">ساعات کاری</label>
               <div class="mt-2">
-                <input maxlength="120" type="text" name="work_time" id="work_time" autocomplete="given-name"
-                  style="text-align: center"
-                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  placeholder="حداکثر 120 کاراکتر" />
+                <input maxlength="150" type="text" name="work_time" id="work_time" autocomplete="work_time"
+                  class="w-full text-center rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 150 کاراکتر" />
               </div>
             </div>
 
             <div>
               <label for="military_service">وضعیت سربازی</label>
               <div class="mt-2">
-                <input maxlength="120" type="text" name="military_service" id="military_service" autocomplete="given-name"
+                <input maxlength="50" type="text" name="military_service" id="military_service" autocomplete="military_service"
                   style="text-align: center"
                   class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                  placeholder="حداکثر 120 کاراکتر" />
+                  placeholder="حداکثر 50 کاراکتر" />
               </div>
             </div>
 
@@ -118,14 +112,13 @@
               </div>
             </div>
             
-            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div class="mt-6">
-                <label for="region" class="block leading-6">
-                  آدرس:
-                </label>
-                <div class="mt-2 min-w-max">
-                  <input type="text" name="address" id="" class="">
-                </div>
+            <div>
+              <label for="address">آدرس</label>
+              <div class="mt-2">
+                <input maxlength="255" type="text" name="address" id="address" autocomplete="address"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 255 کاراکتر" />
               </div>
             </div>
 
@@ -135,10 +128,10 @@
                   انواع همکاری:
                 </label>
                 <div class="mt-2">
-                  <select id="cooperations" name="cooperation_types" autocomplete="cooperations" multiple
+                  <select id="cooperations" name="cooperation_types" multiple
                     class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                     {% for cooperation_type in cooperation_types %}
-                      <option value="{{cooperation_type.id}}">{{ cooperation_type.type }}</option>
+                      <option value="{{cooperation_type.id}}">{{ cooperation_type.name }}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -150,7 +143,7 @@
                   حداقل مدرک تحصیلی:
                 </label>
                 <div class="mt-2 ">
-                  <select id="study_grade" name="study_grade" autocomplete="study_grade" required
+                  <select id="study_grade" name="study_grade" required
                     class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                     {% for study_grade in study_grades %}
                       <option value="{{study_grade.id}}">{{ study_grade.grade }}</option>
@@ -166,7 +159,7 @@
                   دسته‌بندی:
                 </label>
                 <div class="mt-2">
-                  <select id="categories" name="categories" autocomplete="categories-name" multiple
+                  <select id="categories" name="categories" multiple
                     class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                     {% for category in categories %}
                       <option value="{{category.id}}">{{ category.title }}</option>
@@ -179,7 +172,7 @@
                 <div class="mt-6">
                   <label for="tags"> تگ‌ها: </label>
                   <div class="mt-2">
-                    <select id="tags" name="tags" autocomplete="given-name" multiple
+                    <select id="tags" name="tags" multiple
                       class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                       {% for tag in tags %}
                         <option value="{{tag.id}}">{{ tag.name }}</option>
@@ -198,7 +191,7 @@
                   وضعیت انتشار آگهی:
                 </label>
                 <div class="mt-2 ">
-                  <select id="status" name="status" autocomplete="status-name" required
+                  <select id="status" name="status" required
                     class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
                       <option value="published">انتشار</option>
                       <option value="draft">پیش نویس</option>
@@ -217,8 +210,6 @@
       </div>
     </div>
   </section>
-</div>
-
 {% endblock content %}
 
 
