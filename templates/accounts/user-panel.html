@@ -125,12 +125,11 @@
                           {{ job.title }} - 
                           {{ job.summary }}
                         </h3>
-                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
-                          <span class="text-sm">
-                            استان: {{ job.country }}
-                            |
-                            {{ job.price }} ریال
-                          </span>
+                        <div class="mt-auto pt-4 border-t border-slate-950">
+                          <p class="text-sm">
+                            منطقه: {{ job.region }}
+                          </p>
+                          <p>همکاری: {% for co_type in job.cooperation_types.all %} {{co_type.name}} - {% endfor %}</p>
                         </div>
                       </div>
                       <div class="mr-11">

@@ -76,7 +76,7 @@ class StuffImage(models.Model):
     def stuff_image_path(instance, filename):
         file_path = pathlib.Path(filename)
         new_filename = str(uuid.uuid1())
-        return f"barters/imgs/{new_filename}{file_path.suffix}"
+        return f"ads/stuffs/imgs/{new_filename}{file_path.suffix}"
     
     title = models.CharField(max_length=40, null=True, blank=True, verbose_name="عنوان")
     image = models.ImageField(max_length=255, upload_to=stuff_image_path, verbose_name="تصویر")

@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
+from generics import models as generics_models
 from . import models, forms, decorators
 
 
@@ -57,25 +58,67 @@ def advertise_detail_view(request: HttpRequest, adv_slug: str):
 def advertise_create_view(request):
     if request.method == 'POST':
         form = forms.StuffAdvertisingForm(data=request.POST, files=request.FILES)
-        formset = forms.StuffImagesFormSet(request.POST, request.FILES)
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             new_adv = form.save()
             new_adv.owner = request.user
             new_adv.save()
             
-            formset.instance = new_adv
-            formset.save()
+            # update tags and categories
+            tags = request.POST.getlist('tags')
+            new_adv.update_tags(tags)
+
+            # update categories
+            cats = request.POST.getlist('categories')
+            new_adv.update_categories(cats)
+            
             messages.success(request, 'آگهی تبلیغاتی شما ایجاد شد.')
-            return redirect('accounts:user-panel')
+            return redirect('ads:attach-images', adv_slug=new_adv.slug)
     else:
         form = forms.StuffAdvertisingForm()
-        formset = forms.StuffImagesFormSet()
+    
+    stuff_statuses = models.StuffAdvertising.STUFF_STATUSES
+    categories = generics_models.StuffCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
+    regions = generics_models.Region.objects.all()
     
     context = {
         'form': form,
-        'formset': formset,
+        'stuff_statuses': stuff_statuses,
+        'categories': categories,
+        'tags': tags,
+        'regions': regions,
     }
     return render(request, 'ads/adv-create.html', context)
+
+# ---------------------------------------------------------
+
+# ---------------------------------------------------------
+
+@login_required(login_url='accounts:login')
+@decorators.owner_required
+def advertise_image_create_view(request: HttpRequest, adv_slug: str) -> HttpResponse:
+    """Add an image to existing ad."""
+    advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
+    
+    if request.method == 'POST':
+        images = request.FILES.getlist("images")
+        if len(images) < 1:
+            messages.success(request, "آگهی شما با موفقیت ساخته شد")
+            return redirect('accounts:user-panel')
+        
+        for image in images: 
+            image_obj = models.StuffImage.objects.create(stuff_advertising=advertise, image=image)
+        return redirect('ads:attach-images',  adv_slug=advertise.slug)
+    
+    advertise_images = advertise.images.all()
+    
+    context = {
+        'advertise': advertise,
+        'advertise_images': advertise_images,
+    }
+    
+    return render(request, 'ads/adv-attach-images.html', context)
+        
 
 # ---------------------------------------------------------
 
@@ -90,27 +133,40 @@ def advertise_update_view(request: HttpRequest, adv_slug: str):
     
     if request.method == "POST":
         form = forms.StuffAdvertisingForm(request.POST, request.FILES, instance=advertise)
-        formset = forms.StuffImagesFormSet(request.POST, request.FILES, instance=advertise)
         
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             updated_advertise = form.save()
-            formset.save()
             
-            # Process deleted images
-            for form in formset.deleted_forms:
-                instance = form.instance
-                instance.delete()
-                
+            # update tags and categories
+            tags = request.POST.getlist('tags')
+            updated_advertise.update_tags(tags)
+
+            # update categories
+            cats = request.POST.getlist('categories')
+            updated_advertise.update_categories(cats)
+             
             messages.success(request, 'آگهی تبلیغاتی شما به‌روزرسانی شد.')
-            return redirect('accounts:user-panel')
+            return redirect('ads:attach-images',  adv_slug=updated_advertise.slug)
+        else:
+            # print(f"error : {form.errors.as_data()}")
+            messages.warning(request, "لطفا فرم را به طور صحیح پر کنید.")
+            form = forms.StuffAdvertisingForm(request.POST, instance=advertise)
     else:
         form = forms.StuffAdvertisingForm(instance=advertise)
-        formset = forms.StuffImagesFormSet()
+        
+        
+    stuff_statuses = models.StuffAdvertising.STUFF_STATUSES
+    categories = generics_models.StuffCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
+    regions = generics_models.Region.objects.all()
     
     context = {
+        'advertise': advertise,
         'form': form,
-        'formset': formset,
-        'existing_images': existing_images,
+        'stuff_statuses': stuff_statuses,
+        'categories': categories,
+        'tags': tags,
+        'regions': regions,
     }
     
     return render(request, 'ads/adv-update.html', context)

@@ -134,6 +134,10 @@ def job_update_view(request: HttpRequest, job_slug: str):
         if form.is_valid():
             updated_job = form.save()
             
+            # update cooperation types
+            types = request.POST.getlist('cooperation_types')
+            updated_job.update_cooperation_types(types)
+            
             # update tags and categories
             tags = request.POST.getlist('tags')
             updated_job.update_tags(tags)
@@ -145,7 +149,7 @@ def job_update_view(request: HttpRequest, job_slug: str):
             messages.info(request, "آگهی شما بروز رسانی شد.")
             return redirect('accounts:user-panel')
         else:
-            print(f"error : {form.errors.as_data()}")
+            # print(f"error : {form.errors.as_data()}")
             messages.warning(request, "لطفا فرم را به طور صحیح پر کنید.")
             form = forms.JobAdvertisingForm(request.POST, instance=job)
     else:
