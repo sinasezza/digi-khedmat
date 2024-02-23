@@ -1,5 +1,26 @@
+import logging
+from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models
+
+
+logger = logging.getLogger("barters.views")
+
+def log_before_after(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Log before accessing the view
+        logger.info(f"Before accessing view: {func.__name__}")
+        
+        # Call the view function
+        result = func(*args, **kwargs)
+        
+        # Log after accessing the view
+        logger.info(f"After accessing view: {func.__name__}")
+        
+        return result
+    return wrapper
+
 
 def owner_required(view_func):
     def _wrapped_view(request, *args, **kwargs):

@@ -60,6 +60,10 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='jobs', verbose_name="منطقه")
     # --------------------------------------
+    categories = models.ManyToManyField(to=generics_models.JobCategory, blank=True, related_name='jobs', verbose_name="دسته بندی")
+    # --------------------------------------
+    tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='jobs', verbose_name="برچسب ها")
+    # --------------------------------------
     address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     
     class Meta:
@@ -74,6 +78,29 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     
     def get_absolute_url(self):
         return reverse("jobs:job-detail", kwargs={"job_slug": self.slug})
+    
+    # --------------------------------------
+    
+    def get_edit_url(self):
+        return reverse("jobs:job-update", kwargs={"job_slug": self.slug})
+    
+    # --------------------------------------
+    
+    def update_cooperation_types(self, types):
+        self.cooperation_types.set(types)
+        super().save()
+    
+    # --------------------------------------
+    
+    def update_categories(self, categories):
+        self.categories.set(categories)
+        super().save()
+    
+    # --------------------------------------
+    
+    def update_tags(self, tags):
+        self.tags.set(tags)
+        super().save()
     
     # --------------------------------------
     

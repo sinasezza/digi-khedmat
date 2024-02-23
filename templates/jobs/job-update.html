@@ -1,6 +1,238 @@
 {% extends "base/base.html" %}
 
+{% block title %}ساخت آگهی کاریابی | تهاتر کالا{% endblock title %}
 
 {% block content %}
-    به دیجی خدمت خوش آمدید.
+
+<div>
+  <section class="dark:bg-gray-300 font-vazir">
+    <div class="lg:w-1/3 mx-auto lg:py-6">
+      <div>
+        <div class="place-items-center">
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div>
+                <label for="id_title">عنوان آگهی شغلی </label>
+                <div class="mt-2">
+                  <input maxlength="120" type="text" name="title" id="id_title" autocomplete="given-name"
+                    style="text-align: center"
+                    class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                    placeholder="حداکثر 120 کاراکتر" value="{{form.title.value}}" />
+                </div>
+              </div>
+              <div>
+                <label for="id_summary"> خلاصه آگهی: </label>
+                <div class="mt-2">
+                  <input maxlength="400" type="text" name="summary" id="id_summary" autocomplete="family-name"
+                    style="text-align: center"
+                    class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                    placeholder="حداکثر 400 کاراکتر" value="{{form.summary.value}}" />
+                </div>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="id_description">
+                  توضیحات آگهی:
+                </label>
+                <div class="mt-2">
+                  {{ form.description }}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="id_summary"> جنسیت: </label>
+              <div class="mt-2 ">
+                <select id="gender" name="gender" autocomplete="gender-name" required
+                  class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                >
+                  <option value="unknown" {% if form.gender.value == 'unknown' %} selected {% endif %}>فرقی نمیکند</option>
+                  <option value="male" {% if form.gender.value == 'male' %} selected {% endif %}>مرد</option>
+                  <option value="female" {% if form.gender.value == 'female' %} selected {% endif %}>زن</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="age_range">بازه سنی:</label>
+              <div class="mt-2">
+                <input maxlength="120" type="text" name="age_range" id="age_range" autocomplete="given-name"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 120 کاراکتر" value="{{form.age_range.value}}"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="skills">الزامات/مهارت ها:</label>
+              <div class="mt-2">
+                <input maxlength="120" type="text" name="skills" id="skills" autocomplete="given-name"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 120 کاراکتر" value="{{form.skills.value}}"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="benefits">مزایا</label>
+              <div class="mt-2">
+                <input maxlength="120" type="text" name="benefits" id="benefits" autocomplete="given-name"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 120 کاراکتر" value="{{form.benefits.value}}"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="work_time">ساعات کاری</label>
+              <div class="mt-2">
+                <input maxlength="120" type="text" name="work_time" id="work_time" autocomplete="given-name"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 120 کاراکتر" value="{{form.work_time.value}}"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="military_service">وضعیت سربازی</label>
+              <div class="mt-2">
+                <input maxlength="120" type="text" name="military_service" id="military_service" autocomplete="given-name"
+                  style="text-align: center"
+                  class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                  placeholder="حداکثر 120 کاراکتر" value="{{form.military_service.value}}"/>
+              </div>
+            </div>
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="region" class="block leading-6">
+                  منطقه:
+                </label>
+                <div class="mt-2 ">
+                  <select id="region" name="region" autocomplete="region-name" required
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for region in regions %}
+                      <option value="{{region.id}}" {% if region.id == form.region.value %} selected {% endif %}>{{ region }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6">
+                <label for="region" class="block leading-6">
+                  آدرس:
+                </label>
+                <div class="mt-2 min-w-max">
+                  <input type="text" name="address" id="" class="" value="{{form.address.value}}">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6">
+                <label for="cooperations" class="block leading-6">
+                  انواع همکاری:
+                </label>
+                <div class="mt-2">
+                  <select id="cooperations" name="cooperation_types" autocomplete="cooperations" multiple
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for cooperation_type in cooperation_types %}
+                      <option value="{{cooperation_type.id}}" {% if cooperation_type.id == form.cooperation_type.value %} selected {% endif %}>
+                        {{ cooperation_type.type }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+            </div>
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="study_grade" class="block leading-6">
+                  حداقل مدرک تحصیلی:
+                </label>
+                <div class="mt-2 ">
+                  <select id="study_grade" name="study_grade" autocomplete="study_grade" required
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for study_grade in study_grades %}
+                      <option value="{{study_grade.id}}" {% if study_grade.id == form.study_grade.value %} selected {% endif %}>
+                        {{ study_grade.grade }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6">
+                <label for="categories" class="block leading-6">
+                  دسته‌بندی:
+                </label>
+                <div class="mt-2">
+                  <select id="categories" name="categories" autocomplete="categories-name" multiple
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                    {% for category in categories %}
+                      <option value="{{category.id}}" {% if category in job.categories.all %} selected {% endif %}>
+                        {{ category.title }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            
+              <div>
+                <div class="mt-6">
+                  <label for="tags"> تگ‌ها: </label>
+                  <div class="mt-2">
+                    <select id="tags" name="tags" autocomplete="given-name" multiple
+                      class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                      {% for tag in tags %}
+                        <option value="{{tag.id}}" {% if tag in job.tags.all %} selected {% endif %}>
+                          {{ tag.name }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+
+
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="mt-6 ">
+                <label for="status" class="block leading-6">
+                  وضعیت انتشار آگهی:
+                </label>
+                <div class="mt-2 ">
+                  <select id="status" name="status" autocomplete="status-name" required
+                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                      <option value="published">انتشار</option>
+                      <option value="draft">پیش نویس</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="mt-4 mb-2 dark:bg-white w-full py-1.5 rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              role="group">
+              ثبت آگهی
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 {% endblock content %}
+
+
+{% block custom_js %}
+  <script>
+
+  </script>
+{% endblock custom_js %}

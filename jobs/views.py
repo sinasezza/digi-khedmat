@@ -18,6 +18,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 
+from generics import models as generics_models
 from . import models, forms, decorators
 
 
@@ -74,51 +75,52 @@ def job_create_view(request: HttpRequest) -> HttpResponse:
     """View to create a new ad."""
     # If the request is not from POST method then display blank form
     if request.method == 'POST':
-        form = forms.JobAdvertisingForm(request.POST, request.FILES)
+        form = forms.JobAdvertisingForm(request.POST)
         
         if form.is_valid():
             new_job = form.save(commit=False)
             new_job.owner = request.user
             new_job.save()
             
-            return redirect('jobs:attach-images', job_slug=new_job.slug)
+            # update cooperation types
+            types = request.POST.getlist('cooperation_types')
+            new_job.update_cooperation_types(types)
+            
+            # update tags
+            tags = request.POST.getlist('tags')
+            new_job.update_tags(tags)
+
+            # update categories
+            cats = request.POST.getlist('categories')
+            new_job.update_categories(cats)
+            
+            messages.success(request, "آگهی شما با موفقیت ایجاد شد.")
+            return redirect('accounts:user-panel')
+        else:
+            print(f"error : {form.errors.as_data()}")
+            messages.warning(request, "لطفا فرم را به طور صحیح پر کنید.")
+            form = forms.JobAdvertisingForm(request.POST)
     else:
-        context = {
-            'form': forms.JobAdvertisingForm(),
-        }        
+        form = forms.JobAdvertisingForm()
+        
+    
+    categories = generics_models.JobCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
+    regions = generics_models.Region.objects.all()
+    study_grades = models.StudyGrade.objects.all()
+    cooperation_types = models.CooperationType.objects.all()
+    
+        
+    context = {
+        'form': form,
+        'categories': categories,
+        'tags': tags,
+        'regions': regions,
+        'study_grades': study_grades,
+        'cooperation_types': cooperation_types,
+    }        
     
     return render(request, 'jobs/job-create.html', context)
-
-# ---------------------------------------------------------
-
-@login_required(login_url='accounts:login')
-@decorators.owner_required
-def job_image_create_view(request: HttpRequest, job_slug: str) -> HttpResponse:
-    """Add an image to existing ad."""
-    job = get_object_or_404(models.JobAdvertising, slug=job_slug)
-    
-    if request.method == 'POST':
-        ok = request.POST.get('ok', None)
-        if ok is not None and ok == 'True':
-            messages.success(request, "آگهی شما با موفقیت ساخته شد")
-            return redirect('accounts:user-panel')
-        
-        images = request.FILES.getlist("images")
-        
-        for image in images: 
-            image_obj = models.BarterImage.objects.create(image=image)
-            job.images.add(image_obj)
-        return redirect('jobs:attach-images',  job_slug=job.slug)
-    
-    job_images = job.images.all()
-    
-    context = {
-        'job': job,
-        'job_images': job_images,
-    }
-    
-    return render(request, 'jobs/attach-images.html', context)
-        
 
 # ---------------------------------------------------------
 
@@ -131,13 +133,40 @@ def job_update_view(request: HttpRequest, job_slug: str):
         form = forms.JobAdvertisingForm(request.POST, request.FILES, instance=job)
         if form.is_valid():
             updated_job = form.save()
-            return redirect('jobs:attach-images', job_slug=updated_job.slug)
+            
+            # update tags and categories
+            tags = request.POST.getlist('tags')
+            updated_job.update_tags(tags)
+
+            # update categories
+            cats = request.POST.getlist('categories')
+            updated_job.update_categories(cats)
+            
+            messages.info(request, "آگهی شما بروز رسانی شد.")
+            return redirect('accounts:user-panel')
+        else:
+            print(f"error : {form.errors.as_data()}")
+            messages.warning(request, "لطفا فرم را به طور صحیح پر کنید.")
+            form = forms.JobAdvertisingForm(request.POST, instance=job)
     else:
         form = forms.JobAdvertisingForm(instance=job) 
     
+    categories = generics_models.JobCategory.objects.all()
+    tags = generics_models.Tag.objects.all()
+    regions = generics_models.Region.objects.all()
+    study_grades = models.StudyGrade.objects.all()
+    cooperation_types = models.CooperationType.objects.all()
+    
+        
     context = {
+        'job': job,
         'form': form,
-    }
+        'categories': categories,
+        'tags': tags,
+        'regions': regions,
+        'study_grades': study_grades,
+        'cooperation_types': cooperation_types,
+    }        
     
     return render(request, 'jobs/job-update.html', context)
 
