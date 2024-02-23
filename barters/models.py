@@ -24,11 +24,13 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     qrcode_image = models.ImageField(max_length=255, upload_to=barter_qrcode_path, blank=True, null=True, verbose_name="بارکد آگهی")
     # --------------------------------------
-    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='barters', verbose_name="منطقه")
-    # --------------------------------------
     address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     # --------------------------------------
+    region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='barters', verbose_name="منطقه")
+    # --------------------------------------
     categories = models.ManyToManyField(to=generics_models.StuffCategory, blank=True, related_name='barters', verbose_name='دسته بندی')
+    # --------------------------------------
+    tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='barters', verbose_name="تگ")
     # --------------------------------------
     
     class Meta:
@@ -67,6 +69,13 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
         super().save()
     
     # --------------------------------------
+    
+    def update_tags(self, tags):
+        self.tags.set(tags)
+        super().save()
+    
+    # --------------------------------------
+    
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

@@ -43,14 +43,6 @@ def barter_list_view(request):
 
 # ---------------------------------------------------------
 
-# class BarterListView(generic.ListView):
-#     model = models.BarterAdvertising
-#     queryset = models.BarterAdvertising.objects.filter(status='published')
-#     template_name = "barters/barter-list.html"
-#     context_object_name = 'barters'
-
-# ---------------------------------------------------------
-
 def barter_detail_view(request: HttpRequest, barter_slug: str):
     logger.info(f"user {request.user} requested for barter detail")
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug, status='published')
@@ -78,10 +70,11 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
             new_barter.owner = request.user
             new_barter.save()
             
-            # update tags and categories
+            # update tags
             tags = request.POST.getlist('tags')
             new_barter.update_tags(tags)
 
+            # update categories
             cats = request.POST.getlist('categories')
             new_barter.update_categories(cats)
 
@@ -151,6 +144,7 @@ def barter_update_view(request: HttpRequest, barter_slug: str):
             tags = request.POST.getlist('tags')
             updated_barter.update_tags(tags)
 
+            # update categories
             cats = request.POST.getlist('categories')
             updated_barter.update_categories(cats)
             

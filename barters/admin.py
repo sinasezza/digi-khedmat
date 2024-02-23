@@ -26,7 +26,9 @@ class BarterResource(resources.ModelResource):
 @admin.register(models.BarterAdvertising)
 class BarterAdvertisingAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ('id','title', 'date_created', 'status',)
-    ordering = ['-date_created',]
+    search_fields = ('id', 'title',)
+    list_filter = ('owner', 'status', 'tags', 'categories', 'region')
+    ordering = ('-date_created',)
     
     inlines = [BarterImageInline,]
     resource_classes = [BarterResource,]

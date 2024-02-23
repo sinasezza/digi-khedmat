@@ -25,6 +25,10 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------------------------------------------
     region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='stuffs', verbose_name="منطقه")
     # --------------------------------------
+    categories = models.ManyToManyField(to=generics_models.StuffCategory, blank=True, related_name='stuff_ads', verbose_name="دسته بندی")
+    # --------------------------------------
+    tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='stuff_ads', verbose_name="تگ")
+    # --------------------------------------
     address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
     
     class Meta:
@@ -46,6 +50,18 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
         return reverse("ads:adv-update", kwargs={"adv_slug": self.slug})
     
     # --------------------------------------------------------------------------
+    
+    def update_categories(self, categories):
+        self.categories.set(categories)
+        super().save()
+    
+    # --------------------------------------
+    
+    def update_tags(self, tags):
+        self.tags.set(tags)
+        super().save()
+    
+    # --------------------------------------
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

@@ -59,7 +59,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     title = models.CharField(max_length=120, verbose_name="عنوان")
     # --------------------------------------
-    slug = models.SlugField(max_length=256, blank=True, unique=True)
+    slug = models.SlugField(max_length=256, blank=True, unique=True, allow_unicode=True)
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد آگهی")
     # --------------------------------------
@@ -72,8 +72,6 @@ class BaseAdvertisingModel(models.Model):
     summary = models.CharField(max_length=400, null=True, blank=True, verbose_name="خلاصه")
     # --------------------------------------
     description = RichTextField(max_length=2000, null=True, blank=True, verbose_name="توضیحات")
-    # --------------------------------------
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name="تگ")
     # --------------------------------------
     views = models.PositiveIntegerField(default=0, verbose_name="تعداد بازدید")
     # --------------------------------------
@@ -90,11 +88,6 @@ class BaseAdvertisingModel(models.Model):
     
     # --------------------------------------
     
-    def update_tags(self, tags):
-        self.tags.set(tags)
-        super().save()
-    
-    # --------------------------------------
     
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)       

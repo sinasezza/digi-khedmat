@@ -26,7 +26,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {% for image_obj in barter_images %}
         <div class="relative group">
-          <img class="w-full h-auto rounded-lg" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
+          <img class="w-9/12 h-9/12 rounded-lg" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">
           <button type="button" class="absolute top-2 right-2 bg-red-500 text-white font-semibold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 delete-button" data-image-id="{{ image_obj.id }}">حذف</button>
         </div>
       {% endfor %}
