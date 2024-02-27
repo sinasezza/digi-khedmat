@@ -74,7 +74,7 @@ def add_favorite_api(request: HttpRequest) -> Response:
         advertisement_type = request.data.get('advertisement_type')
         
         # Check if the advertisement type is valid
-        if advertisement_type not in ['BarterAdvertising', 'Advertise', 'JobAdvertising']:
+        if advertisement_type not in ['BarterAdvertising', 'StuffAdvertising', 'JobAdvertising']:
             return Response(data={"message": "Invalid advertisement type"}, status=rest_status.HTTP_400_BAD_REQUEST)
         
         # Get the ContentType object for the advertisement type
@@ -87,7 +87,7 @@ def add_favorite_api(request: HttpRequest) -> Response:
                 advertisement_type=content_type,
                 object_id=advertisement_id
             )
-            return Response(data={"message": "Favorite Object Created successfully"}, status=rest_status.HTTP_201_CREATED)
+            return Response(data={"message": "Favorite Object Created successfully", 'favorite_id': favorite.id,}, status=rest_status.HTTP_201_CREATED)
         except Exception as e:
             return Response(data={"message": str(e)}, status=rest_status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:

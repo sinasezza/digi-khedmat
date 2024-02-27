@@ -14,11 +14,9 @@ from generics import models as generics_models
 from . import models, forms, decorators
 
 
-
+@decorators.log_before_after
 def advertise_list_view(request):
     ads = models.StuffAdvertising.objects.filter(status='published')
-    
-    # logger.info(f"advertise list fetched by  user {request.user}")
     
     # response to search advertise
     search_input = request.GET.get('search-area') or ''
@@ -26,8 +24,13 @@ def advertise_list_view(request):
         ads = ads.filter(
             Q(title__icontains=search_input) | 
             Q(summary__icontains=search_input) | 
-            Q(description__icontains=search_input)
-        )
+            Q(description__icontains=search_input) |
+            Q(stuff_status__icontains=search_input) |
+            Q(categories__title__icontains=search_input) |  
+            Q(tags__name__icontains=search_input) |  
+            Q(region__state__icontains=search_input) |  
+            Q(region__city__icontains=search_input)   
+        ).distinct()
     
     # Pagination
     paginated = Paginator(ads, 10) 
@@ -42,12 +45,20 @@ def advertise_list_view(request):
 
 # ---------------------------------------------------------
 
+@decorators.log_before_after
 def advertise_detail_view(request: HttpRequest, adv_slug: str):
     advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug, status='published')
     advertise.increment_views()
     
+    # check if user added this advertising to his favorites
+    try:
+        favorite = request.user.favorites.get(object_id=advertise.id) 
+    except:
+        favorite = None
+        
     context = {
         'advertise': advertise,
+        'favorite': favorite,
     }
     return render (request, 'ads/adv-detail.html', context)
 
@@ -55,6 +66,7 @@ def advertise_detail_view(request: HttpRequest, adv_slug: str):
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.log_before_after
 def advertise_create_view(request):
     if request.method == 'POST':
         form = forms.StuffAdvertisingForm(data=request.POST, files=request.FILES)
@@ -92,10 +104,9 @@ def advertise_create_view(request):
 
 # ---------------------------------------------------------
 
-# ---------------------------------------------------------
-
 @login_required(login_url='accounts:login')
 @decorators.owner_required
+@decorators.log_before_after
 def advertise_image_create_view(request: HttpRequest, adv_slug: str) -> HttpResponse:
     """Add an image to existing ad."""
     advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
@@ -125,6 +136,7 @@ def advertise_image_create_view(request: HttpRequest, adv_slug: str) -> HttpResp
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
+@decorators.log_before_after
 def advertise_update_view(request: HttpRequest, adv_slug: str):
     advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
     

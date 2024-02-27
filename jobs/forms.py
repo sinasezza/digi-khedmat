@@ -21,3 +21,35 @@ class JobAdvertisingForm(forms.ModelForm):
             'region',
             'address',
         )
+
+# ================================================================
+
+class ResumeFileForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.ResumeFile
+        fields = (
+            'fname',
+            'lname',
+            'description',
+            'pdf_file',
+        )
+
+# ================================================================
+
+class ResumeForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Resume
+        fields = (
+            'fname',
+            'lname',
+            'title',
+            'description',
+            'image',
+            'telephone',
+            'email',
+            'linkedin',
+            'github',
+            'website',
+        )

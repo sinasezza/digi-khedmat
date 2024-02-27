@@ -46,7 +46,7 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(models.ResumeFile)
 class ResumeFileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'advertisement_type', 'advertisement', 'date_sent')
+    list_display = ('user', 'fname', 'lname', 'advertisement', 'date_sent')
 
 # =================================================
 

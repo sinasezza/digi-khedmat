@@ -11,6 +11,9 @@ from . import models, decorators
 
 def get_or_create_chat_room_view(request: HttpRequest, receiver_id: str) -> HttpResponseRedirect:
     receiver = get_object_or_404(Account, id=receiver_id)
+    
+    if  request.user == receiver:
+        return redirect('generics:main-page')
 
     threads = models.Thread.objects.filter((Q(user1=request.user) &  Q(user2=receiver)) | (Q(user1=receiver) & Q(user2=request.user)))
     if threads.exists():

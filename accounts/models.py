@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
@@ -63,6 +63,9 @@ class Account(AbstractUser):
     # -----------------------------------------
     info_complete = models.BooleanField(default=False, verbose_name="اطلاعات کامل است؟")
     # -----------------------------------------
+    favorites = GenericRelation(to='Favorite', object_id_field='object_id', content_type_field='advertisement_type')
+    # -----------------------------------------
+    
     
     objects = AccountManager()
     # -----------------------------------------
@@ -73,6 +76,11 @@ class Account(AbstractUser):
     
     def get_user_profile(self):
         return reverse("accounts:user-profile", kwargs={"id":self.id,})
+    
+    # -----------------------------------------
+    
+    def get_chat_url(self):
+        return reverse('chat:get-create-chat-room', kwargs={"receiver_id": self.id})
     
     # -----------------------------------------
     
@@ -144,6 +152,11 @@ class Favorite(models.Model):
         indexes = [
             models.Index(fields=["advertisement_type", "object_id"]),
         ]
+    
+    # -----------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.owner.username}'s  favorite for {self.advertisement}"
 
 # ==================================================================================
 
