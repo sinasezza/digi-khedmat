@@ -53,3 +53,62 @@ class ResumeForm(forms.ModelForm):
             'github',
             'website',
         )
+        
+# ================================================================
+
+class ExperienceForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Experience
+        fields = (
+            'title',
+            'company',
+            'start_date',
+            'end_date',
+            'description',
+        )
+
+# ================================================================
+
+class SkillForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Skill
+        fields = (
+            'title',
+        )
+
+# ================================================================
+
+class EducationForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Education
+        fields = (
+            'title',
+            'description',
+            'start_date',
+            'end_date',
+        )
+
+# ================================================================
+
+class AchievementForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Achievement
+        fields = (
+            'title',
+            'description',
+        )
+
+# ================================================================
+
+class LanguageForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Language
+        fields = (
+            'name',
+            'level',
+        )

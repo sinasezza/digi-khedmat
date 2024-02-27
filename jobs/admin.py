@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
+
 from . import models
 
 
@@ -34,7 +36,26 @@ class StudyGradeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'title')
+    list_display = ('user', 'advertisement', 'fname', 'lname', 'date_created')
+    ordering = ('-user', '-date_created')
+    readonly_fields = ('image_tag',)
+
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'advertisement', 'fname', 'lname', 'image', 'image_tag')
+        }),
+        ('Other Information', {
+            'fields': ('description', 'telephone', 'email', 'linkedin', 'github', 'website'),
+        }),
+    )
+
+    def image_tag(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" style="max-width:200px;max-height:200px" />')
+        else:
+            return '-'
+
+    image_tag.short_description = 'عکس رزومه'
 
 # =================================================
 
@@ -46,7 +67,8 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(models.ResumeFile)
 class ResumeFileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'fname', 'lname', 'advertisement', 'date_sent')
+    list_display = ('user', 'advertisement', 'fname', 'lname', 'advertisement', 'date_sent')
+    ordering = ('-user', '-date_sent')
 
 # =================================================
 

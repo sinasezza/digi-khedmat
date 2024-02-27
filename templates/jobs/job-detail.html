@@ -124,86 +124,92 @@
 
       <!-- Form 1: ResumeFileForm -->
       <div x-show="activeTab === 'form1'" id="form1" class="w-full md:w-1/2">
-        <form action="{% url 'jobs:resume-file-create' job.slug %}" method="post" class="flex flex-wrap">
-          {% csrf_token %}
-          <div class="w-full px-4 mb-4">
-            <label for="fname1" class="block mb-1">نام</label>
-            <input type="text" id="fname1" name="fname" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full px-4 mb-4">
-            <label for="lname1" class="block mb-1">نام خانوادگی</label>
-            <input type="text" id="lname1" name="lname" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full px-4 mb-4">
-            <label for="description1" class="block mb-1">توضیحات</label>
-            <textarea id="description1" name="description" class="w-full rounded-md border-gray-300"></textarea>
-          </div>
-          <div class="w-full px-4 mb-4">
-            <label for="pdf_file" class="block mb-1">فایل رزومه</label>
-            <input type="file" id="pdf_file" name="pdf_file" class="w-full rounded-md border-gray-300">
-          </div>
-          <!-- Add more fields as needed -->
-          <div class="w-full px-4 mb-4">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
-          </div>
-        </form>
+        {% if request.user.is_authenticated %}
+          <form action="{% url 'jobs:resume-file-create' job.slug %}" method="post" class="flex flex-wrap" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="w-full px-4 mb-4">
+              <label for="fname1" class="block mb-1">نام</label>
+              <input type="text" id="fname1" name="fname" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full px-4 mb-4">
+              <label for="lname1" class="block mb-1">نام خانوادگی</label>
+              <input type="text" id="lname1" name="lname" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full px-4 mb-4">
+              <label for="description1" class="block mb-1">توضیحات</label>
+              <textarea id="description1" name="description" class="w-full rounded-md border-gray-300"></textarea>
+            </div>
+            <div class="w-full px-4 mb-4">
+              <label for="pdf_file" class="block mb-1">فایل رزومه</label>
+              <input type="file" id="pdf_file" name="pdf_file" class="w-full rounded-md border-gray-300" accept=".pdf">
+            </div>
+            <!-- Add more fields as needed -->
+            <div class="w-full px-4 mb-4">
+              <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
+            </div>
+          </form>
+        {% else %}
+          <p class="font-semibold">برای ارسال فایل باید وارد حساب خود شوید.</p>
+        {% endif %}
       </div>
 
       <!-- Form 2: ResumeForm -->
       <div x-show="activeTab === 'form2'" id="form2" class="w-full md:w-1/2">
-        <form action="{% url 'jobs:resume-create' job.slug %}" method="post" class="flex flex-wrap ml-0">
-          {% csrf_token %}
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="fname2" class="block mb-1">نام</label>
-            <input type="text" id="fname2" name="fname" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="lname2" class="block mb-1">نام خانوادگی</label>
-            <input type="text" id="lname2" name="lname" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="title" class="block mb-1">عنوان شغلی</label>
-            <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="description2" class="block mb-1">توضیحات</label>
-            <textarea id="description2" name="description" class="w-full rounded-md border-gray-300"></textarea>
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="image" class="block mb-1">عکس</label>
-            <input type="file" id="image" name="image" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="telephone" class="block mb-1">شماره تلفن</label>
-            <input type="text" id="telephone" name="telephone" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="email" class="block mb-1">ایمیل</label>
-            <input type="email" id="email" name="email" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="linkedin" class="block mb-1">آدرس لینکدین</label>
-            <input type="text" id="linkedin" name="linkedin" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="github" class="block mb-1">آدرس گیتهاب</label>
-            <input type="text" id="github" name="github" class="w-full rounded-md border-gray-300">
-          </div>
-          <div class="w-full md:w-1/2 px-4 mb-4">
-            <label for="website" class="block mb-1">آدرس وبسایت</label>
-            <input type="text" id="website" name="website" class="w-full rounded-md border-gray-300">
-          </div>
-          <!-- Add more fields as needed -->
-          <div class="w-full px-4 mb-4">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
-          </div>
-        </form>
+        {% if request.user.is_authenticated %}
+          <form action="{% url 'jobs:resume-create' job.slug %}" method="post" class="flex flex-wrap ml-0" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="fname2" class="block mb-1">نام</label>
+              <input type="text" id="fname2" name="fname" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="lname2" class="block mb-1">نام خانوادگی</label>
+              <input type="text" id="lname2" name="lname" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="title" class="block mb-1">عنوان شغلی</label>
+              <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="description2" class="block mb-1">توضیحات</label>
+              <textarea id="description2" name="description" class="w-full rounded-md border-gray-300"></textarea>
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="image" class="block mb-1">عکس</label>
+              <input type="file" id="image" name="image" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="telephone" class="block mb-1">شماره تلفن</label>
+              <input type="text" id="telephone" name="telephone" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="email" class="block mb-1">ایمیل</label>
+              <input type="email" id="email" name="email" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="linkedin" class="block mb-1">آدرس لینکدین</label>
+              <input type="text" id="linkedin" name="linkedin" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="github" class="block mb-1">آدرس گیتهاب</label>
+              <input type="text" id="github" name="github" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="w-full md:w-1/2 px-4 mb-4">
+              <label for="website" class="block mb-1">آدرس وبسایت</label>
+              <input type="text" id="website" name="website" class="w-full rounded-md border-gray-300">
+            </div>
+            <!-- Add more fields as needed -->
+            <div class="w-full px-4 mb-4">
+              <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
+            </div>
+          </form>
+        {% else %}
+          <p class="font-semibold">برای پر کردن فرم باید وارد حساب خود شوید.</p>
+        {% endif %}
       </div>
-
-
-
     </div>
   </div>
+  <!-- End Modal for displaying send resume form -->
 
 {% endblock content %}
 
