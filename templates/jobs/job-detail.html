@@ -217,8 +217,8 @@
   <script type="text/javascript">
     const save_img = "{% static 'global/icons/insta-save.png' %}";
     const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
-    const advertisementId = "{{ advertise.id }}";
-    const advertisementType = "StuffAdvertising";
+    const advertisementId = "{{ job.id }}";
+    const advertisementType = "JobAdvertising";
     const csrftoken = getCookie('csrftoken');
     let isFavorite = {% if favorite %}true{% else %}false{% endif %};
     let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
