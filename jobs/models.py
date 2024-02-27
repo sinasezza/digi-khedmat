@@ -160,6 +160,34 @@ class StudyField(models.Model):
 
 # =======================================================================
 
+class ResumeFile(models.Model):
+    def resume_pdf_file_path(instance, filename):
+        new_filename = str(uuid.uuid1())
+        return f"jobs/cvs/pdfs/{new_filename}.pdf"
+    # --------------------------------------
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # --------------------------------------
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
+    # --------------------------------------
+    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
+    # -----------------------------------------
+    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
+    # --------------------------------------
+    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
+    # --------------------------------------
+    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
+    # --------------------------------------
+    pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
+    # --------------------------------------
+
+    date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
+    # -----------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.fname} {self.lname} <-> {self.advertisement}"
+
+# =======================================================================
+
 class Resume(models.Model):
     def resume_image_path(instance, filename):
         new_filename = str(uuid.uuid1())
@@ -178,7 +206,7 @@ class Resume(models.Model):
     # --------------------------------------
     title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
     # --------------------------------------
-    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
+    description = models.TextField(max_length=755, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
     image = models.ImageField(upload_to=resume_image_path, null=True, blank=True, verbose_name="عکس")
     # --------------------------------------
@@ -220,34 +248,6 @@ class Resume(models.Model):
 
 # =======================================================================
 
-class ResumeFile(models.Model):
-    def resume_pdf_file_path(instance, filename):
-        new_filename = str(uuid.uuid1())
-        return f"jobs/cvs/pdfs/{new_filename}.pdf"
-    # --------------------------------------
-    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # --------------------------------------
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
-    # --------------------------------------
-    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
-    # -----------------------------------------
-    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
-    # --------------------------------------
-    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
-    # --------------------------------------
-    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
-    # --------------------------------------
-    pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
-    # --------------------------------------
-
-    date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
-    # -----------------------------------------
-    
-    def __str__(self) -> str:
-        return f"{self.fname} {self.lname} <-> {self.advertisement}"
-
-# =======================================================================
-
 class Experience(models.Model):
     title = models.CharField(max_length=255)
     # --------------------------------------
@@ -271,7 +271,6 @@ class Experience(models.Model):
         pass
 
 # =======================================================================
-
 
 class Skill(models.Model):
     title = models.CharField(max_length=80, verbose_name="عنوان")

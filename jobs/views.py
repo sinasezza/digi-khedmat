@@ -1,22 +1,13 @@
 import uuid
-import logging
-from typing import Any
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
+from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.views import generic
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.units import inch
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
 from generics import models as generics_models
 from . import models, forms, decorators
@@ -217,34 +208,48 @@ def resume_detail_view(request, id):
 # ---------------------------------------------------------
 
 @login_required(login_url="accounts:login")
+@require_POST
 def  resume_file_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
-    """View for uploading a user's CV."""
-    if request.method == "POST":
-        form = forms.ResumeFileForm(data=request.POST,)
+    job_advertising = get_object_or_404(models.JobAdvertising, slug=job_slug)
+    
+    form = forms.ResumeFileForm(data=request.POST or None, files=request.FILES or None)
+    
+    if form.is_valid():
+        resume = form.save(commit=False)
+        resume.user = request.user
+        resume.advertisement = job_advertising
+        resume.save()
         
-        if not form.is_valid():
-            messages.error(request, "Please correct the errors below.")
-            
-        else:
-            # Save the file to MEDIA_ROOT directory and create Resume object with it
-            pass
+        messages.success(request, f"رزومه شما برای {job_advertising.owner.username} ارسال شد.")
+        return redirect('jobs:job-detail', job_slug=job_slug)
+        
     else:
-        messages.warning(request, "خطایی پیش آمده لطفا دوباره تلاش کنید")
-        return redirect()
+        print(f"error : {form.errors.as_data()}")
+        messages.error(request, "خطایی پیش آمده لطفا دوباره تلاش کنید")
+        return redirect('jobs:job-detail', job_slug=job_slug)
 
 # ---------------------------------------------------------
 
 @login_required(login_url="accounts:login")
+@require_POST
 def  resume_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
-    """View for uploading a user's CV."""
-    if request.method == "POST":
-        form = forms.ResumeForm(data=request.POST, files=request.FILES or None)
+    job_advertising = get_object_or_404(models.JobAdvertising, slug=job_slug)
+    form = forms.ResumeForm(data=request.POST or None, files=request.FILES or None)
+    
+    print(f"request files is {request.FILES}/n")
+
+    if form.is_valid():
+        resume = form.save(commit=False)
+        resume.user = request.user
+        resume.advertisement = job_advertising
+        resume.save()
         
-        if not form.is_valid():
-            messages.error(request, "Please correct the errors below.")
-            
-        else:
-            # Save the file to MEDIA_ROOT directory and create Resume object with it
-            pass
+        messages.success(request, f"رزومه شما برای {job_advertising.owner.username} ارسال شد.")
+        return redirect('jobs:job-detail', job_slug=job_slug)
+    
+    else:
+        print(f"error : {form.errors.as_data()}")
+        messages.error(request, "خطایی پیش آمده لطفا دوباره تلاش کنید")
+        return redirect('jobs:job-detail', job_slug=job_slug)
 
 # ---------------------------------------------------------
