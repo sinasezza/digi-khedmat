@@ -1,6 +1,7 @@
 import uuid
 from django.urls import reverse
 from django.utils.text import slugify
+from django.utils import timezone
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -79,6 +80,8 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='jobs', verbose_name="برچسب ها")
     # --------------------------------------
     address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
+    # --------------------------------------
+    
     
     class Meta:
         default_related_name = "jobs"
@@ -115,6 +118,15 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     def update_tags(self, tags):
         self.tags.set(tags)
         super().save()
+    
+    # --------------------------------------
+    
+    def get_gender(self):
+        # Iterate over GENDERS to find the label for the current gender title
+        for gender in self.GENDERS:
+            if gender[0] == self.gender:
+                return gender[1]
+        return '-'  # Return an empty string if the type is not found
     
     # --------------------------------------
     
@@ -158,13 +170,15 @@ class Resume(models.Model):
     # --------------------------------------
     user = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="کاربر")
     # --------------------------------------
+    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
+    # -----------------------------------------
     fname = models.CharField(max_length=255, verbose_name="نام")
     # --------------------------------------
     lname = models.CharField(max_length=255, verbose_name="نام خانوادگی")
     # --------------------------------------
     title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
     # --------------------------------------
-    description = models.TextField(max_length=255, blank=True, verbose_name="توضیحات")
+    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
     image = models.ImageField(upload_to=resume_image_path, null=True, blank=True, verbose_name="عکس")
     # --------------------------------------
@@ -172,12 +186,14 @@ class Resume(models.Model):
     # --------------------------------------
     email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="ایمیل")
     # --------------------------------------
-    linkedin = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس لینکدین")
+    linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس لینکدین")
     # --------------------------------------
-    github = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس گیتهاب")
+    github = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس گیتهاب")
     # --------------------------------------
-    website = models.CharField(max_length=255,  null=True, blank=True, verbose_name="آدرس وبسایت")
+    website = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس وبسایت")
     # --------------------------------------
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    # -----------------------------------------
 
 
     class Meta:
@@ -211,18 +227,24 @@ class ResumeFile(models.Model):
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="کاربر")
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
+    # --------------------------------------
+    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
+    # -----------------------------------------
+    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
+    # --------------------------------------
+    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
+    # --------------------------------------
+    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
     pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
     # --------------------------------------
-    advertisement_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name="نوع آگهی")
+
+    date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
     # -----------------------------------------
-    object_id = models.UUIDField(verbose_name="شناسه آگهی")
-    # -----------------------------------------
-    advertisement = GenericForeignKey("advertisement_type", "object_id")
-    # -----------------------------------------
-    date_sent = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ ارسال')
-    # -----------------------------------------
+    
+    def __str__(self) -> str:
+        return f"{self.fname} {self.lname} <-> {self.advertisement}"
 
 # =======================================================================
 
@@ -241,13 +263,6 @@ class Experience(models.Model):
     # --------------------------------------
     order = models.IntegerField(blank=False, default=100_000)
     # --------------------------------------
-
-    def tech_as_list(self):
-        tech_list = ""
-        if not self.tech == "":
-            tech_list = self.tech.replace(", ", ",").split(',')
-            tech_list = [x[0].upper() + x[1:] for x in tech_list]
-        return tech_list
 
     def __str__(self):
         return self.title

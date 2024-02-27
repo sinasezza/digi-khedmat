@@ -22,25 +22,27 @@ from generics import models as generics_models
 from . import models, forms, decorators
 
 
-logger = logging.getLogger("jobs.views")
-
-
 # ************************************** JOB ADVERTISING VIEWS **************************************
 
-
+@decorators.log_before_after
 def job_list_view(request):
     jobs = models.JobAdvertising.objects.filter(status='published')
-    
-    logger.info(f"job list fetched by  user {request.user}")
-    
+        
     # response to search job
     search_input = request.GET.get('search-area') or ''
     if search_input:
         jobs = jobs.filter(
             Q(title__icontains=search_input) | 
             Q(summary__icontains=search_input) | 
-            Q(description__icontains=search_input)
-        )
+            Q(description__icontains=search_input) |
+            Q(cooperation_types__type__icontains=search_input) | 
+            Q(study_grade__grade__icontains=search_input) |  
+            Q(gender__icontains=search_input) |  
+            Q(categories__title__icontains=search_input) |  
+            Q(tags__name__icontains=search_input) |  
+            Q(region__state__icontains=search_input) |  
+            Q(region__city__icontains=search_input)   
+        ).distinct()
     
     # Pagination
     paginated = Paginator(jobs, 6) 
@@ -55,15 +57,25 @@ def job_list_view(request):
 
 # ---------------------------------------------------------
 
+@decorators.log_before_after
 def job_detail_view(request: HttpRequest, job_slug: str):
-    logger.info(f"user {request.user} requested for job detail")
-    job = get_object_or_404(models.JobAdvertising, slug=job_slug, status='published')
-    logger.info(f"user {request.user} retrieved job detail {job}")
-    
+    job = get_object_or_404(models.JobAdvertising, slug=job_slug, status='published')    
     job.increment_views()
     
+    # check if user added this advertising to his favorites
+    try:
+        favorite = request.user.favorites.get(object_id=job.id) 
+    except:
+        favorite = None
+    
+    resume_form = forms.ResumeForm()
+    resume_file_form = forms.ResumeFileForm()
+        
     context = {
         'job': job,
+        'favorite': favorite,
+        'resume_form': resume_form,
+        'resume_file_form': resume_file_form,
     }
     return render (request, 'jobs/job-detail.html', context)
 
@@ -191,22 +203,8 @@ def job_delete_view(request: HttpRequest, job_id: str, job_slug: str):
 
 # ************************************** RESUME VIEWS **************************************
 
-
-@login_required(login_url="accounts:login")
-def  resume_upload_view(request: HttpRequest) -> HttpResponseRedirect:
-    """View for uploading a user's CV."""
-    if request.method == "POST":
-        form = forms.ResumeUploadForm(data=request.POST, files=request.FILES or None)
-        
-        if not form.is_valid():
-            messages.error(request, "Please correct the errors below.")
-            
-        else:
-            # Save the file to MEDIA_ROOT directory and create Resume object with it
-            pass
-
-# ---------------------------------------------------------
-
+@login_required
+@decorators.resume_connection_required
 def resume_detail_view(request, id):
     resume = models.Resume.objects.get(id=id)
     
@@ -216,50 +214,37 @@ def resume_detail_view(request, id):
     
     return  render(request, 'jobs/resumes/resume-details.html', context)
 
+# ---------------------------------------------------------
 
-# def write_pdf_view(request):
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
+@login_required(login_url="accounts:login")
+def  resume_file_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
+    """View for uploading a user's CV."""
+    if request.method == "POST":
+        form = forms.ResumeFileForm(data=request.POST,)
+        
+        if not form.is_valid():
+            messages.error(request, "Please correct the errors below.")
+            
+        else:
+            # Save the file to MEDIA_ROOT directory and create Resume object with it
+            pass
+    else:
+        messages.warning(request, "خطایی پیش آمده لطفا دوباره تلاش کنید")
+        return redirect()
 
-#     buffer = BytesIO()
-#     p = canvas.Canvas(buffer)
+# ---------------------------------------------------------
 
-#     # Start writing the PDF here
-#     p.drawString(100, 100, 'resume and title')
-#     resume = models.Resume.objects.first()
-#     p.drawString(100, 200, f"Title: {resume.title}")
-#     p.drawString(100, 300, f"Author: {resume.fname}")
-#     p.drawString(100, 400, f"Year: {resume.lname}")
-#     # End writing
-
-#     p.showPage()
-#     p.save()
-
-#     pdf = buffer.getvalue()
-#     buffer.close()
-#     response.write(pdf)
-
-#     return response
-
-
-# def write_pdf_view2(request):
-#     doc = SimpleDocTemplate("/tmp/somefilename.pdf")
-#     styles = getSampleStyleSheet()
-#     Story = [Spacer(1,2*inch)]
-#     style = styles["Normal"]
-#     for i in range(100):
-#        bogustext = ("This is Paragraph number %s.  " % i) * 20
-#        p = Paragraph(bogustext, style)
-#        Story.append(p)
-#        Story.append(Spacer(1,0.2*inch))
-#     doc.build(Story)
-
-#     fs = FileSystemStorage("/tmp")
-#     with fs.open("somefilename.pdf") as pdf:
-#         response = HttpResponse(pdf, content_type='application/pdf')
-#         response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-#         return response
-
-#     return response
+@login_required(login_url="accounts:login")
+def  resume_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
+    """View for uploading a user's CV."""
+    if request.method == "POST":
+        form = forms.ResumeForm(data=request.POST, files=request.FILES or None)
+        
+        if not form.is_valid():
+            messages.error(request, "Please correct the errors below.")
+            
+        else:
+            # Save the file to MEDIA_ROOT directory and create Resume object with it
+            pass
 
 # ---------------------------------------------------------

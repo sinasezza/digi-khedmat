@@ -10,27 +10,29 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
+from accounts.models import Favorite
 from generics import models as generics_models
 from . import models, forms, decorators
 
 
-logger = logging.getLogger("barters.views")
-
+@decorators.log_before_after
 def barter_list_view(request):
     barters = models.BarterAdvertising.objects.filter(status='published')
     
-    logger.info(f"barter list fetched by  user {request.user}")
-    
-    # response to search barter
+    # search barter advertising based on search input
     search_input = request.GET.get('search-area') or ''
     if search_input:
         barters = barters.filter(
             Q(title__icontains=search_input) | 
             Q(summary__icontains=search_input) | 
-            Q(description__icontains=search_input)
-        )
+            Q(description__icontains=search_input) |
+            Q(categories__title__icontains=search_input) |  
+            Q(tags__name__icontains=search_input) |  
+            Q(region__state__icontains=search_input) |  
+            Q(region__city__icontains=search_input)   
+        ).distinct()
     
-    # Pagination
+    # paginate advertising items
     paginated = Paginator(barters, 6) 
     page_number = request.GET.get("page")  
     paginated_barters = paginated.get_page(page_number)
@@ -43,15 +45,20 @@ def barter_list_view(request):
 
 # ---------------------------------------------------------
 
+@decorators.log_before_after
 def barter_detail_view(request: HttpRequest, barter_slug: str):
-    logger.info(f"user {request.user} requested for barter detail")
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug, status='published')
-    logger.info(f"user {request.user} retrieved barter detail {barter}")
-    
     barter.increment_views()
     
+    # check if user added this advertising to his favorites
+    try:
+        favorite = request.user.favorites.get(object_id=barter.id) 
+    except:
+        favorite = None
+
     context = {
         'barter': barter,
+        'favorite': favorite,
     }
     return render (request, 'barters/barter-detail.html', context)
 
@@ -59,6 +66,7 @@ def barter_detail_view(request: HttpRequest, barter_slug: str):
 # ---------------------------------------------------------
 
 @login_required(login_url='accounts:login')
+@decorators.log_before_after
 def barter_create_view(request: HttpRequest) -> HttpResponse:
     """View to create a new barter advertisement."""
     if request.method == 'POST':
@@ -104,6 +112,7 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
+@decorators.log_before_after
 def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResponse:
     """Add an image to existing ad."""
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
@@ -132,6 +141,7 @@ def barter_image_create_view(request: HttpRequest, barter_slug: str) -> HttpResp
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
+@decorators.log_before_after
 def barter_update_view(request: HttpRequest, barter_slug: str):
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     
@@ -170,6 +180,7 @@ def barter_update_view(request: HttpRequest, barter_slug: str):
 
 @login_required(login_url='accounts:login')
 @decorators.owner_required
+@decorators.log_before_after
 def barter_delete_view(request: HttpRequest, barter_id: str, barter_slug: str):
     barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
     

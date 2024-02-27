@@ -59,11 +59,6 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     
     # --------------------------------------
     
-    def get_chat_url(self):
-        return reverse('chat:get-create-chat-room', kwargs={"receiver_id": self.owner.id})
-    
-    # --------------------------------------
-    
     def update_categories(self, categories):
         self.categories.set(categories)
         super().save()

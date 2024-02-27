@@ -8,50 +8,66 @@
     <div class="bg-white p-8 rounded-md shadow-md">
       <h2 class="text-3xl font-bold mb-4">{{ barter.title }}</h2>
       <h3 class="text-2xl font-semibold text-gray-700 mb-4">
-        ارتباط با <a href="{{ barter.get_chat_url }}" class="text-blue-600 hover:underline">{{ barter.owner.username }}</a>
+        ارتباط با <a href="{{barter.owner.get_user_profile}}" class="text-blue-600 hover:underline">{{ barter.owner.username }}</a>
       </h3>
 
-      <button id="add-favorite-btn" class="text-white px-4 py-2 rounded-md shadow-md transition duration-300 bg-slate-600 hover:bg-slate-700">
-        <img src="{% static 'global/icons/instagram-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
-      </button>
-      
-      <h3>خلاصه</h3>
-      <p class="text-gray-600 my-4">{{ barter.summary }}</p>
-      <p class="text-sm text-gray-500 my-4">{{ barter.date_created | to_Jdate }}</p>
-      <img src="{{ barter.qrcode_image.url }}" alt="QR Code" class="w-40 h-40 my-4">
-
-      <div class="mb-4">
-        <strong>دسته بندی‌ها:</strong>
-        {% for category in barter.categories.all %}
-          <a href="{% url 'barters:barter-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer">{{ category.title }}</a>
-        {% endfor %}
-      </div>
-      
-      <div class="mb-4">
-        <strong>برچسب‌ها:</strong>
-        {% for tag in barter.tags.all %}
-          <a href="{% url 'barters:barter-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer">{{ tag.name }}</a>
-        {% endfor %}
-      </div>
-
-      <div class="mb-4">
-        <strong>موقعیت‌ها:</strong>
-        {% for location in barter.locations.all %}
-            <a href="{% url 'barters:barter-list' %}?search-area={{location.city}}" class="mr-2 cursor-pointer">{{ location.city }}, {{ location.province }}</a>
-        {% endfor %}
-      </div>
-
-      <h3>توضیحات</h3>
-      <div class="text-gray-800">{{ barter.description | safe }}</div>
-
       <!-- Barter Images Grid -->
-      <div class="grid grid-cols-3 gap-4 mt-8">
+      <div class="grid grid-cols-4 gap-4 mt-8">
         {% for image_obj in barter.images.all %}
           <div class="relative">
-            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer barter-image">
+            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer barter-image h-80 w-80">
           </div>
         {% endfor %}
       </div>
+
+      <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+        {% if favorite %}
+          <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+        {% else %}
+          <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
+        {% endif %}
+      </button>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">خلاصه:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ barter.summary }}</p>
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">تاریخ انتشار:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ barter.date_published | to_Jdate }}</p>
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">توضیحات:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ barter.description | safe }}</p>
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">منطقه:</strong>
+        <a href="{% url 'barters:barter-list' %}?search-area={{barter.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">{{ barter.region.state }}</a>,
+        <a href="{% url 'barters:barter-list' %}?search-area={{barter.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">{{ barter.region.city }}</a>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">آدرس:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ barter.address }}</p>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">دسته بندی‌ها:</strong>
+        {% for category in barter.categories.all %}
+          <a href="{% url 'barters:barter-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">{{ category.title }}</a>
+        {% endfor %}
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">برچسب‌ها:</strong>
+        {% for tag in barter.tags.all %}
+          <a href="{% url 'barters:barter-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">{{ tag.name }}</a>
+        {% endfor %}
+      </div>
+
     </div>
   </div>
 
@@ -65,5 +81,15 @@
 {% endblock content %}
 
 {% block custom_js %}
+  <script type="text/javascript">
+    const save_img = "{% static 'global/icons/insta-save.png' %}";
+    const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
+    const advertisementId = "{{ barter.id }}";
+    const advertisementType = "BarterAdvertising";
+    const csrftoken = getCookie('csrftoken');
+    let isFavorite = {% if favorite %}true{% else %}false{% endif %};
+    let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
+  </script>
+
   <script src="{% static 'barters/js/barter-detail.js' %}"></script>
 {% endblock custom_js %}
