@@ -12,8 +12,7 @@ urlpatterns = [
     path('change-password/', views.change_password_view, name='change-password'),
     path('user-panel/', views.user_panel_view, name='user-panel'),
     path('my-profile/', views.my_profile_view, name='my-profile'),
-    path('user-profile/<str:id>/', views.user_profile_view, name='user-profile'),
+    path('user-profile/@<str:username>/', views.user_profile_view, name='user-profile'),
     path('notifications/', views.notifications_view, name='notifications'),
     path('favorites/', views.favorites_view, name='favorites'),
-    path('customers/', views.customers_view, name='customers'),
 ]

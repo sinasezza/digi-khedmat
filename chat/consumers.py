@@ -39,7 +39,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Save message to the database
         saved_message = await self.save_message(sender_username, receiver_username, message)
-        print(f"saved message is {saved_message}")
 
         # Send message to room group
         await self.channel_layer.group_send(

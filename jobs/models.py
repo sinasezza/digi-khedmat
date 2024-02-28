@@ -167,9 +167,11 @@ class ResumeFile(models.Model):
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, verbose_name="کاربر")
+    employer = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True, related_name='rcv_resume_files', verbose_name="کارفرما")
     # --------------------------------------
-    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, related_name='resume_files', verbose_name="کاربر")
+    # --------------------------------------
+    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, related_name='resume_files', verbose_name="آگهی")
     # -----------------------------------------
     fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
     # --------------------------------------
@@ -179,12 +181,24 @@ class ResumeFile(models.Model):
     # --------------------------------------
     pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
     # --------------------------------------
-
     date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
+    # -----------------------------------------
+    is_sent = models.BooleanField(default=True, verbose_name="ارسال شده")
     # -----------------------------------------
     
     def __str__(self) -> str:
         return f"{self.fname} {self.lname} <-> {self.advertisement}"
+    
+    # -----------------------------------------
+    
+    def get_absolute_url(self):
+        return reverse("jobs:resume-file-detail", kwargs={"id": self.id})
+    
+    # -----------------------------------------
+    
+    def get_pdf_url(self):
+        return reverse("jobs:pdf-preview", kwargs={'id': self.id})
+    
 
 # =======================================================================
 
@@ -196,9 +210,11 @@ class Resume(models.Model):
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="کاربر")
+    employer = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True, related_name='rcv_resumes', verbose_name="کارفرما")
     # --------------------------------------
-    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, verbose_name="آگهی")
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='resumes', verbose_name="کاربر")
+    # --------------------------------------
+    advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, related_name='resumes', verbose_name="آگهی")
     # -----------------------------------------
     fname = models.CharField(max_length=255, verbose_name="نام")
     # --------------------------------------
@@ -222,7 +238,8 @@ class Resume(models.Model):
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     # -----------------------------------------
-
+    is_sent = models.BooleanField(default=False, verbose_name="ارسال شده")
+    # -----------------------------------------
 
     class Meta:
         pass
@@ -230,9 +247,25 @@ class Resume(models.Model):
     # --------------------------------------
 
     def __str__(self):
-        return f"{self.full_name} - {self.title}"
+        return f"adv:{self.advertisement} - name:{self.full_name} - title:{self.title}"
 
     # --------------------------------------
+    
+    def get_absolute_url(self):
+        return reverse("jobs:resume-detail", kwargs={"id": self.id})
+    
+    # --------------------------------------
+    
+    def get_complete_url(self):
+        return reverse("jobs:resume-complete", kwargs={'resume_id': self.id})
+    
+    # --------------------------------------
+    
+    def send(self):
+        self.sent = True
+        super.save()
+    
+    # -----------------------------------------
     
     @property
     def full_name(self):
@@ -249,9 +282,9 @@ class Resume(models.Model):
 # =======================================================================
 
 class Experience(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, verbose_name="عنوان")
     # --------------------------------------
-    company = models.CharField(max_length=255)
+    company = models.CharField(max_length=255, verbose_name="شرکت/مجموعه")
     # --------------------------------------
     start_date = models.DateField(null=True, blank=True, verbose_name="تاریخ شروع")
     # --------------------------------------
@@ -261,11 +294,9 @@ class Experience(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='experiences')
     # --------------------------------------
-    order = models.IntegerField(blank=False, default=100_000)
-    # --------------------------------------
 
     def __str__(self):
-        return self.title
+        return f"resume:{self.resume} - title:{self.title}"
 
     class Meta:
         pass
@@ -277,11 +308,9 @@ class Skill(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='skills')
     # --------------------------------------
-    order = models.IntegerField(blank=False, default=100_000)
-    # --------------------------------------
 
     def __str__(self):
-        return self.title
+        return f"resume:{self.resume} - title:{self.title}"
 
     class Meta:
         pass
@@ -299,11 +328,9 @@ class Education(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='educations')
     # --------------------------------------
-    order = models.IntegerField(blank=False, default=100_000)
-    # --------------------------------------
 
     def __str__(self):
-        return self.title
+        return f"resume:{self.resume} - title:{self.title}"
 
     class Meta:
         pass
@@ -317,11 +344,10 @@ class Achievement(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='achievements')
     # --------------------------------------
-    order = models.IntegerField(blank=False, default=100_000)
-    # --------------------------------------
+
 
     def __str__(self):
-        return self.title
+        return f"resume:{self.resume} - title:{self.title}"
 
     class Meta:
         pass
@@ -340,11 +366,10 @@ class Language(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='languages')
     # --------------------------------------
-    order = models.IntegerField(blank=False, default=100_000)
-    # --------------------------------------
+
 
     def __str__(self):
-        return self.title
+        return f"resume:{self.resume} - title:{self.name} - level:{self.level}"
 
     class Meta:
         pass

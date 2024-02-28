@@ -7,7 +7,8 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest, FileResponse
+from django.forms import modelformset_factory
 
 from generics import models as generics_models
 from . import models, forms, decorators
@@ -194,16 +195,53 @@ def job_delete_view(request: HttpRequest, job_id: str, job_slug: str):
 
 # ************************************** RESUME VIEWS **************************************
 
+
+@login_required(login_url="accounts:login")
+def resume_list_view(request: HttpRequest) -> HttpResponse:
+    resumes = request.user.rcv_resumes.all()
+    resume_files = request.user.rcv_resume_files.all()
+    
+    print(f"resume files is {resume_files}")
+    
+    context = {
+        'resumes': resumes,
+        'resume_files': resume_files,
+    }
+    return render(request, 'jobs/resumes/resume-list.html', context)
+
+# ---------------------------------------------------------
+
 @login_required
 @decorators.resume_connection_required
-def resume_detail_view(request, id):
-    resume = models.Resume.objects.get(id=id)
+def resume_file_detail_view(request: HttpRequest, id: str) -> HttpResponse:
+    resume = get_object_or_404(models.ResumeFile, id=id)
+        
+    context = {
+        'resume': resume,
+    }
+        
+    return  render(request, 'jobs/resumes/resume-file-detail.html', context)
+
+# ---------------------------------------------------------
+
+@login_required
+@decorators.resume_connection_required
+def pdf_preview_view(request, id):
+    resume = get_object_or_404(models.ResumeFile, id=id)
+    return FileResponse(open(f'{resume.pdf_file.path}', 'rb'), content_type='application/pdf')
+
+# ---------------------------------------------------------
+
+@login_required
+@decorators.resume_connection_required
+def resume_detail_view(request : HttpRequest, id: str):
+    resume = get_object_or_404(models.Resume, id=id)
     
     context = {
         'resume': resume,
     }
     
-    return  render(request, 'jobs/resumes/resume-details.html', context)
+    return  render(request, 'jobs/resumes/resume-detail.html', context)
 
 # ---------------------------------------------------------
 
@@ -218,9 +256,10 @@ def  resume_file_create_view(request: HttpRequest, job_slug: str) -> HttpRespons
         resume = form.save(commit=False)
         resume.user = request.user
         resume.advertisement = job_advertising
+        resume.employer = job_advertising.owner
         resume.save()
         
-        messages.success(request, f"رزومه شما برای {job_advertising.owner.username} ارسال شد.")
+        messages.success(request, f"رزومه شما برای {resume.employer.username} ارسال شد.")
         return redirect('jobs:job-detail', job_slug=job_slug)
         
     else:
@@ -232,7 +271,7 @@ def  resume_file_create_view(request: HttpRequest, job_slug: str) -> HttpRespons
 
 @login_required(login_url="accounts:login")
 @require_POST
-def  resume_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
+def resume_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedirect:
     job_advertising = get_object_or_404(models.JobAdvertising, slug=job_slug)
     form = forms.ResumeForm(data=request.POST or None, files=request.FILES or None)
     
@@ -242,14 +281,97 @@ def  resume_create_view(request: HttpRequest, job_slug: str) -> HttpResponseRedi
         resume = form.save(commit=False)
         resume.user = request.user
         resume.advertisement = job_advertising
+        resume.employer = job_advertising.owner
         resume.save()
         
-        messages.success(request, f"رزومه شما برای {job_advertising.owner.username} ارسال شد.")
-        return redirect('jobs:job-detail', job_slug=job_slug)
+        return redirect(resume.get_complete_url())
     
     else:
         print(f"error : {form.errors.as_data()}")
         messages.error(request, "خطایی پیش آمده لطفا دوباره تلاش کنید")
         return redirect('jobs:job-detail', job_slug=job_slug)
+
+# ---------------------------------------------------------
+
+@login_required(login_url="accounts:login")
+@decorators.resume_owner_required
+def resume_complete_view(request, resume_id):
+    resume = get_object_or_404(models.Resume, id=resume_id)
+    
+    # Create formsets for related models
+    ExperienceFormSet = modelformset_factory(models.Experience, form=forms.ExperienceForm, extra=1)
+    SkillFormSet = modelformset_factory(models.Skill, form=forms.SkillForm, extra=1)
+    EducationFormSet = modelformset_factory(models.Education, form=forms.EducationForm, extra=1)
+    AchievementFormSet = modelformset_factory(models.Achievement, form=forms.AchievementForm, extra=1)
+    LanguageFormSet = modelformset_factory(models.Language, form=forms.LanguageForm, extra=1)
+
+    if request.method == 'POST':
+        resume_form = forms.ResumeForm(data=request.POST, files=request.FILES, instance=resume)
+        # Save formsets if they are valid
+        experience_formset = ExperienceFormSet(request.POST, prefix='experience', queryset=models.Experience.objects.none())
+        skill_formset = SkillFormSet(request.POST, prefix='skill', queryset=models.Skill.objects.none())
+        education_formset = EducationFormSet(request.POST, prefix='education', queryset=models.Education.objects.none())
+        achievement_formset = AchievementFormSet(request.POST, prefix='achievement', queryset=models.Achievement.objects.none())
+        language_formset = LanguageFormSet(request.POST, prefix='language', queryset=models.Language.objects.none())
+
+        if (resume_form.is_valid() and
+            experience_formset.is_valid() and
+            skill_formset.is_valid() and
+            education_formset.is_valid() and
+            achievement_formset.is_valid() and
+            language_formset.is_valid()):
+            
+            updated_resume = resume_form.save()
+            
+            # Save formsets with the main form instance
+            for form in experience_formset:
+                new_exp = form.save(commit=False)
+                new_exp.resume = updated_resume
+                new_exp.save()
+
+            for form in skill_formset:
+                new_skill = form.save(commit=False)
+                new_skill.resume = updated_resume
+                new_skill.save()
+
+            for form in education_formset:
+                new_edu = form.save(commit=False)
+                new_edu.resume = updated_resume
+                new_edu.save()
+
+            for form in achievement_formset:
+                new_ach = form.save(commit=False)
+                new_ach.resume = updated_resume
+                new_ach.save()
+
+            for form in language_formset:
+                new_lang = form.save(commit=False)
+                new_lang.resume = updated_resume
+                new_lang.save()
+
+            updated_resume.send()
+            messages.success(request, f"رزومه شما برای {resume.employer.username} ارسال شد.")
+            return redirect(resume.advertisement.get_absolute_url())
+        else:
+            messages.error(request, "An error occurred while processing formsets.")
+    else:
+        resume_form = forms.ResumeForm(instance=resume)
+        # Initialize formsets with queryset filtered by the current resume instance
+        experience_formset = ExperienceFormSet(prefix='experience', queryset=resume.experiences.all())
+        skill_formset = SkillFormSet(prefix='skill', queryset=resume.skills.all())
+        education_formset = EducationFormSet(prefix='education', queryset=resume.educations.all())
+        achievement_formset = AchievementFormSet(prefix='achievement', queryset=resume.achievements.all())
+        language_formset = LanguageFormSet(prefix='language', queryset=resume.languages.all())
+
+    context = {
+        'resume': resume,
+        'resume_form': resume_form,
+        'experience_formset': experience_formset,
+        'skill_formset': skill_formset,
+        'education_formset': education_formset,
+        'achievement_formset': achievement_formset,
+        'language_formset': language_formset,
+    }
+    return render(request, 'jobs/resumes/resume-create-complete.html', context)
 
 # ---------------------------------------------------------

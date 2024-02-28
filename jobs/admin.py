@@ -34,15 +34,37 @@ class StudyGradeAdmin(admin.ModelAdmin):
 
 # =================================================
 
+
+class ExperienceInline(admin.StackedInline):
+    model = models.Experience
+    extra = 1
+
+class SkillInline(admin.StackedInline):
+    model = models.Skill
+    extra = 1
+
+class EducationInline(admin.StackedInline):
+    model = models.Education
+    extra = 1
+
+class AchievementInline(admin.StackedInline):
+    model = models.Achievement
+    extra = 1
+
+class LanguageInline(admin.StackedInline):
+    model = models.Language
+    extra = 1
+
 @admin.register(models.Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'advertisement', 'fname', 'lname', 'date_created')
+    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'date_created')
     ordering = ('-user', '-date_created')
     readonly_fields = ('image_tag',)
+    inlines = [ExperienceInline, SkillInline, EducationInline, AchievementInline, LanguageInline]
 
     fieldsets = (
         (None, {
-            'fields': ('user', 'advertisement', 'fname', 'lname', 'image', 'image_tag')
+            'fields': ('user', 'employer', 'advertisement', 'fname', 'lname', 'image', 'image_tag')
         }),
         ('Other Information', {
             'fields': ('description', 'telephone', 'email', 'linkedin', 'github', 'website'),
@@ -57,6 +79,7 @@ class ResumeAdmin(admin.ModelAdmin):
 
     image_tag.short_description = 'عکس رزومه'
 
+
 # =================================================
 
 @admin.register(models.Experience)
@@ -67,7 +90,7 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(models.ResumeFile)
 class ResumeFileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'advertisement', 'fname', 'lname', 'advertisement', 'date_sent')
+    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'advertisement', 'date_sent')
     ordering = ('-user', '-date_sent')
 
 # =================================================

@@ -75,7 +75,7 @@ class Account(AbstractUser):
     # -----------------------------------------
     
     def get_user_profile(self):
-        return reverse("accounts:user-profile", kwargs={"id":self.id,})
+        return reverse("accounts:user-profile", kwargs={"username":self.username,})
     
     # -----------------------------------------
     
@@ -171,3 +171,5 @@ class OneTimePassword(models.Model):
         
     def __str__(self) -> str:
         return f"code -{self.code} for {self.user}"
+
+# ==================================================================================

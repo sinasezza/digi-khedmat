@@ -47,3 +47,12 @@ def resume_connection_required(view_func):
         return view_func(request, *args, **kwargs)
     
     return _wrapped_view
+
+# ---------------------------------------------------------------------
+
+def resume_owner_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        return view_func(request, *args, **kwargs)
+    
+    return _wrapped_view
