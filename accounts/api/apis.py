@@ -89,7 +89,6 @@ def add_favorite_api(request: HttpRequest) -> Response:
             )
             return Response(data={"message": "Favorite Object Created successfully", 'favorite_id': favorite.id,}, status=rest_status.HTTP_201_CREATED)
         except Exception as e:
-            print(f"err : {e}")
             return Response(data={"message": str(e)}, status=rest_status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)

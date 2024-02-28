@@ -176,8 +176,8 @@ def my_profile_view(request: HttpRequest) -> HttpResponse:
 
 # ---------------------------------------------------
 
-def user_profile_view(request: HttpRequest, id: str) -> HttpResponse:
-    user = get_object_or_404(models.Account, id=id)
+def user_profile_view(request: HttpRequest, username: str) -> HttpResponse:
+    user = get_object_or_404(models.Account, username=username)
     
     context = {
         'user': user,
@@ -207,11 +207,3 @@ def favorites_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'accounts/favorites.html', context)
 
 # ---------------------------------------------------
-
-@login_required(login_url='accounts:login')
-def customers_view(request: HttpRequest) -> HttpResponse:
-    
-    context = {
-        
-    }
-    return render(request, 'accounts/customers.html', context)
