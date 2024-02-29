@@ -47,4 +47,12 @@ class Message(models.Model):
         return f"Message from {self.from_user} to {self.to_user}"
 
     
+# =====================================================================
+
+class Report(models.Model):
+    thread = models.ForeignKey(to=Thread, on_delete=models.SET_NULL, null=True, blank=True, related_name='reports', verbose_name="کفت و گو")
+    # -------------------------------------------------
+    reporter = models.ForeignKey(to=get_user_model(), on_delete=models.SET_NULL, null=True, related_name='reports', verbose_name="گزارش دهنده")
+    # -------------------------------------------------
+    message = models.TextField(max_length=400, verbose_name="پیام گزارش")
     
