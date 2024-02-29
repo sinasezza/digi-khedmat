@@ -198,15 +198,19 @@ def job_delete_view(request: HttpRequest, job_id: str, job_slug: str):
 
 @login_required(login_url="accounts:login")
 def resume_list_view(request: HttpRequest) -> HttpResponse:
-    resumes = request.user.rcv_resumes.all()
-    resume_files = request.user.rcv_resume_files.all()
+    received_resumes = request.user.rcv_resumes.all()
+    sent_resumes = request.user.resumes.all()
     
-    print(f"resume files is {resume_files}")
+    received_resume_files = request.user.rcv_resume_files.all()
+    sent_resume_files = request.user.resume_files.all()
     
     context = {
-        'resumes': resumes,
-        'resume_files': resume_files,
+        "received_resumes": received_resumes,  
+        "sent_resumes": sent_resumes,  
+        "received_resume_files": received_resume_files, 
+        "sent_resume_files": sent_resume_files,
     }
+    
     return render(request, 'jobs/resumes/resume-list.html', context)
 
 # ---------------------------------------------------------
