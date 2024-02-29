@@ -226,7 +226,7 @@ def resume_file_detail_view(request: HttpRequest, id: str) -> HttpResponse:
 
 @login_required
 @decorators.resume_connection_required
-def pdf_preview_view(request, id):
+def pdf_download_view(request, id):
     resume = get_object_or_404(models.ResumeFile, id=id)
     return FileResponse(open(f'{resume.pdf_file.path}', 'rb'), content_type='application/pdf')
 
@@ -353,7 +353,7 @@ def resume_complete_view(request, resume_id):
             messages.success(request, f"رزومه شما برای {resume.employer.username} ارسال شد.")
             return redirect(resume.advertisement.get_absolute_url())
         else:
-            messages.error(request, "An error occurred while processing formsets.")
+            messages.error(request, "لطفا از صحت فرم ها اطمینان حاصل فرمایید.")
     else:
         resume_form = forms.ResumeForm(instance=resume)
         # Initialize formsets with queryset filtered by the current resume instance

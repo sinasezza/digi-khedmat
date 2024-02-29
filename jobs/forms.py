@@ -46,6 +46,8 @@ class ResumeForm(forms.ModelForm):
             'lname',
             'title',
             'description',
+            'gender',
+            'military_service',
             'image',
             'telephone',
             'email',
