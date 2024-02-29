@@ -20,7 +20,7 @@
       <h4 class="text-lg font-semibold mt-4">فایل های ارسالی</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for resume in resume_files %}
-          <div class="bg-gray-100 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}">
             <p class="mb-2">فرستنده <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
             <p class="mb-2">آگهی <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
             <p><a href="{{resume.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
@@ -33,7 +33,7 @@
       <h4 class="text-lg font-semibold mt-4">فرم های ارسالی</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for resume in resumes %}
-          <div class="bg-gray-100 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}">
             <p class="mb-2">فرستنده <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
             <p class="mb-2">آگهی <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
             <p><a href="{{resume.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>

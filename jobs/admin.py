@@ -57,8 +57,8 @@ class LanguageInline(admin.StackedInline):
 
 @admin.register(models.Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'date_created')
-    ordering = ('-user', '-date_created')
+    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'date_sent')
+    ordering = ('-user', '-date_sent')
     readonly_fields = ('image_tag',)
     inlines = [ExperienceInline, SkillInline, EducationInline, AchievementInline, LanguageInline]
 

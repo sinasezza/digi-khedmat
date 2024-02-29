@@ -98,6 +98,11 @@ class Account(AbstractUser):
 class NotificationManager(models.Manager):
     def unseen_notifications(self):
         return self.filter(seen=False)
+    
+    # -----------------------------------------
+    
+    def unseen_notifications_count(self):
+        return self.filter(seen=False).count()
 
 class Notification(models.Model):
     TYPES = (

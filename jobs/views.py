@@ -215,6 +215,9 @@ def resume_list_view(request: HttpRequest) -> HttpResponse:
 @decorators.resume_connection_required
 def resume_file_detail_view(request: HttpRequest, id: str) -> HttpResponse:
     resume = get_object_or_404(models.ResumeFile, id=id)
+    
+    if request.user == resume.employer:
+        resume.mark_as_seen(commit=True)
         
     context = {
         'resume': resume,
@@ -237,6 +240,9 @@ def pdf_download_view(request, id):
 def resume_detail_view(request : HttpRequest, id: str):
     resume = get_object_or_404(models.Resume, id=id)
     
+    if request.user == resume.employer:
+        resume.mark_as_seen(commit=True)
+    
     context = {
         'resume': resume,
     }
@@ -258,6 +264,8 @@ def  resume_file_create_view(request: HttpRequest, job_slug: str) -> HttpRespons
         resume.advertisement = job_advertising
         resume.employer = job_advertising.owner
         resume.save()
+        
+        resume.send()
         
         messages.success(request, f"رزومه شما برای {resume.employer.username} ارسال شد.")
         return redirect('jobs:job-detail', job_slug=job_slug)
