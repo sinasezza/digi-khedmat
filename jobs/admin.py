@@ -37,23 +37,23 @@ class StudyGradeAdmin(admin.ModelAdmin):
 
 class ExperienceInline(admin.StackedInline):
     model = models.Experience
-    extra = 1
+    extra = 0
 
 class SkillInline(admin.StackedInline):
     model = models.Skill
-    extra = 1
+    extra = 0
 
 class EducationInline(admin.StackedInline):
     model = models.Education
-    extra = 1
+    extra = 0
 
 class AchievementInline(admin.StackedInline):
     model = models.Achievement
-    extra = 1
+    extra = 0
 
 class LanguageInline(admin.StackedInline):
     model = models.Language
-    extra = 1
+    extra = 0
 
 @admin.register(models.Resume)
 class ResumeAdmin(admin.ModelAdmin):
@@ -67,7 +67,7 @@ class ResumeAdmin(admin.ModelAdmin):
             'fields': ('user', 'employer', 'advertisement', 'fname', 'lname', 'image', 'image_tag')
         }),
         ('Other Information', {
-            'fields': ('description', 'telephone', 'email', 'linkedin', 'github', 'website'),
+            'fields': ('description', 'military_service', 'telephone', 'email', 'linkedin', 'github', 'website'),
         }),
     )
 

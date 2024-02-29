@@ -4,30 +4,30 @@
 
 {% block content %}
 
-<div class="bg-white p-4 rounded-lg shadow-lg">
-  <h3 class="text-xl font-bold mb-4">فرستنده :</h3>
-  <p><a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
+  <div class="bg-white p-4 rounded-lg shadow-lg">
+    <h3 class="text-xl font-bold mb-4">فرستنده :</h3>
+    <p><a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
 
-  <h3 class="text-xl font-bold mt-4 mb-4">آگهی :</h3>
-  <p><a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
+    <h3 class="text-xl font-bold mt-4 mb-4">آگهی :</h3>
+    <p><a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
 
-  <div class="mt-8">
-    <div class="mb-4">
-      <span class="font-semibold">نام :</span>
-      <p>{{ resume.fname }} {{ resume.lname }}</p>
-    </div>
+    <div class="mt-8">
+      <div class="mb-4">
+        <span class="font-semibold">نام :</span>
+        <p>{{ resume.fname }} {{ resume.lname }}</p>
+      </div>
 
-    <div class="mb-4">
-      <span class="font-semibold">توضیحات :</span>
-      <p>{{ resume.description | safe }}</p>
-    </div>
+      <div class="mb-4">
+        <span class="font-semibold">توضیحات :</span>
+        <p>{{ resume.description | safe }}</p>
+      </div>
 
-    <div class="mb-4">
-      <span class="font-semibold">فایل :</span>
-      <a href="{{ resume.get_pdf_url }}" class="text-blue-500 hover:underline">دانلود</a>
+      <div class="mb-4">
+        <span class="font-semibold">فایل :</span>
+        <a href="{{ resume.get_pdf_url }}" class="text-blue-500 hover:underline">دانلود</a>
+      </div>
     </div>
   </div>
-</div>
     
 {% endblock content %}
 

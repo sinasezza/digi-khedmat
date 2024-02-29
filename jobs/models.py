@@ -197,7 +197,7 @@ class ResumeFile(models.Model):
     # -----------------------------------------
     
     def get_pdf_url(self):
-        return reverse("jobs:pdf-preview", kwargs={'id': self.id})
+        return reverse("jobs:pdf-download", kwargs={'id': self.id})
     
 
 # =======================================================================
@@ -207,6 +207,13 @@ class Resume(models.Model):
         new_filename = str(uuid.uuid1())
         return f"jobs/cvs/images/{new_filename}.png"
     
+    # --------------------------------------
+    
+    GENDERS = (
+        ("male", "مرد"),
+        ("female", "زن"),
+    )
+        
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
@@ -223,6 +230,10 @@ class Resume(models.Model):
     title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
     # --------------------------------------
     description = models.TextField(max_length=755, null=True, blank=True, verbose_name="توضیحات")
+    # --------------------------------------
+    gender = models.CharField(max_length=15, default="male", choices=GENDERS, verbose_name="جنسیت")
+    # --------------------------------------
+    military_service = models.CharField(max_length=200, null=True, blank=True, verbose_name="وضعیت سربازی")
     # --------------------------------------
     image = models.ImageField(upload_to=resume_image_path, null=True, blank=True, verbose_name="عکس")
     # --------------------------------------
@@ -272,6 +283,14 @@ class Resume(models.Model):
         return f"{self.fname} {self.lname}"
 
     # --------------------------------------
+    
+    @property
+    def gender_name(self):
+        # Iterate over GENDERS to find the label for the current gender
+        for choice in self.GENDERS:
+            if choice[0] == self.gender:
+                return choice[1]
+        return '-'  # Return an empty string if the gender is not found   
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -366,12 +385,25 @@ class Language(models.Model):
     # --------------------------------------
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='languages')
     # --------------------------------------
+    
+    class Meta:
+        pass
 
+    # --------------------------------------
 
     def __str__(self):
         return f"resume:{self.resume} - title:{self.name} - level:{self.level}"
+    
+    # --------------------------------------
+    
+    @property
+    def level_name(self) -> str:
+        # Iterate over LEVELS to find the label for the current level
+        for choice in self.LEVELS:
+            if choice[0] == self.level:
+                return choice[1]
+        return '-'  # Return an empty string if the level is not found
 
-    class Meta:
-        pass
+
 
 # =======================================================================

@@ -9,7 +9,7 @@ register = template.Library()
 def load_sidebar(request):
     unseen_notifications_count = request.user.notifications.unseen_notifications().count()
     favorites_count = request.user.favorites.count()
-    resumes_count = request.user.resumes.count() + request.user.resume_files.count()
+    resumes_count = request.user.rcv_resumes.count() + request.user.rcv_resume_files.count()
     
     context = {
         'unseen_notifications_count': unseen_notifications_count,
