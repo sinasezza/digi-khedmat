@@ -160,12 +160,79 @@ class StudyField(models.Model):
 
 # =======================================================================
 
-class ResumeFile(models.Model):
+class BaseResumeManager(models.Manager):
+    
+    def unseen_resumes(self):
+        return self.filter(seen=False)
+    
+    # --------------------------------------
+    
+    def unseen_count(self):
+        return self.filter(seen=False).count()
+    
+    # --------------------------------------
+    
+
+class BaseResume(models.Model):
+    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # --------------------------------------
+    title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
+    # --------------------------------------
+    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
+    # --------------------------------------
+    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
+    # --------------------------------------
+    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
+    # -----------------------------------------
+    date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
+    # -----------------------------------------
+    seen = models.BooleanField(default=False, verbose_name="مشاهده شده")
+    # -----------------------------------------
+    is_sent = models.BooleanField(default=False, verbose_name="ارسال شده")
+    # -----------------------------------------
+    
+    objects = BaseResumeManager()
+
+    
+    class Meta:
+        abstract = True
+    
+    # -----------------------------------------
+    
+    
+    def __str__(self):
+        return f"adv:{self.advertisement} - name:{self.full_name} - title:{self.title}"
+
+    # --------------------------------------
+    
+    def send(self):
+        self.is_sent = True
+        super.save()
+    
+    # -----------------------------------------
+    
+    @property
+    def full_name(self):
+        return f"{self.fname} {self.lname}"
+
+    # --------------------------------------
+    
+    def mark_as_seen(self, commit=False):
+        self.seen = True
+        if commit:
+            super().save()
+    
+    # -----------------------------------------
+    
+
+
+# =======================================================================
+
+class ResumeFile(BaseResume):
     def resume_pdf_file_path(instance, filename):
         new_filename = str(uuid.uuid1())
         return f"jobs/cvs/pdfs/{new_filename}.pdf"
-    # --------------------------------------
-    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     # --------------------------------------
     employer = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True, related_name='rcv_resume_files', verbose_name="کارفرما")
     # --------------------------------------
@@ -173,24 +240,9 @@ class ResumeFile(models.Model):
     # --------------------------------------
     advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, related_name='resume_files', verbose_name="آگهی")
     # -----------------------------------------
-    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
-    # --------------------------------------
-    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
-    # --------------------------------------
-    description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
-    # --------------------------------------
     pdf_file = models.FileField(max_length=100, upload_to=resume_pdf_file_path, null=True, blank=True, verbose_name="فایل رزومه")
     # --------------------------------------
-    date_sent = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ارسال")
-    # -----------------------------------------
-    is_sent = models.BooleanField(default=True, verbose_name="ارسال شده")
-    # -----------------------------------------
-    
-    def __str__(self) -> str:
-        return f"{self.fname} {self.lname} <-> {self.advertisement}"
-    
-    # -----------------------------------------
-    
+
     def get_absolute_url(self):
         return reverse("jobs:resume-file-detail", kwargs={"id": self.id})
     
@@ -200,9 +252,11 @@ class ResumeFile(models.Model):
         return reverse("jobs:pdf-download", kwargs={'id': self.id})
     
 
+    
+
 # =======================================================================
 
-class Resume(models.Model):
+class Resume(BaseResume):
     def resume_image_path(instance, filename):
         new_filename = str(uuid.uuid1())
         return f"jobs/cvs/images/{new_filename}.png"
@@ -213,24 +267,14 @@ class Resume(models.Model):
         ("male", "مرد"),
         ("female", "زن"),
     )
-        
-    # --------------------------------------
-    id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     # --------------------------------------
     employer = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True, related_name='rcv_resumes', verbose_name="کارفرما")
     # --------------------------------------
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='resumes', verbose_name="کاربر")
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, related_name='resumes', verbose_name="کاربر")
     # --------------------------------------
     advertisement = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, blank=True, null=True, related_name='resumes', verbose_name="آگهی")
     # -----------------------------------------
-    fname = models.CharField(max_length=255, verbose_name="نام")
-    # --------------------------------------
-    lname = models.CharField(max_length=255, verbose_name="نام خانوادگی")
-    # --------------------------------------
-    title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
-    # --------------------------------------
-    description = models.TextField(max_length=755, null=True, blank=True, verbose_name="توضیحات")
-    # --------------------------------------
     gender = models.CharField(max_length=15, default="male", choices=GENDERS, verbose_name="جنسیت")
     # --------------------------------------
     military_service = models.CharField(max_length=200, null=True, blank=True, verbose_name="وضعیت سربازی")
@@ -247,21 +291,12 @@ class Resume(models.Model):
     # --------------------------------------
     website = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس وبسایت")
     # --------------------------------------
-    date_created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
-    # -----------------------------------------
-    is_sent = models.BooleanField(default=False, verbose_name="ارسال شده")
-    # -----------------------------------------
 
     class Meta:
         pass
 
     # --------------------------------------
 
-    def __str__(self):
-        return f"adv:{self.advertisement} - name:{self.full_name} - title:{self.title}"
-
-    # --------------------------------------
-    
     def get_absolute_url(self):
         return reverse("jobs:resume-detail", kwargs={"id": self.id})
     
@@ -272,18 +307,6 @@ class Resume(models.Model):
     
     # --------------------------------------
     
-    def send(self):
-        self.sent = True
-        super.save()
-    
-    # -----------------------------------------
-    
-    @property
-    def full_name(self):
-        return f"{self.fname} {self.lname}"
-
-    # --------------------------------------
-    
     @property
     def gender_name(self):
         # Iterate over GENDERS to find the label for the current gender
@@ -291,11 +314,9 @@ class Resume(models.Model):
             if choice[0] == self.gender:
                 return choice[1]
         return '-'  # Return an empty string if the gender is not found   
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
+    
     # --------------------------------------
+
 
 
 # =======================================================================

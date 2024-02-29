@@ -31,6 +31,7 @@ class ResumeFileForm(forms.ModelForm):
         fields = (
             'fname',
             'lname',
+            'title',
             'description',
             'pdf_file',
         )
