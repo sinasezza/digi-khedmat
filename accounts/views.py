@@ -207,3 +207,11 @@ def favorites_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'accounts/favorites.html', context)
 
 # ---------------------------------------------------
+
+@login_required
+def settings_view(request: HttpRequest) -> HttpResponse:
+    
+    context = {
+        
+    }
+    return render(request, 'accounts/settings.html', context)
