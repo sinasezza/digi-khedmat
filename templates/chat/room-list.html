@@ -10,7 +10,7 @@
   <ul class="max-w-md space-y-4">
     {% for room in rooms %}
       {% get_other_user request.user room as other_user %}
-      <li class="bg-white shadow-md rounded-md overflow-hidden">
+      <li id="room-{{ room.name }}" class="bg-white shadow-md rounded-md overflow-hidden">
         
         <div x-data="{ isOpen: false, action: '' }">
           <!-- Button to toggle menu -->
@@ -21,20 +21,20 @@
           </button>
         
           <!-- Dropdown menu -->
-          <div x-show="isOpen" @click.away="isOpen = false" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+          <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
-                <button @click="action = 'delete'" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                <button @click="action = 'delete'" class="delete-room px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" data-room-name="{{ room.name }}">
                   حذف
                 </button>
               </li>
               <li>
-                <button @click="action = 'report'" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button @click="action = 'report'" class="report-room px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" data-room-name="{{ room.name }}">
                   گزارش
                 </button>
               </li>
             </ul>
-          </div>
+          </div>        
         </div>
         
 
@@ -59,3 +59,7 @@
     {% endfor %}
   </ul>
 {% endblock content %}
+
+{% block custom_js %}
+  <script src="{% static 'chat/js/room-list.js' %}"></script>
+{% endblock custom_js %}

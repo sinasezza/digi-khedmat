@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}دیجی خدمت | کارجویان{% endblock title %}
 
@@ -17,9 +18,10 @@
     </ul>
 
     <div x-show="activeTab === 'files'">
-      <h4 class="text-lg font-semibold mt-4">فایل های ارسالی</h4>
+
+      <h4 class="text-lg font-semibold mt-4">فایل های دریافت شده</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for resume in resume_files %}
+        {% for resume in received_resume_files %}
           <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}">
             <p class="mb-2">فرستنده <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
             <p class="mb-2">آگهی <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
@@ -27,17 +29,42 @@
           </div>
         {% endfor %}
       </div>
+
+      <h4 class="text-lg font-semibold mt-4">فایل های ارسال شده</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for resume_file in sent_resume_files %}
+          <div class="bg-gray-200 p-4 rounded-lg {% if resume_file.seen %} bg-lime-200 {% endif %}" id="resume-file-{{ resume_file.id }}">
+            <p class="mb-2">فرستنده <a href="{{ resume_file.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume_file.user.username }}</a></p>
+            <p class="mb-2">آگهی <a href="{{ resume_file.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume_file.advertisement.title }}</a></p>
+            <p><a href="{{ resume_file.file.url }}" class="text-blue-500 hover:underline">دانلود فایل</a></p>
+            <button class="delete-resume-file" data-resume-file-id="{{ resume_file.id }}">حذف</button>
+          </div>
+        {% endfor %}
+      </div>
+      
     </div>
     
     <div x-show="activeTab === 'forms'">
-      <h4 class="text-lg font-semibold mt-4">فرم های ارسالی</h4>
+      <h4 class="text-lg font-semibold mt-4">فرم های دریافت شده</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for resume in resumes %}
+        {% for resume in received_resumes %}
           <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}">
             <p class="mb-2">فرستنده <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
             <p class="mb-2">آگهی <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
             <p><a href="{{resume.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
           </div>
+        {% endfor %}
+      </div>
+
+      <h4 class="text-lg font-semibold mt-4">فرم های ارسال شده</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for resume in sent_resumes %}
+          <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}" id="resume-{{ resume.id }}">
+            <p class="mb-2">فرستنده <a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
+            <p class="mb-2">آگهی <a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
+            <p><a href="{{ resume.get_absolute_url }}" class="text-blue-500 hover:underline">مشاهده</a></p>
+            <button class="delete-resume" data-resume-id="{{ resume.id }}">حذف</button>
+          </div>        
         {% endfor %}
       </div>
     </div>
@@ -45,4 +72,7 @@
 {% endblock content %}  
 
 
-{% block custom_js %}{% endblock custom_js %}
+{% block custom_js %}
+  <script src="{% static 'jobs/js/resume-list.js' %}"></script>
+{% endblock custom_js %}
+

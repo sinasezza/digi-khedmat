@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/barters/', include('barters.api.urls', namespace='barters-api')),
     path('api/ads/', include('ads.api.urls', namespace='ads-api')),
     path('api/jobs/', include('jobs.api.urls', namespace='jobs-api')),
+    path('api/chat/', include('chat.api.urls', namespace='chat-api')),
 
     
     

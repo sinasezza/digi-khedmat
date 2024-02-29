@@ -10,26 +10,28 @@ from .. import models, permissions
 
 @api_view(http_method_names=["DELETE",])
 @authentication_classes((rest_authentications.SessionAuthentication,))
-@permission_classes((permissions.IsResumeOwner,))
-def resume_delete_api(request: HttpRequest, id: str) -> Response:
+@permission_classes((permissions.IsRoomMember,))
+def room_delete_api(request: HttpRequest, name: str) -> Response:
     if request.method == "DELETE":
-        resume = get_object_or_404(models.Resume, id=id)
-        resume.delete()
+        room = get_object_or_404(models.Thread, name=name)
+        room.delete()
         return Response(status=rest_status.HTTP_204_NO_CONTENT)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
 
 # ------------------------------------------------------------------------------------
 
-@api_view(http_method_names=["DELETE",])
-@authentication_classes((rest_authentications.SessionAuthentication,))
-@permission_classes((permissions.IsResumeOwner,))
-def resume_file_delete_api(request: HttpRequest, id: str) -> Response:
-    if request.method == "DELETE":
-        resume = get_object_or_404(models.ResumeFile, id=id)
-        resume.delete()
-        return Response(status=rest_status.HTTP_204_NO_CONTENT)
+@api_view(http_method_names=('POST',))
+@authentication_classes([rest_authentications.SessionAuthentication,])
+@permission_classes([permissions.IsRoomMember,])
+def room_report_api(request: HttpRequest, name: str) -> Response:
+    if request.method == "POST":
+        room = get_object_or_404(models.Thread, name=name)
+        
+        try:
+            #TODO: create report instance
+            return Response(data={"message": "این مورد گزارش شد.",}, status=rest_status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(data={"message": str(e)}, status=rest_status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
-
-# ------------------------------------------------------------------------------------
