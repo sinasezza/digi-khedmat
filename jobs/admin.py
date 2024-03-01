@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
+
 from . import models
 
 
@@ -32,9 +34,51 @@ class StudyGradeAdmin(admin.ModelAdmin):
 
 # =================================================
 
+
+class ExperienceInline(admin.StackedInline):
+    model = models.Experience
+    extra = 0
+
+class SkillInline(admin.StackedInline):
+    model = models.Skill
+    extra = 0
+
+class EducationInline(admin.StackedInline):
+    model = models.Education
+    extra = 0
+
+class AchievementInline(admin.StackedInline):
+    model = models.Achievement
+    extra = 0
+
+class LanguageInline(admin.StackedInline):
+    model = models.Language
+    extra = 0
+
 @admin.register(models.Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'title')
+    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'date_sent')
+    ordering = ('-user', '-date_sent')
+    readonly_fields = ('image_tag',)
+    inlines = [ExperienceInline, SkillInline, EducationInline, AchievementInline, LanguageInline]
+
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'employer', 'advertisement', 'fname', 'lname', 'image', 'image_tag')
+        }),
+        ('Other Information', {
+            'fields': ('description', 'military_service', 'telephone', 'email', 'linkedin', 'github', 'website'),
+        }),
+    )
+
+    def image_tag(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" style="max-width:200px;max-height:200px" />')
+        else:
+            return '-'
+
+    image_tag.short_description = 'عکس رزومه'
+
 
 # =================================================
 
@@ -46,7 +90,8 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(models.ResumeFile)
 class ResumeFileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'advertisement_type', 'advertisement', 'date_sent')
+    list_display = ('user', 'employer', 'advertisement', 'fname', 'lname', 'advertisement', 'date_sent')
+    ordering = ('-user', '-date_sent')
 
 # =================================================
 

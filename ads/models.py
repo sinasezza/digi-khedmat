@@ -55,13 +55,22 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
         self.categories.set(categories)
         super().save()
     
-    # --------------------------------------
+    # --------------------------------------------------------------------------
     
     def update_tags(self, tags):
         self.tags.set(tags)
         super().save()
     
-    # --------------------------------------
+    # --------------------------------------------------------------------------
+
+    def get_stuff_status(self):
+        # Iterate over STUFF_STATUSES to find the label for the current stuff status
+        for status in self.STUFF_STATUSES:
+            if status[0] == self.stuff_status:
+                return status[1]
+        return '-'  # Return an empty string if the type is not found
+
+    # --------------------------------------------------------------------------
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

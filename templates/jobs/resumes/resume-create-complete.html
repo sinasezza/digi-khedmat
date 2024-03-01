@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}دیجی خدمت | تکمیل رزومه{% endblock title %}
+
+{% block content %}
+  <form id="resumeForm" action="" method="post" enctype="multipart/form-data" class="bg-white p-4 rounded-lg shadow-lg">
+    {% csrf_token %}
+
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">فرم رزومه</h3>
+      <div id="main-form" class="space-y-4">
+        <div class="border border-gray-300 p-4 rounded-lg">
+          {{ resume_form|crispy }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">تجربیات</h3>
+      <div id="experienceForms" class="space-y-4">
+        {{ experience_formset.management_form }}
+        {% for form in experience_formset.forms %}
+          <div class="border border-gray-300 p-4 rounded-lg">
+            {{ form|crispy }}
+          </div>
+        {% endfor %}
+      </div>
+      <button id="addExperience" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-4">افزودن تجربیات جدید</button>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">مهارت‌ها</h3>
+      <div id="skillForms" class="space-y-4">
+        {{ skill_formset.management_form }}
+        {% for form in skill_formset.forms %}
+          <div class="border border-gray-300 p-4 rounded-lg">
+            {{ form|crispy }}
+          </div>
+        {% endfor %}
+      </div>
+      <button id="addSkill" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-4">افزودن مهارت جدید</button>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">تحصیلات</h3>
+      <div id="educationForms" class="space-y-4">
+        {{ education_formset.management_form }}
+        {% for form in education_formset.forms %}
+          <div class="border border-gray-300 p-4 rounded-lg">
+            {{ form|crispy }}
+          </div>
+        {% endfor %}
+      </div>
+      <button id="addEducation" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-4">افزودن تحصیلات جدید</button>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">دستاوردها</h3>
+      <div id="achievementForms" class="space-y-4">
+        {{ achievement_formset.management_form }}
+        {% for form in achievement_formset.forms %}
+          <div class="border border-gray-300 p-4 rounded-lg">
+            {{ form|crispy }}
+          </div>
+        {% endfor %}
+      </div>
+      <button id="addAchievement" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-4">افزودن دستاورد جدید</button>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-bold mb-4">زبان‌ها</h3>
+      <div id="languageForms" class="space-y-4">
+        {{ language_formset.management_form }}
+        {% for form in language_formset.forms %}
+          <div class="border border-gray-300 p-4 rounded-lg">
+            {{ form|crispy }}
+          </div>
+        {% endfor %}
+      </div>
+      <button id="addLanguage" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-4">افزودن زبان جدید</button>
+    </div>
+
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">ارسال</button>
+  </form>
+{% endblock content %}
+
+{% block custom_js %}
+  <script>
+    let experienceForm = `{% crispy experience_formset.empty_form %}`;
+    let skillForm = `{% crispy skill_formset.empty_form %}`;
+    let educationForm = `{% crispy education_formset.empty_form %}`;
+    let achievementForm = `{% crispy achievement_formset.empty_form %}`;
+    let languageForm = `{% crispy language_formset.empty_form %}`;
+    let experienceFormNum = {{ experience_formset|length }};
+    let skillFormNum = {{ skill_formset|length }};
+    let educationFormNum = {{ education_formset|length }};
+    let achievementFormNum = {{ achievement_formset|length }};
+    let languageFormNum = {{ language_formset|length }};
+  </script>
+
+  <script src="{% static 'jobs/js/resume-create.js' %}"></script>
+{% endblock custom_js %}

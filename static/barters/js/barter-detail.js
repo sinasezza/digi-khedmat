@@ -1,6 +1,4 @@
 $(document).ready(function() {
-  var addFavoriteButton = $("#add-favorite-btn");
-
   // Handle image click to show in modal
   $('.barter-image').on('click', function () {
     const imageUrl = $(this).attr('src');
@@ -15,11 +13,20 @@ $(document).ready(function() {
     }
   });
 
-  addFavoriteButton.on('click', function() {
-    var csrftoken = getCookie('csrftoken');
-    var advertisementId = "{{ barter.id }}";  // Assuming the barter object has an ID field
-    var advertisementType = "BarterAdvertising";  // Assuming the advertisement type is "BarterAdvertising"
+  var toggleFavoriteButton = $("#toggle-favorite-btn");
+  var favoriteIcon = toggleFavoriteButton.find('.favorite-icon');
 
+  // Function to toggle the favorite button icon
+  function toggleFavoriteIcon() {
+    if (favoriteIcon.attr('src') === save_img) {
+      favoriteIcon.attr('src', unsave_img);
+    } else {
+      favoriteIcon.attr('src', save_img);
+    }
+  }
+
+
+  function addFavorite() {
     fetch('/api/auth/add-favorite/', {
       method: 'POST',
       headers: {
@@ -34,13 +41,58 @@ $(document).ready(function() {
     .then(response => {
       if (!response.ok) {
         throw new Error('Error adding favorite');
-        $(this).find('.favorite-icon').toggleClass('bg-slate-700');
       }
-      console.log('Favorite added successfully');
-      // Update button text or style to indicate the favorite is added
+      // Toggle the favorite button icon
+      toggleFavoriteIcon();
+
+      alert('این آگهی به علاقه مندی های شما اضافه شد.');
+      return response.json();
+    })
+    .then(data => {
+      // Update number of favorites on page
+      favoriteId = data['favorite_id'];
+      isFavorite = true;
     })
     .catch(error => {
       console.error('Error adding favorite:', error.message);
     });
+  }
+
+  function deleteFavorite() {
+    fetch(`/api/auth/delete-favorite/${favoriteId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error deleting favorite');
+      }
+      // Toggle the favorite button icon
+      toggleFavoriteIcon();
+      // Update button text or style to indicate the favorite is added
+
+      alert('این آگهی از علاقه مندی های شما حذف شد.');
+      
+      isFavorite = false;
+    })
+    .catch(error => {
+      console.error('Error deleting favorite:', error.message);
+    });
+  }
+
+  // Handle favorite button click
+  toggleFavoriteButton.on('click', function() {
+    if(isFavorite)
+      // delete
+      deleteFavorite();
+    else
+      // add
+      addFavorite();
   });
 });
+
+
+

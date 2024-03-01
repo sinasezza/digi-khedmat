@@ -1,0 +1,163 @@
+{% extends 'base/base.html' %}
+
+{% block title %}دیجی خدمت | رزومه{% endblock title %}
+
+{% block content %}
+  <div class="bg-white p-8 rounded-lg shadow-lg">
+    <div class="mb-8">
+      <h3 class="text-2xl font-bold mb-4">فرستنده :</h3>
+      <p><a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-2xl font-bold mb-4">آگهی :</h3>
+      <p><a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-2xl font-bold mb-4">تاریخ ارسال :</h3>
+      <p>{{ resume.date_sent | to_Jdate }}</p>
+    </div>
+
+    <div class="mt-8">
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">اطلاعات شخصی :</h3>
+        <div class="space-y-4">
+          <div>
+            <span class="font-semibold">نام :</span>
+            <p>{{ resume.full_name }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">توضیحات :</span>
+            <p>{{ resume.description | safe }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">جنسیت :</span>
+            <p>{{ resume.gender_name }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">سربازی :</span>
+            <p>{{ resume.military_service }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">عکس :</span>
+            <img src="{{resume.image.url}}" alt="عکس {{ resume.full_name }}" class="w-24 h-24 rounded-lg">
+          </div>
+
+          <div>
+            <span class="font-semibold">شماره تلفن :</span>
+            <p>{{ resume.phone_number }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">ایمیل :</span>
+            <p>{{ resume.email }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">آدرس لینکدین :</span>
+            <p>{{ resume.linkedin }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">آدرس گیتهاب :</span>
+            <p>{{ resume.github }}</p>
+          </div>
+
+          <div>
+            <span class="font-semibold">آدرس وبسایت :</span>
+            <p>{{ resume.website }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">تجربیات :</h3>
+        <div class="space-y-4">
+          {% for experience in resume.experiences.all %}
+            <div>
+              <span class="font-semibold">عنوان :</span>
+              <p>{{ experience.title }} </p>
+
+              <span class="font-semibold">شرکت/مجموعه :</span>
+              <p>{{ experience.company }}</p>
+
+              <span class="font-semibold">تاریخ :</span>
+              <p>{{ experience.start_date | to_Jdate }} - {{ experience.end_date | to_Jdate }}</p>
+
+              <span class="font-semibold">توضیحات :</span>
+              <p>{{experience.description}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">مهارت ها :</h3>
+        <div class="space-y-4">
+          {% for skill in resume.skills.all %}
+            <div>
+              <span class="font-semibold">عنوان :</span>
+              <p>{{ skill.title }} </p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">تحصیلات :</h3>
+        <div class="space-y-4">
+          {% for education in resume.educations.all %}
+            <div>
+              <span class="font-semibold">عنوان :</span>
+              <p>{{ education.title }} </p>
+
+              <span class="font-semibold">تاریخ :</span>
+              <p>{{ education.start_date | to_Jdate }} - {{ education.end_date | to_Jdate }}</p>
+
+              <span class="font-semibold">توضیحات :</span>
+              <p>{{education.description}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">دستاورد ها :</h3>
+        <div class="space-y-4">
+          {% for achievement in resume.achievements.all %}
+            <div>
+              <span class="font-semibold">عنوان :</span>
+              <p>{{ achievement.title }} </p>
+
+              <span class="font-semibold">توضیحات :</span>
+              <p>{{achievement.description}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4">زبان ها :</h3>
+        <div class="space-y-4">
+          {% for language in resume.languages.all %}
+            <div>
+              <span class="font-semibold">نام :</span>
+              <p>{{ language.name }} </p>
+
+              <span class="font-semibold">سطح :</span>
+              <p>{{language.level_name}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock content %}
+
+{% block custom_js %}{% endblock custom_js %}

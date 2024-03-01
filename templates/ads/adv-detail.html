@@ -1,72 +1,105 @@
 {% extends "base/base.html" %}
+{% load static %}
 
 {% block title %}دیجی خدمت | تبلیغات | {{adv.title}} {% endblock title %}
 
-{% block custom_assets %}
-
-{% endblock custom_assets %}
-
 {% block content %}
-	{% comment %} <li><a href="{{ adv.get_absolute_url }}">{{ adv}} </a></li> {% endcomment %}
-<div class="dark:bg-gray-300 font-vazir">
-  <div class="pt-6">
-    <nav aria-label="Breadcrumb">
-      <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-          <div class="flex items-center">
-            <a href="#" class="mr-2 text-sm font-medium text-gray-900">
-				دسته‌بندی: {adv}
-			</a>
+  <div class="container mx-auto mt-8">
+    <div class="bg-white p-8 rounded-md shadow-md">
+      <h2 class="text-3xl font-bold mb-4">{{ advertise.title }}</h2>
+      <h3 class="text-2xl font-semibold text-gray-700 mb-4">
+        ارتباط با <a href="{{advertise.owner.get_user_profile}}" class="text-blue-600 hover:underline">{{ advertise.owner.username }}</a>
+      </h3>
+
+      <!-- advertise Images Grid -->
+      <div class="grid grid-cols-4 gap-4 mt-8">
+        {% for image_obj in advertise.images.all %}
+          <div class="relative">
+            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer advertise-image h-80 w-80">
           </div>
-      </ol>
-    </nav>
-
-    <!-- Image gallery -->
-    <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-      <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-        <img src="{{ adv.images.first.image.url }}"alt="Two each of gray, white, and black shirts laying flat." class="h-full w-full object-cover object-center">
-      </div>
-      <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-          <img src="{{ adv.images.second.image.url }}" alt="Model wearing plain black basic tee." class="h-full w-full object-cover object-center">
-        </div>
-        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-          <img src="{{ adv.images.third.image.url }}" alt="Model wearing plain gray basic tee." class="h-full w-full object-cover object-center">
-        </div>
-      </div>
-      <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-        <img src="{{ adv.images.forth.image.url }}"alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
-      </div>
-    </div>
-
-    <!-- Product info -->
-    <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-      <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-			{{ adv.title }}</h1>
+        {% endfor %}
       </div>
 
-      <!-- Options -->
-      <div class="mt-4 lg:row-span-3 lg:mt-0">
-        <p class="text-3xl tracking-tight text-gray-900">
-			{{ ads.price }} ریال
-		</p>
-
-		<h3 class="mt-10 text-sm font-medium text-gray-900">
-			وضعیت آگهی: {{ adv.stuff_status }}
-		</h3>
-	</div>
-	<div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-        <!-- Description and details -->
-        <div>
-          <div class="space-y-6">
-            <p class="text-base text-gray-900">
-				{{ adv.description }}				
-			</p>
-          </div>
-        </div>
+      <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+        {% if favorite %}
+          <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+        {% else %}
+          <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
+        {% endif %}
+      </button>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">خلاصه:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ advertise.summary }}</p>
       </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">تاریخ انتشار:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ advertise.date_published | to_Jdate }}</p>
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">توضیحات:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ advertise.description | safe }}</p>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">وضعیت:</strong>
+        <a href="{% url 'ads:adv-list' %}?search-area={{advertise.stuff_status}}" class="mr-2 cursor-pointer underline text-blue-600">{{ advertise.get_stuff_status}}</a>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">قیمت:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ advertise.price}} تومان</p>
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">منطقه:</strong>
+        <a href="{% url 'ads:adv-list' %}?search-area={{advertise.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">{{ advertise.region.state }}</a>,
+        <a href="{% url 'ads:adv-list' %}?search-area={{advertise.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">{{ advertise.region.city }}</a>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">آدرس:</strong>
+        <p class="text-base text-gray-600 mt-2">{{ advertise.address }}</p>
+      </div>
+
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">دسته بندی‌ها:</strong>
+        {% for category in advertise.categories.all %}
+          <a href="{% url 'ads:adv-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">{{ category.title }}</a>
+        {% endfor %}
+      </div>
+      
+      <div class="my-4">
+        <strong class="text-lg text-gray-800">برچسب‌ها:</strong>
+        {% for tag in advertise.tags.all %}
+          <a href="{% url 'ads:adv-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">{{ tag.name }}</a>
+        {% endfor %}
+      </div>
+
     </div>
   </div>
-</div>
 
+  <!-- Modal for displaying image in full size -->
+  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+    <div class="max-w-4xl mx-auto">
+      <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
+      <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+    </div>
+  </div>
 {% endblock content %}
+
+{% block custom_js %}
+  <script type="text/javascript">
+    const save_img = "{% static 'global/icons/insta-save.png' %}";
+    const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
+    const advertisementId = "{{ advertise.id }}";
+    const advertisementType = "StuffAdvertising";
+    const csrftoken = getCookie('csrftoken');
+    let isFavorite = {% if favorite %}true{% else %}false{% endif %};
+    let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
+  </script>
+
+  <script src="{% static 'ads/js/adv-detail.js' %}"></script>
+{% endblock custom_js %}
