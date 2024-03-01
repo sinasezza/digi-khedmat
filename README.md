@@ -17,7 +17,6 @@ backend and frontend services source code for digi-khedmat web application. (dig
 
 
 ## Getting Started
-
 ```bash
 mkdir -p digi_khedmat
 cd digi_khedmat
@@ -27,27 +26,36 @@ cd digi-khedmat
 
 
 ### Configure Environment
+_macOS/Linux Users_
 ```bash
-python3 manage.py -m venv venv
+python manage.py -m venv venv
 source ./venv/bin/activate
 pip install -r requirements.txt
 ```
 
+_Windows Users_
+```bash
+python manage.py -m venv venv
+source venv\scripts\activate
+pip install -r requirements.txt
+```
+
+
 ### Configure and Run TailwindCss
 ```bash
-python3 mange.py tailwind install
+python mange.py tailwind install
 python manage.py tailwind start
 ```
 
 ### Configure Node Packages
 ```bash
-python3 manage.py node_packages install
+python manage.py node_packages install
 ```
 
 ### Run The Django Http Server
 ```bash
-python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py runserver
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
 ```
 
