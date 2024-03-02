@@ -85,15 +85,37 @@
 
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">ارسال</button>
   </form>
+
+
+  <!-- experience_formset empty form -->
+  <div id="experience_empty_form" class="hidden">
+    <div class="border border-gray-300 p-4 rounded-lg">{{experience_formset.empty_form|crispy}}</div>
+  </div>
+
+  <!-- skill_formset empty form -->
+  <div id="skill_empty_form" class="hidden">
+    <div class="border border-gray-300 p-4 rounded-lg">{{skill_formset.empty_form|crispy}}</div>
+  </div>
+
+  <!-- education_formset empty form -->
+  <div id="education_empty_form" class="hidden">
+    <div class="border border-gray-300 p-4 rounded-lg">{{education_formset.empty_form|crispy}}</div>
+  </div>
+
+  <!-- achievement_formset empty form -->
+  <div id="achievement_empty_form" class="hidden">
+    <div class="border border-gray-300 p-4 rounded-lg">{{achievement_formset.empty_form|crispy}}</div>
+  </div>
+
+  <!-- language_formset empty form -->
+  <div id="language_empty_form" class="hidden">
+    <div class="border border-gray-300 p-4 rounded-lg">{{language_formset.empty_form|crispy}}</div>
+  </div>
+
 {% endblock content %}
 
 {% block custom_js %}
   <script>
-    let experienceForm = `{% crispy experience_formset.empty_form %}`;
-    let skillForm = `{% crispy skill_formset.empty_form %}`;
-    let educationForm = `{% crispy education_formset.empty_form %}`;
-    let achievementForm = `{% crispy achievement_formset.empty_form %}`;
-    let languageForm = `{% crispy language_formset.empty_form %}`;
     let experienceFormNum = {{ experience_formset|length }};
     let skillFormNum = {{ skill_formset|length }};
     let educationFormNum = {{ education_formset|length }};

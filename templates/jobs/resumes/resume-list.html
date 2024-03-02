@@ -36,7 +36,7 @@
           <div class="bg-gray-200 p-4 rounded-lg {% if resume_file.seen %} bg-lime-200 {% endif %}" id="resume-file-{{ resume_file.id }}">
             <p class="mb-2">فرستنده <a href="{{ resume_file.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume_file.user.username }}</a></p>
             <p class="mb-2">آگهی <a href="{{ resume_file.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume_file.advertisement.title }}</a></p>
-            <p><a href="{{ resume_file.file.url }}" class="text-blue-500 hover:underline">دانلود فایل</a></p>
+            <p><a href="{{resume_file.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
             <button class="delete-resume-file" data-resume-file-id="{{ resume_file.id }}">حذف</button>
           </div>
         {% endfor %}
