@@ -16,6 +16,9 @@ backend and frontend services source code for digi-khedmat web application. (dig
 - [Git](https://git-scm.com/)
 
 
+### Required python package Manager
+we need a Python packaging and dependency management, so we use [poetry](https://python-poetry.org/).
+
 ## Getting Started
 ```bash
 mkdir -p digi_khedmat
@@ -30,32 +33,34 @@ _macOS/Linux Users_
 ```bash
 python manage.py -m venv venv
 source ./venv/bin/activate
-pip install -r requirements.txt
+pip install poetry
+poetry install
 ```
 
 _Windows Users_
 ```bash
 python manage.py -m venv venv
-source venv\scripts\activate
-pip install -r requirements.txt
+venv\scripts\activate
+pip install poetry
+poetry install
 ```
 
 
 ### Configure and Run TailwindCss
 ```bash
-python mange.py tailwind install
-python manage.py tailwind start
+poetry run python mange.py tailwind install
+poetry run python manage.py tailwind start
 ```
 
 ### Configure Node Packages
 ```bash
-python manage.py node_packages install
+poetry run python manage.py node_packages install
 ```
 
 ### Run The Django Http Server
 ```bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
+poetry run python manage.py makemigrations
+poetry run python manage.py migrate
+poetry run python manage.py runserver
 ```
 
