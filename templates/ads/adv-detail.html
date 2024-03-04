@@ -15,7 +15,7 @@
       <div class="mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:px-8">
          {% for image_obj in advertise.images.all %}
          <div class="aspect-h-4 aspect-w-4 hidden overflow rounded-lg lg:block">
-            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class=" rounded h-full w-full object-cover object-center">
+            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer rounded h-full w-full advertise-image object-cover object-center">
          </div>
          {% endfor %}
       </div>
@@ -91,35 +91,37 @@
                </a>
                {% endfor %}
             </div>
-            <form class="">
-               <!-- Colors -->
-               <div>
-                  <div class="flex items-center">
-                     <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
-                     {% if favorite %}
-                     <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
-                     {% else %}
-                     <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
-                     {% endif %}
-                     </button>
+              <div>
+                <div class="flex items-center">
+                    <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+                      {% if favorite %}
+                        <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                      {% else %}
+                        <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                      {% endif %}
+                    </button>
+                </div>
+
+                <!-- modal for showing image -->
+                <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+                  <div class="max-w-4xl mx-auto">
+                    <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
+                    <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
                   </div>
-                  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
-                     <div class="max-w-4xl mx-auto">
-                        <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
-                        <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
-                     </div>
-                  </div>
-               </div>
-               <!-- Sizes -->
-               <a href="{{advertise.owner.get_user_profile}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  <div class="text-2xl mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                     <p class="hover:underline">
-                        ارتباط با 
-                        {{ advertise.owner.username }}
-                     </p>
-                  </div>
-               </a>
-            </form>
+                </div>
+                <!-- end modal  -->
+
+              </div>
+              
+              
+              <a href="{{advertise.owner.get_user_profile}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <div class="text-2xl mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                    <p class="hover:underline">
+                      ارتباط با 
+                      {{ advertise.owner.username }}
+                    </p>
+                </div>
+              </a>
          </div>
          <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             <!-- Description and details -->
