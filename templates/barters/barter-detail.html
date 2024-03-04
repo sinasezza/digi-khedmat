@@ -3,233 +3,136 @@
 {% block title %}دیجی خدمت | تبلیغات | {{adv.title}} {% endblock title %}
 {% block custom_assets %}
 {% endblock custom_assets %}
+
 {% block content %}
-<div class="dark:bg-gray-300 font-vazir">
-   <div class="pt-6">
-      <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8 mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+  <div class="dark:bg-gray-300 font-vazir">
+    <div class="pt-6">
+        <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8 mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+          <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
             {{ barter.title }}
-         </h1>
-      </div>
-      <!-- Image gallery -->
-      <div class="mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:px-8">
-         {% for image_obj in barter.images.all %}
-         <div class="aspect-h-4 aspect-w-4 hidden overflow rounded-lg lg:block">
-            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class=" rounded h-full w-full object-cover object-center">
-         </div>
-         {% endfor %}
-      </div>
-      <!-- Product info -->
-      <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-               {{ barter.title }}
-            </h1>
-         </div>
-         <!-- Options -->
-         <div class="lg:row-span-3 lg:mt-0">
-            
-            <!-- Reviews -->
-            <div class="">
-               <div class="flex items-center">
-                  <div class="mb-4">
-                     <p class="text-base text-gray-600">
-                        <strong class="text-lg text-gray-900">
-                        تاریخ انتشار:
-                        </strong>
-                        {{ barter.date_published | to_Jdate }}
-                     </p>
-                  </div>
-               </div>
-               <strong class="text-lg text-gray-900">
-               منطقه:
-               </strong>
-               استان
-               <a href="{% url 'ads:adv-list' %}?search-area={{barter.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">
-               {{ barter.region.state }}
-               </a>
-               ، شهرستان
-               <a href="{% url 'ads:adv-list' %}?search-area={{barter.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">
-               {{ barter.region.city }}
-               </a>
-            </div>
-            <div>
-               <p class="text-base text-gray-600 mt-2">
-                  <strong class="text-lg text-gray-900">
-                  آدرس:
-                  </strong>
-                  {{ barter.address }}
-               </p>
-            </div>
-            <div class="mt-2">
-               <strong class="text-lg text-gray-900">
-               ‌دسته‌بندی‌ها:
-               </strong>
-               {% for categories in barter.categories.all %}
-               <a href="{% url 'ads:adv-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">
-               {{ categories.title }}
-               </a>
-               {% endfor %}
-            </div>
-            <div class="mt-2">
-               <strong class="text-lg text-gray-900">
-               برچسب‌ها:
-               </strong>
-               {% for tag in barter.tags.all %}
-               <a href="{% url 'ads:adv-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">
-               {{ tag.name }}
-               </a>
-               {% endfor %}
-            </div>
-            <form class="">
-               <!-- Colors -->
-               <div>
-                  <div class="flex items-center">
-                     <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
-                     {% if favorite %}
-                     <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
-                     {% else %}
-                     <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
-                     {% endif %}
-                     </button>
-                  </div>
-                  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
-                     <div class="max-w-4xl mx-auto">
-                        <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
-                        <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
-                     </div>
-                  </div>
-               </div>
-               <!-- Sizes -->
-               <a href="{{barter.owner.get_user_profile}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  <div class="text-2xl mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                     <p class="hover:underline">
-                        ارتباط با 
-                        {{ barter.owner.username }}
-                     </p>
-                  </div>
-               </a>
-            </form>
-         </div>
-         <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-            <!-- Description and details -->
-            <div>
-               <p class="text-base text-gray-900">
-                  <strong class="text-lg text-gray-800">
-                  خلاصه آگهی:
-                  </strong>
-               <div class="mr-5">
-                  {{ barter.summary }}
-               </div>
-               </p>
-            </div>
-            <div class="mt-5">
-               <p class="text-base text-gray-900">
-                  <strong class="text-lg text-gray-800">
-                  توضیحات آگهی:
-                  </strong>
-               <div class="mr-5">
-                  {{ barter.description | safe }}
-               </div>
-               </p>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-{% endblock content %}
-{% block custom_js %}
-<script type="text/javascript">
-   const save_img = "{% static 'global/icons/insta-save.png' %}";
-   const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
-   const bartermentId = "{{ barter.id }}";
-   const bartermentType = "StuffAdvertising";
-   const csrftoken = getCookie('csrftoken');
-   let isFavorite = {% if favorite %}true{% else %}false{% endif %};
-   let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
-</script>
-<script src="{% static 'ads/js/adv-detail.js' %}"></script>
-{% endblock custom_js %}
-
-
-{% comment %} {% extends 'base/base.html' %}
-{% load static %}
-
-{% block title %}ساخت آگهی | تهاتر کالا{% endblock title %}
-
-{% block content %}
-  <div class="container mx-auto mt-8">
-    <div class="bg-white p-8 rounded-md shadow-md">
-      <h2 class="text-3xl font-bold mb-4">{{ barter.title }}</h2>
-      <h3 class="text-2xl font-semibold text-gray-700 mb-4">
-        ارتباط با <a href="{{barter.owner.get_user_profile}}" class="text-blue-600 hover:underline">{{ barter.owner.username }}</a>
-      </h3>
-
-      <!-- Barter Images Grid -->
-      <div class="grid grid-cols-4 gap-4 mt-8">
-        {% for image_obj in barter.images.all %}
-          <div class="relative">
-            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer barter-image h-80 w-80">
+          </h1>
+        </div>
+        <!-- Image gallery -->
+        <div class="mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:px-8">
+          {% for image_obj in barter.images.all %}
+          <div class="aspect-h-4 aspect-w-4 hidden overflow rounded-lg lg:block">
+            <img src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" class="cursor-pointer rounded h-full barter-image w-full object-cover object-center">
           </div>
-        {% endfor %}
-      </div>
+          {% endfor %}
+        </div>
+        <!-- Product info -->
+        <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+          <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+              <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                {{ barter.title }}
+              </h1>
+          </div>
+          <!-- Options -->
+          <div class="lg:row-span-3 lg:mt-0">
+              
+              <!-- Reviews -->
+              <div class="">
+                <div class="flex items-center">
+                    <div class="mb-4">
+                      <p class="text-base text-gray-600">
+                          <strong class="text-lg text-gray-900">
+                          تاریخ انتشار:
+                          </strong>
+                          {{ barter.date_published | to_Jdate }}
+                      </p>
+                    </div>
+                </div>
+                <strong class="text-lg text-gray-900">
+                منطقه:
+                </strong>
+                استان
+                <a href="{% url 'ads:adv-list' %}?search-area={{barter.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">
+                {{ barter.region.state }}
+                </a>
+                ، شهرستان
+                <a href="{% url 'ads:adv-list' %}?search-area={{barter.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">
+                {{ barter.region.city }}
+                </a>
+              </div>
+              <div>
+                <p class="text-base text-gray-600 mt-2">
+                    <strong class="text-lg text-gray-900">
+                    آدرس:
+                    </strong>
+                    {{ barter.address }}
+                </p>
+              </div>
+              <div class="mt-2">
+                <strong class="text-lg text-gray-900">
+                ‌دسته‌بندی‌ها:
+                </strong>
+                {% for categories in barter.categories.all %}
+                <a href="{% url 'ads:adv-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">
+                {{ categories.title }}
+                </a>
+                {% endfor %}
+              </div>
+              <div class="mt-2">
+                <strong class="text-lg text-gray-900">
+                برچسب‌ها:
+                </strong>
+                {% for tag in barter.tags.all %}
+                <a href="{% url 'ads:adv-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">
+                {{ tag.name }}
+                </a>
+                {% endfor %}
+              </div>
+                <div>
+                    <div class="flex items-center">
+                      <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+                      {% if favorite %}
+                        <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                      {% else %}
+                      <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                        {% endif %}
+                      </button>
+                    </div>
+                    <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+                      <div class="max-w-4xl mx-auto">
+                          <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
+                          <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+                      </div>
+                    </div>
+                </div>
 
-      <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
-        {% if favorite %}
-          <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
-        {% else %}
-          <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
-        {% endif %}
-      </button>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">خلاصه:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ barter.summary }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">تاریخ انتشار:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ barter.date_published | to_Jdate }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">توضیحات:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ barter.description | safe }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">منطقه:</strong>
-        <a href="{% url 'barters:barter-list' %}?search-area={{barter.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">{{ barter.region.state }}</a>,
-        <a href="{% url 'barters:barter-list' %}?search-area={{barter.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">{{ barter.region.city }}</a>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">آدرس:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ barter.address }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">دسته بندی‌ها:</strong>
-        {% for category in barter.categories.all %}
-          <a href="{% url 'barters:barter-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">{{ category.title }}</a>
-        {% endfor %}
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">برچسب‌ها:</strong>
-        {% for tag in barter.tags.all %}
-          <a href="{% url 'barters:barter-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">{{ tag.name }}</a>
-        {% endfor %}
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Modal for displaying image in full size -->
-  <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
-    <div class="max-w-4xl mx-auto">
-      <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
-      <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+                <a href="{{barter.owner.get_user_profile}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <div class="text-2xl mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                      <p class="hover:underline">
+                          ارتباط با 
+                          {{ barter.owner.username }}
+                      </p>
+                    </div>
+                </a>
+          </div>
+          <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+              <!-- Description and details -->
+              <div>
+                <p class="text-base text-gray-900">
+                    <strong class="text-lg text-gray-800">
+                    خلاصه آگهی:
+                    </strong>
+                <div class="mr-5">
+                    {{ barter.summary }}
+                </div>
+                </p>
+              </div>
+              <div class="mt-5">
+                <p class="text-base text-gray-900">
+                    <strong class="text-lg text-gray-800">
+                    توضیحات آگهی:
+                    </strong>
+                <div class="mr-5">
+                    {{ barter.description | safe }}
+                </div>
+                </p>
+              </div>
+          </div>
+        </div>
     </div>
   </div>
 {% endblock content %}
@@ -239,11 +142,11 @@
     const save_img = "{% static 'global/icons/insta-save.png' %}";
     const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
     const bartermentId = "{{ barter.id }}";
-    const bartermentType = "BarterAdvertising";
+    const bartermentType = "StuffAdvertising";
     const csrftoken = getCookie('csrftoken');
     let isFavorite = {% if favorite %}true{% else %}false{% endif %};
     let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
   </script>
 
   <script src="{% static 'barters/js/barter-detail.js' %}"></script>
-{% endblock custom_js %} {% endcomment %}
+{% endblock custom_js %}
