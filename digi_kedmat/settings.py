@@ -137,6 +137,8 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 WSGI_APPLICATION = "digi_kedmat.wsgi.application"
 ASGI_APPLICATION = "digi_kedmat.asgi.application"
 
+LOGIN_URL = 'accounts:login'
+
 
 #### REST API SETTINGS
 REST_FRAMEWORK = {

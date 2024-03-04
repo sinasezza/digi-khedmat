@@ -207,7 +207,7 @@ class BaseResume(models.Model):
     
     def send(self):
         self.is_sent = True
-        super.save()
+        super().save()
     
     # -----------------------------------------
     
