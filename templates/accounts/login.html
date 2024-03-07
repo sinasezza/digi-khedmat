@@ -13,17 +13,17 @@
 <div class="font-vazir">
   <div>
     <h2 class="mt-10 text-center text-2xl font-bold leading-9">
-      نام کاربری و رمز عبور خود را وارد کنید.
+      شناسه (نام کاربری، ایمیل یا شماره تلفن) و رمز عبور خود را وارد کنید.
     </h2>
     
     <div class="mt-10 sm:mx-auto sm:max-w-sm">
       <form method="post">
         {% csrf_token %}
-        <label for="username">
-          نام کاربری:
+        <label for="identifier">
+          شناسه:
         </label>
         <div class="mt-2">
-          <input id="username" name="username" type="username" autocomplete="username" 
+          <input id="identifier" name="identifier" type="identifier" autocomplete="identifier" 
             style="text-align: center;"      
             required class="w-full rounded-md py-1.5 ring-1">
         </div>

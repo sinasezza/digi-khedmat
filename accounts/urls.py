@@ -15,5 +15,4 @@ urlpatterns = [
     path('user-profile/@<str:username>/', views.user_profile_view, name='user-profile'),
     path('notifications/', views.notifications_view, name='notifications'),
     path('favorites/', views.favorites_view, name='favorites'),
-    path('settings/', views.settings_view, name='settings'),
 ]

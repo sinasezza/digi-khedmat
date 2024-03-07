@@ -10,7 +10,7 @@ class UserRegisterForm(forms.ModelForm):
     
     class Meta:
         model = models.Account
-        fields = ('username', 'first_name', 'last_name', 'phone_number','password', 'confirm_password')
+        fields = ('username', 'first_name', 'last_name', 'phone_number', 'email', 'password', 'confirm_password')
         
         labels = {
             'username': 'نام کاربری',
@@ -18,6 +18,7 @@ class UserRegisterForm(forms.ModelForm):
             'last_name': 'نام خانوادگی',
             'phone_number': 'شماره تلفن',
             'password': 'رمز عبور',
+            'email': 'ایمیل',
             'confirm_password': 'تایید رمز عبور', 
         }
     
@@ -53,9 +54,20 @@ class UserRegisterForm(forms.ModelForm):
         matching_phone_numbers = models.Account.objects.filter(phone_number=phone_number)
 
         if matching_phone_numbers.exists():
-            raise forms.ValidationError('این شماره تلفن وجود دارد.')
+            raise forms.ValidationError('این شماره تلفن در سامانه وجود دارد.')
         
         return phone_number
+
+    # ---------------------------------------------------
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        matching_emails = models.Account.objects.filter(email=email)
+
+        if matching_emails.exists():
+            raise forms.ValidationError('این ایمیل در سامانه وجود دارد.')
+        
+        return email
 
     # ---------------------------------------------------
 
@@ -101,7 +113,7 @@ class UserRegisterInfoForm(forms.ModelForm):
 # ======================================================
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
+    identifier = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     captcha = CaptchaField()
     
