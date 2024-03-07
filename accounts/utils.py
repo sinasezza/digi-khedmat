@@ -3,6 +3,7 @@ import string
 import threading
 import time
 import datetime
+from django.db.models import Q
 from django.utils import timezone
 from django.conf import settings
 from sms_ir import SmsIr
@@ -74,3 +75,19 @@ def create_otp(phone_number, user):
     otp_obj = models.OneTimePassword.objects.create(user=user, code=otp)
     delete_thread = threading.Thread(target=delete_otp_after_2_minutes, kwargs={"otp_obj": otp_obj})
     delete_thread.start()
+
+# ----------------------------------------------------------
+
+def check_user(request, identifier) -> models.Account | None:
+    user = models.Account.objects.filter(
+        Q(email__iexact=identifier) |
+        Q(username__iexact=identifier) |
+        Q(phone_number__exact=identifier)
+    )
+    
+    if user.exists():
+        return  user.first()
+    else:
+        return None
+
+# ----------------------------------------------------------

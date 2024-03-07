@@ -8,9 +8,10 @@ from django.contrib.auth.decorators import login_required
 # from django.views.generic.edit import CreateView
 # from django.contrib.auth.views import LoginView
 from django.utils import timezone
-from . import models, forms, utils
+from . import models, forms, utils, decorators
 
 
+@decorators.logout_required
 def register_view(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
     if request.method == 'POST':
         form = forms.UserRegisterForm(request.POST)
@@ -57,18 +58,21 @@ def register_info_view(request: HttpRequest) -> HttpResponse | HttpResponseRedir
 
 # ---------------------------------------------------
 
+@decorators.logout_required
 def login_view(request):
     if request.method == 'POST':
         form = forms.UserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            identifier = form.cleaned_data['identifier']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user:
+            
+            user = utils.check_user(request, identifier)
+            
+            if user and user.check_password(password):
                 login(request, user)    
                 messages.success(request, f"{user.first_name} عزیز خوش آمدی")
 
-                return redirect('accounts:register-info') if user.info_complete else redirect('generics:main-page')
+                return redirect('accounts:register-info') if not user.info_complete else redirect('generics:main-page')
             else:
                 messages.error(request, 'نام کاربری یا رمز ورود نادرست است.')
         else:
@@ -207,11 +211,3 @@ def favorites_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'accounts/favorites.html', context)
 
 # ---------------------------------------------------
-
-@login_required
-def settings_view(request: HttpRequest) -> HttpResponse:
-    
-    context = {
-        
-    }
-    return render(request, 'accounts/settings.html', context)
