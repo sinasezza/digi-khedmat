@@ -85,6 +85,7 @@ def login_view(request):
 
 # ---------------------------------------------------
 
+@decorators.logout_required
 def login_otp_view(request):
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
