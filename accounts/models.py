@@ -166,7 +166,7 @@ class Favorite(models.Model):
 # ==================================================================================
 
 class OneTimePassword(models.Model):
-    code = models.CharField(max_length=6, unique=True, verbose_name="کد")
+    code = models.CharField(max_length=7, verbose_name="کد")
     # -----------------------------------------
     user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="otp", verbose_name="کاربر")
     # -----------------------------------------
