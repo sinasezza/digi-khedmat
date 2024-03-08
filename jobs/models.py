@@ -18,12 +18,13 @@ class CooperationType(models.Model):
     )
     type = models.CharField(max_length=50, choices=COOPERATION_TYPES, verbose_name="نوع")
     
-    class Meta:
-        verbose_name = "نوع همکاری"
-        verbose_name_plural = "انواع همکاری"
+    # ---------------------------------------------------------------------
+    
     
     def __str__(self) -> str:
         return self.name
+    
+    # ---------------------------------------------------------------------
     
     @property
     def name(self):
@@ -36,16 +37,37 @@ class CooperationType(models.Model):
 # =======================================================================
 
 class StudyGrade(models.Model):
-    grade = models.CharField(max_length=100, verbose_name="نام مقطع")
+    GRADES = (
+        ('unknown', "مهم نیست"),
+        ('Elementary', "ابتدایی"),
+        ('Junior', "سیکل"),
+        ('HighSchool', "دبیرستان"),
+        ('Diploma', "دیپلم"),
+        ('Bachelor', "کارشناسی"),
+        ('Master', "کارشناسی ارشد"),
+        ('P.H.D', "دکتری"),
+    )
+    
+    grade = models.CharField(max_length=100, choices=GRADES, default='unknown', verbose_name="نام مقطع")
+    
+    # ---------------------------------------------------------------------
     
     def  __str__(self) -> str:
         return  self.grade
     
-    class Meta:
-        verbose_name = "مقطع تحصیلی"
-        verbose_name_plural = "مقاطع تحصیلی"
-        
-        
+    # ---------------------------------------------------------------------
+    
+    @property
+    def grade_name(self):
+        # Iterate over GRADES to find the label for the current grade
+        for choice in self.GRADES:
+            if choice[0] == self.grade:
+                return choice[1]
+        return '-'  # Return an empty string if the grade is not found
+    
+    # ---------------------------------------------------------------------
+    
+
 # =======================================================================
 
 class JobAdvertising(generics_models.BaseAdvertisingModel):
@@ -143,10 +165,6 @@ class JobGroup(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name="نام")
     job_advertising = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='job_groups', verbose_name="آگهی کاریابی")
     
-    class Meta:
-        verbose_name = "گروه شغلی"
-        verbose_name_plural = "گروه های شغلی"
-        
 
 # =======================================================================
 
@@ -154,9 +172,6 @@ class StudyField(models.Model):
     field = models.CharField(max_length=100, verbose_name="نام رشته")
     job_advertising = models.ForeignKey(to=JobAdvertising, on_delete=models.CASCADE, null=True, blank=True, related_name='study_fields', verbose_name="آگهی کاریابی")
     
-    class Meta:
-        verbose_name = "رشته تحصیلی"
-        verbose_name_plural = "رشته های تحصیلی"
 
 # =======================================================================
 

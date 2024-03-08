@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}پنل کاربری{% endblock title %}
 
@@ -170,9 +171,11 @@
                         </h3>
                         <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
                           <span class="text-sm">
-                            وضعیت آگهی: {{ stuff_adv.stuff_status }}
-                            |
-                            {{ stuff_adv.price }} ریال
+                            وضعیت آگهی: {{ stuff_adv.get_stuff_status }}
+                          </span>
+                          |
+                          <span class="text-sm">
+                            {{ stuff_adv.price | intcomma }} تومان
                           </span>
                         </div>
                       </div>
