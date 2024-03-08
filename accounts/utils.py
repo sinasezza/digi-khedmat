@@ -70,7 +70,7 @@ def delete_otp_after_2_minutes(otp_obj):
 def create_otp(phone_number, user):
     
     otp = generate_otp()
-    # send_otp_phone_number(phone_number, otp)
+    send_otp_phone_number(phone_number, otp)
     
     otp_obj = models.OneTimePassword.objects.create(user=user, code=otp)
     delete_thread = threading.Thread(target=delete_otp_after_2_minutes, kwargs={"otp_obj": otp_obj})

@@ -16,7 +16,7 @@ from . import models, forms, decorators
 
 @decorators.log_before_after
 def advertise_list_view(request):
-    ads = models.StuffAdvertising.objects.filter(status='published')
+    ads = models.StuffAdvertising.objects.filter(status='published').order_by('date_published')
     
     # response to search advertise
     search_input = request.GET.get('search-area') or ''
@@ -30,10 +30,10 @@ def advertise_list_view(request):
             Q(tags__name__icontains=search_input) |  
             Q(region__state__icontains=search_input) |  
             Q(region__city__icontains=search_input)   
-        ).distinct()
+        ).distinct().order_by('-date_published')
     
     # Pagination
-    paginated = Paginator(ads, 10) 
+    paginated = Paginator(ads, 8) 
     page_number = request.GET.get("page")  
     paginated_ads = paginated.get_page(page_number)
         

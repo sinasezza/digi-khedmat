@@ -17,7 +17,7 @@ from . import models, forms, decorators
 
 @decorators.log_before_after
 def barter_list_view(request):
-    barters = models.BarterAdvertising.objects.filter(status='published')
+    barters = models.BarterAdvertising.objects.filter(status='published').order_by('-date_published')
     
     # search barter advertising based on search input
     search_input = request.GET.get('search-area') or ''
@@ -30,10 +30,10 @@ def barter_list_view(request):
             Q(tags__name__icontains=search_input) |  
             Q(region__state__icontains=search_input) |  
             Q(region__city__icontains=search_input)   
-        ).distinct()
+        ).distinct().order_by('-date_published')
     
     # paginate advertising items
-    paginated = Paginator(barters, 6) 
+    paginated = Paginator(barters, 8) 
     page_number = request.GET.get("page")  
     paginated_barters = paginated.get_page(page_number)
         
