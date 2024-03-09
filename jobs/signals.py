@@ -9,7 +9,7 @@ def resume_file_notification_maker(sender, instance: models.ResumeFile, created,
         
         Notification.objects.create(
             recipient= instance.employer,
-            message=f"کاربر {instance.user} یک فایل رزومه برای شما ارسال است.",
+            message=f"کاربر {instance.user} یک فایل رزومه برای شما ارسال کرده است.",
             review_link=instance.get_absolute_url(),
         )
 
@@ -21,7 +21,7 @@ def resume_notification_maker(sender, instance: models.Resume, created, **kwargs
         
         Notification.objects.create(
             recipient= instance.employer,
-            message=f"کاربر {instance.user} یک فرم رزومه برای شما ارسال است.",
+            message=f"کاربر {instance.user} یک فرم رزومه برای شما ارسال کرده است.",
             review_link=instance.get_absolute_url(),
         )
 
