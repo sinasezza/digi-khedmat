@@ -34,8 +34,8 @@ $(document).ready(function() {
         'X-CSRFToken': csrftoken
       },
       body: JSON.stringify({
-        advertisement_id: bartermentId,
-        advertisement_type: bartermentType,
+        advertisement_id: advertisementId,
+        advertisement_type: advertisementType,
       })
     })
     .then(response => {

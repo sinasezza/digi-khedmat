@@ -39,7 +39,7 @@
                             حداقل مدرک تحصیلی:
                             </strong>
                             <a href="{% url 'jobs:job-list' %}?search-area={{job.study_grade}}" class="cursor-pointer underline text-blue-600">
-                            {{ job.study_grade }}
+                            {{ job.study_grade.grade_name }}
                             </a>
                         </h3>
                     </div>
@@ -326,8 +326,8 @@
 <script type="text/javascript">
     const save_img = "{% static 'global/icons/insta-save.png' %}";
     const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
-    const jobmentId = "{{ job.id }}";
-    const jobmentType = "JobAdvertising";
+    const advertisementId = "{{ job.id }}";
+    const advertisementType = "JobAdvertising";
     const csrftoken = getCookie('csrftoken');
     let isFavorite = {% if favorite %}true{% else %}false{% endif %};
     let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
