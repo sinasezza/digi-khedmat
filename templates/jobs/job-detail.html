@@ -1,251 +1,336 @@
 {% extends "base/base.html" %}
 {% load static %}
-
 {% block title %}دیجی خدمت | کاریابی | {{job.title}} {% endblock title %}
-
 {% block content %}
-  <div class="container mx-auto mt-8">
-    <div class="bg-white p-8 rounded-md shadow-md">
-      <h2 class="text-3xl font-bold mb-4">{{ job.title }}</h2>
-      <h3 class="text-2xl font-semibold text-gray-700 mb-4">
-        ارسال <button type="button" id="resume-btn" class="text-blue-600 underline bg-gray-200">رزومه</button> به <a href="{{job.owner.get_user_profile}}" class="text-blue-600 hover:underline">{{ job.owner.username }}</a>
-      </h3>
-
-      <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
-        {% if favorite %}
-          <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
-        {% else %}
-          <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
-        {% endif %}
-      </button>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">خلاصه:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.summary }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">تاریخ انتشار:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.date_published | to_Jdate }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">توضیحات:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.description | safe }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">نوع همکاری:</strong>
-        {% for co_type in job.cooperation_types.all %}
-          <a href="{% url 'jobs:job-list' %}?search-area={{co_type.type}}" class="mx-2 cursor-pointer underline text-blue-600">{{ co_type.name }}</a>
-        {% endfor %}
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">حداقل مدرک تحصیلی:</strong>
-        <a href="{% url 'jobs:job-list' %}?search-area={{job.study_grade}}" class="mx-2 cursor-pointer underline text-blue-600">{{ job.study_grade }}</a>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">جنسیت:</strong>
-        <a href="{% url 'jobs:job-list' %}?search-area={{job.gender}}" class="mx-2 cursor-pointer underline text-blue-600">{{ job.get_gender }}</a>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">بازه سنی:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.age_range }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">الزامات/مهارت ها:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.skills | safe }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">مزایا:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.benefits | safe }}</p>
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">ساعت کاری:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.work_time | safe }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">وضعیت سربازی:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.military_service | safe }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">منطقه:</strong>
-        <a href="{% url 'jobs:job-list' %}?search-area={{job.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">{{ job.region.state }}</a>,
-        <a href="{% url 'jobs:job-list' %}?search-area={{job.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">{{ job.region.city }}</a>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">آدرس:</strong>
-        <p class="text-base text-gray-600 mt-2">{{ job.address }}</p>
-      </div>
-
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">دسته بندی‌ها:</strong>
-        {% for category in job.categories.all %}
-          <a href="{% url 'jobs:job-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">{{ category.title }}</a>
-        {% endfor %}
-      </div>
-      
-      <div class="my-4">
-        <strong class="text-lg text-gray-800">برچسب‌ها:</strong>
-        {% for tag in job.tags.all %}
-          <a href="{% url 'jobs:job-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">{{ tag.name }}</a>
-        {% endfor %}
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Modal for displaying send resume form -->
-  <div id="resume-modal" x-data="{ activeTab: 'form1' }" class="hidden fixed inset-0 z-50 overflow-auto bg-white opacity-95 flex justify-center items-center">
-    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-wrap">
-      <button id="closeModal" class="absolute top-4 right-4 text-black font-extrabold">&times;</button>
-      
-      <!-- Tabs -->
-      <nav id="tabs" class="w-full mb-4 flex" aria-label="Tabs">
-        <button @click="activeTab = 'form1'" :class="{ 'bg-blue-500 text-white': activeTab === 'form1', 'text-gray-500 hover:text-gray-700': activeTab !== 'form1' }" class="flex-auto py-2 px-4 text-center font-medium text-sm leading-5 focus:outline-none focus:text-gray-700" aria-current="page">
-          ارسال فایل
-        </button>
-        <button @click="activeTab = 'form2'" :class="{ 'bg-blue-500 text-white': activeTab === 'form2', 'text-gray-500 hover:text-gray-700': activeTab !== 'form2' }" class="flex-auto py-2 px-4 text-center font-medium text-sm leading-5 focus:outline-none focus:text-gray-700" aria-current="false">
-          پر کردن فرم
-        </button>
-      </nav>
-
-      <!-- Form 1: ResumeFileForm -->
-      <div x-show="activeTab === 'form1'" id="form1" class="w-full md:w-1/2">
-        {% if request.user.is_authenticated %}
-          {% if request.user != job.owner %}
-            <form action="{% url 'jobs:resume-file-create' job.slug %}" method="post" class="flex flex-wrap" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="w-full px-4 mb-4">
-                <label for="fname1" class="block mb-1">نام</label>
-                <input type="text" id="fname1" name="fname" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full px-4 mb-4">
-                <label for="lname1" class="block mb-1">نام خانوادگی</label>
-                <input type="text" id="lname1" name="lname" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full px-4 mb-4">
-                <label for="title" class="block mb-1">عنوان شغلی</label>
-                <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full px-4 mb-4">
-                <label for="description1" class="block mb-1">توضیحات</label>
-                <textarea id="description1" name="description" class="w-full rounded-md border-gray-300"></textarea>
-              </div>
-              <div class="w-full px-4 mb-4">
-                <label for="pdf_file" class="block mb-1">فایل رزومه</label>
-                <input type="file" id="pdf_file" name="pdf_file" class="w-full rounded-md border-gray-300" accept=".pdf">
-              </div>
-              <!-- Add more fields as needed -->
-              <div class="w-full px-4 mb-4">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
-              </div>
-            </form>
-          {% else %}
-            <p class="font-semibold">شما نمیتوانید برای خود رزومه ارسال کنید :)</p>
-          {% endif %}
-        {% else %}
-          <p class="font-semibold">برای ارسال فایل باید وارد حساب خود شوید.</p>
-        {% endif %}
-      </div>
-
-      <!-- Form 2: ResumeForm -->
-      <div x-show="activeTab === 'form2'" id="form2" class="w-full md:w-1/2">
-        {% if request.user.is_authenticated %}
-          {% if request.user != job.owner %}
-            <form action="{% url 'jobs:resume-create' job.slug %}" method="post" class="flex flex-wrap ml-0" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="fname2" class="block mb-1">نام</label>
-                <input type="text" id="fname2" name="fname" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="lname2" class="block mb-1">نام خانوادگی</label>
-                <input type="text" id="lname2" name="lname" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="title" class="block mb-1">عنوان شغلی</label>
-                <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="description2" class="block mb-1">توضیحات</label>
-                <textarea id="description2" name="description" class="w-full rounded-md border-gray-300"></textarea>
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="id_summary"> جنسیت: </label>
-                <div class="mt-2 ">
-                  <select id="gender" name="gender" autocomplete="gender-name" required
-                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
-                      <option value="male">مرد</option>
-                      <option value="female">زن</option>
-                  </select>
+<div class="dark:bg-gray-300 font-vazir">
+    <div class="pt-6">
+        <!-- Product info -->
+        <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+            <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                    {{ job.title }}
+                </h1>
+            </div>
+            <!-- Options -->
+            <div class="lg:row-span-3 lg:mt-0">
+                <div class="text-lg tracking-tight font-medium text-gray-900">
+                    <strong class="text-gray-800">
+                    نوع همکاری:
+                    </strong>
+                    {% for co_type in job.cooperation_types.all %}
+                    <a href="{% url 'jobs:job-list' %}?search-area={{co_type.type}}" class="mx-2 cursor-pointer underline text-blue-600">
+                    {{ co_type.name }}
+                    </a>
+                    {% endfor %}
                 </div>
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="military_service" class="block mb-1">وضعیت سربازی</label>
-                <input type="text" id="military_service" name="military_service" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="image" class="block mb-1">عکس</label>
-                <input type="file" id="image" name="image" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="telephone" class="block mb-1">شماره تلفن</label>
-                <input type="text" id="telephone" name="telephone" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="email" class="block mb-1">ایمیل</label>
-                <input type="email" id="email" name="email" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="linkedin" class="block mb-1">آدرس لینکدین</label>
-                <input type="text" id="linkedin" name="linkedin" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="github" class="block mb-1">آدرس گیتهاب</label>
-                <input type="text" id="github" name="github" class="w-full rounded-md border-gray-300">
-              </div>
-              <div class="w-full md:w-1/2 px-4 mb-4">
-                <label for="website" class="block mb-1">آدرس وبسایت</label>
-                <input type="text" id="website" name="website" class="w-full rounded-md border-gray-300">
-              </div>
-              <!-- Add more fields as needed -->
-              <div class="w-full px-4 mb-4">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
-              </div>
-            </form>
-          {% else %}
-            <p class="font-semibold">شما نمیتوانید برای خود رزومه ارسال کنید :)</p>
-          {% endif %}
-        {% else %}
-          <p class="font-semibold">برای پر کردن فرم باید وارد حساب خود شوید.</p>
-        {% endif %}
-      </div>
+                <!-- Reviews -->
+                <div class="mt-2 text-gray-600">
+                    <div class="flex items-center">
+                        <div>
+                            <p class="text-base text-gray-600">
+                                <strong class="text-lg text-gray-900">
+                                تاریخ انتشار:
+                                </strong>
+                                {{ job.date_published | to_Jdate }}
+                            </p>
+                        </div>
+                        <h3 class="font-medium text-gray-900">
+                            <strong class="text-lg text-gray-900">
+                            حداقل مدرک تحصیلی:
+                            </strong>
+                            <a href="{% url 'jobs:job-list' %}?search-area={{job.study_grade}}" class="cursor-pointer underline text-blue-600">
+                            {{ job.study_grade }}
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+                <div class="mt-2 text-gray-600">
+                    <strong class="text-lg text-gray-900">
+                    منطقه:
+                    </strong>
+                    استان
+                    <a href="{% url 'jobs:job-list' %}?search-area={{job.region.state}}" class="mr-2 cursor-pointer underline text-blue-600">
+                    {{ job.region.state }}
+                    </a>
+                    ، شهرستان
+                    <a href="{% url 'jobs:job-list' %}?search-area={{job.region.city}}" class="mr-2 cursor-pointer underline text-blue-600">
+                    {{ job.region.city }}
+                    </a>
+                </div>
+                <div>
+                    <p class="text-base text-gray-600 mt-2">
+                        <strong class="text-lg text-gray-900">
+                        آدرس:
+                        </strong>
+                        {{ job.address }}
+                    </p>
+                </div>
+                <div class="mt-2">
+                    <strong class="text-lg text-gray-900">
+                    ‌دسته‌بندی‌ها:
+                    </strong>
+                    {% for categories in job.categories.all %}
+                    <a href="{% url 'jobs:job-list' %}?search-area={{category.title}}" class="mx-2 cursor-pointer underline text-blue-600">
+                    {{ categories.title }}
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="mt-2">
+                    <strong class="text-lg text-gray-900">
+                    برچسب‌ها:
+                    </strong>
+                    {% for tag in job.tags.all %}
+                    <a href="{% url 'jobs:job-list' %}?search-area={{tag.name}}" class="mx-2 cursor-pointer underline text-blue-600">
+                    {{ tag.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="flex items-center mt-2">
+                    <div>
+                        <strong class="text-lg text-gray-900">
+                        جنسیت:
+                        </strong>
+                        <a href="{% url 'jobs:job-list' %}?search-area={{job.gender}}" class="mx-2 cursor-pointer underline text-blue-600">
+                        {{ job.get_gender }}
+                        </a>
+                    </div>
+                    <strong class="mr-10 text-lg text-gray-800">
+                    بازه سنی:&nbsp;
+                    </strong>
+                    <p class="text-base text-gray-600">
+                        {{ job.age_range }}
+                    </p>
+                </div>
+                <div class="flex items-center text-base text-gray-600 mt-2">
+                    <div>
+                        <strong class="text-lg text-gray-900">
+                        ساعت کاری:
+                        </strong>
+                        {{ job.work_time | safe }}
+                    </div>
+                    <strong class="mr-10 text-lg text-gray-900">
+                    وضعیت سربازی:&nbsp;
+                    </strong>
+                    <p class="text-base text-gray-600">
+                        {{ job.military_service | safe }}
+                    </p>
+                </div>
+                <div>
+                    <div class="flex items-center">
+                        <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+                        {% if favorite %}
+                        <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                        {% else %}
+                        <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
+                        {% endif %}
+                        </button>
+                    </div>
+                    <!-- modal for showing image -->
+                    <div id="imageModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-80 flex justify-center items-center">
+                        <div class="max-w-4xl mx-auto">
+                            <button id="closeModal" class="absolute top-4 right-4 text-white font-extrabold">&times;</button>
+                            <img id="fullSizeImage" class="max-w-full max-h-full" src="" alt="Full size image">
+                        </div>
+                    </div>
+                    <!-- end modal  -->
+                </div>
+                <div href="{{job.owner.get_user_profile}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <div class="text-2xl mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                        <h3 class="text-2xl font-semibold">
+                            ارسال&nbsp;
+                            <button type="button" id="resume-btn" class="underline">
+                            رزومه
+                            </button>
+                            &nbsp;به
+                            <a href="{{job.owner.get_user_profile}}" class="underline">
+                            {{ job.owner.username }}
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+                <!-- Description and details -->
+                <div>
+                    <p class="text-base text-gray-900">
+                        <strong class="text-lg text-gray-800">
+                        خلاصه آگهی:
+                        </strong>
+                    <div class="mr-5">
+                        {{ job.summary }}
+                    </div>
+                    </p>
+                </div>
+                <div class="mt-5">
+                    <p class="text-base text-gray-900">
+                        <strong class="text-lg text-gray-800">
+                        توضیحات آگهی:
+                        </strong>
+                    <div class="mr-5">
+                        {{ job.description | safe }}
+                    </div>
+                    </p>
+                </div>
+                <div class="mt-5">
+                    <p class="text-base text-gray-900">
+                        <strong class="text-lg text-gray-800">
+                        الزامات / مهارت‌ها:
+                        </strong>
+                    <div class="mr-5">
+                        {{ job.skills | safe }}
+                    </div>
+                    </p>
+                </div>
+                <div class="mt-5">
+                    <p class="text-base text-gray-900">
+                        <strong class="text-lg text-gray-800">
+                        مزایا:
+                        </strong>
+                    <div class="mr-5">
+                        {{ job.benefits | safe }}
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- End Modal for displaying send resume form -->
-
+</div>
+<!-- Modal for displaying send resume form -->
+<div id="resume-modal" x-data="{ activeTab: 'form1' }" class="font-vazir hidden fixed inset-0 z-50 overflow-auto bg-white opacity-95 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-wrap">
+        <button id="closeModal" class="absolute top-4 right-4 text-black font-extrabold">&times;</button>
+        <!-- Tabs -->
+        <nav id="tabs" class="w-full mb-4 flex" aria-label="Tabs">
+            <button @click="activeTab = 'form1'" :class="{ 'bg-blue-500 text-white': activeTab === 'form1', 'text-gray-500 hover:text-gray-700': activeTab !== 'form1' }" class="flex-auto py-2 px-4 text-center font-medium text-sm leading-5 focus:outline-none focus:text-gray-700" aria-current="page">
+            ارسال فایل
+            </button>
+            <button @click="activeTab = 'form2'" :class="{ 'bg-blue-500 text-white': activeTab === 'form2', 'text-gray-500 hover:text-gray-700': activeTab !== 'form2' }" class="flex-auto py-2 px-4 text-center font-medium text-sm leading-5 focus:outline-none focus:text-gray-700" aria-current="false">
+            پر کردن فرم
+            </button>
+        </nav>
+        <!-- Form 1: ResumeFileForm -->
+        <div x-show="activeTab === 'form1'" id="form1" class="w-full md:w-1/2">
+            {% if request.user.is_authenticated %}
+            {% if request.user != job.owner %}
+            <form action="{% url 'jobs:resume-file-create' job.slug %}" method="post" class="flex flex-wrap" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="w-full px-4 mb-4">
+                    <label for="fname1" class="block mb-1">نام</label>
+                    <input type="text" id="fname1" name="fname" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full px-4 mb-4">
+                    <label for="lname1" class="block mb-1">نام خانوادگی</label>
+                    <input type="text" id="lname1" name="lname" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full px-4 mb-4">
+                    <label for="title" class="block mb-1">عنوان شغلی</label>
+                    <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full px-4 mb-4">
+                    <label for="description1" class="block mb-1">توضیحات</label>
+                    <textarea id="description1" name="description" class="w-full rounded-md border-gray-300"></textarea>
+                </div>
+                <div class="w-full px-4 mb-4">
+                    <label for="pdf_file" class="block mb-1">فایل رزومه</label>
+                    <input type="file" id="pdf_file" name="pdf_file" class="w-full rounded-md border-gray-300" accept=".pdf">
+                </div>
+                <!-- Add more fields as needed -->
+                <div class="w-full px-4 mb-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
+                </div>
+            </form>
+            {% else %}
+            <p class="font-semibold">شما نمیتوانید برای خود رزومه ارسال کنید :)</p>
+            {% endif %}
+            {% else %}
+            <p class="font-semibold">برای ارسال فایل باید وارد حساب خود شوید.</p>
+            {% endif %}
+        </div>
+        <!-- Form 2: ResumeForm -->
+        <div x-show="activeTab === 'form2'" id="form2" class="w-full md:w-1/2">
+            {% if request.user.is_authenticated %}
+            {% if request.user != job.owner %}
+            <form action="{% url 'jobs:resume-create' job.slug %}" method="post" class="flex flex-wrap ml-0" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="fname2" class="block mb-1">نام</label>
+                    <input type="text" id="fname2" name="fname" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="lname2" class="block mb-1">نام خانوادگی</label>
+                    <input type="text" id="lname2" name="lname" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="title" class="block mb-1">عنوان شغلی</label>
+                    <input type="text" id="title" name="title" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="description2" class="block mb-1">توضیحات</label>
+                    <textarea id="description2" name="description" class="w-full rounded-md border-gray-300"></textarea>
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="id_summary"> جنسیت: </label>
+                    <div class="mt-2 ">
+                        <select id="gender" name="gender" autocomplete="gender-name" required
+                            class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option value="male">مرد</option>
+                            <option value="female">زن</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="military_service" class="block mb-1">وضعیت سربازی</label>
+                    <input type="text" id="military_service" name="military_service" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="image" class="block mb-1">عکس</label>
+                    <input type="file" id="image" name="image" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="telephone" class="block mb-1">شماره تلفن</label>
+                    <input type="text" id="telephone" name="telephone" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="email" class="block mb-1">ایمیل</label>
+                    <input type="email" id="email" name="email" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="linkedin" class="block mb-1">آدرس لینکدین</label>
+                    <input type="text" id="linkedin" name="linkedin" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="github" class="block mb-1">آدرس گیتهاب</label>
+                    <input type="text" id="github" name="github" class="w-full rounded-md border-gray-300">
+                </div>
+                <div class="w-full md:w-1/2 px-4 mb-4">
+                    <label for="website" class="block mb-1">آدرس وبسایت</label>
+                    <input type="text" id="website" name="website" class="w-full rounded-md border-gray-300">
+                </div>
+                <!-- Add more fields as needed -->
+                <div class="w-full px-4 mb-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ارسال</button>
+                </div>
+            </form>
+            {% else %}
+            <p class="font-semibold">شما نمیتوانید برای خود رزومه ارسال کنید :)</p>
+            {% endif %}
+            {% else %}
+            <p class="font-semibold">برای پر کردن فرم باید وارد حساب خود شوید.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- End Modal for displaying send resume form -->
 {% endblock content %}
-
 {% block custom_js %}
-  <script type="text/javascript">
+<script type="text/javascript">
     const save_img = "{% static 'global/icons/insta-save.png' %}";
     const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
-    const advertisementId = "{{ job.id }}";
-    const advertisementType = "JobAdvertising";
+    const jobmentId = "{{ job.id }}";
+    const jobmentType = "JobAdvertising";
     const csrftoken = getCookie('csrftoken');
     let isFavorite = {% if favorite %}true{% else %}false{% endif %};
     let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
-  </script>
-
-  <script src="{% static 'jobs/js/job-detail.js' %}"></script>
+</script>
+<script src="{% static 'jobs/js/job-detail.js' %}"></script>
 {% endblock custom_js %}
