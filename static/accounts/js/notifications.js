@@ -2,8 +2,16 @@ $(document).ready(function() {
     $('.delete-btn').on('click', function() {
         var $deleteBtn = $(this);
         var notificationId = $deleteBtn.closest('li').data('notification-id');
-        handleDelete(notificationId, $deleteBtn);
+    
+        // Show confirmation dialog
+        if (confirm("آیا این اعلان را حذف میکنید؟")) {
+            handleDelete(notificationId, $deleteBtn);
+        } else {
+            // User clicked cancel, do nothing
+            return;
+        }
     });
+    
 
     $('.mark-as-read-btn').on('click', function() {
         var $seenBtn = $(this);
