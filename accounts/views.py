@@ -16,10 +16,9 @@ def register_view(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
     if request.method == 'POST':
         form = forms.UserRegisterForm(request.POST)
         if form.is_valid():
-            new_user = form.save()
+            form.save()
             messages.info(request, f"حساب کاربری با موفقیت ایجاد شد.")
-            login(request, new_user)
-            return redirect('accounts:register-info')
+            return redirect('accounts:login')
         else:
             print(f"error {form.errors.as_data}")
             messages.warning(request, 'لطفا فرم را صحیح تر پر کنید.')
@@ -113,6 +112,26 @@ def login_otp_view(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:login')
+
+# ---------------------------------------------------
+
+@login_required(login_url='accounts:login')
+def delete_account_view(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
+    user = request.user
+    SENTENCE = f"اینجانب {user.username} حساب خود را حذف میکنم"
+    
+    if request.method == "POST":
+        password = request.POST.get('password')
+        sentence = request.POST.get('sentence')
+
+        if user.check_password(password) and sentence == SENTENCE:
+            user.delete()
+            messages.info(request, f'حساب کاربری {user.username} حذف شد.')
+            return redirect('generics:main-page')
+        else:
+            messages.warning(request, 'گذرواژه یا جمله وارد شده اشتباه است. لطفا دوباره تلاش کنید.')
+
+    return render(request, 'accounts/delete-account.html')
 
 # ---------------------------------------------------
 
