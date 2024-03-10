@@ -45,7 +45,7 @@ class Account(AbstractUser):
     # -----------------------------------------
     profile_photo   = models.ImageField(upload_to=user_profile_image_path, null=True, blank=True, verbose_name="عکس پروفایل")
     # -----------------------------------------
-    bio             = models.TextField(max_length=1000, null=True, blank=True, verbose_name="بیوگرافی")
+    bio             = models.TextField(max_length=250, null=True, blank=True, verbose_name="بیوگرافی")
     # -----------------------------------------
     age             = models.PositiveSmallIntegerField(default=0 , null=True,blank=True, verbose_name="سن")
     # -----------------------------------------
@@ -53,13 +53,13 @@ class Account(AbstractUser):
     # -----------------------------------------
     national_code   = models.CharField(max_length=15, null=True, blank=True, verbose_name="کد ملی")
     # -----------------------------------------
-    address = models.CharField(max_length=400, null=True, blank=True, verbose_name="آدرس")
+    address = models.CharField(max_length=90, null=True, blank=True, verbose_name="آدرس")
     # -----------------------------------------
-    education = models.CharField(max_length=70, null=True, blank=True, verbose_name="تحصیلات")
+    education = models.CharField(max_length=50, null=True, blank=True, verbose_name="تحصیلات")
     # -----------------------------------------
-    occupation = models.CharField(max_length=100, null=True, blank=True, verbose_name="شغل")
+    occupation = models.CharField(max_length=40, null=True, blank=True, verbose_name="شغل")
     # -----------------------------------------
-    company_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="نام شرکت")
+    company_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="نام شرکت")
     # -----------------------------------------
     info_complete = models.BooleanField(default=False, verbose_name="اطلاعات کامل است؟")
     # -----------------------------------------

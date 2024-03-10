@@ -11,4 +11,5 @@ urlpatterns = [
     path('add-favorite/', apis.add_favorite_api, name='add-favorite'),
     path('delete-favorite/<str:id>/', apis.delete_favorite_api, name='delete-favorite'),
     path('send-otp/', apis.send_otp_api, name='send-otp'),
+    path('check-field-existence/', apis.check_field_existence_api, name='check-field-existence'),
 ]

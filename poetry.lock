@@ -1348,6 +1348,20 @@ redis = ">=3,<4.0.0 || >4.0.0,<4.0.1 || >4.0.1"
 hiredis = ["redis[hiredis] (>=3,!=4.0.0,!=4.0.1)"]
 
 [[package]]
+name = "django-schema-viewer"
+version = "0.4.1"
+description = ""
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "django_schema_viewer-0.4.1-py3-none-any.whl", hash = "sha256:a111c8e6aae4c6b154122580e1cea8c9ae3ac5399a81e5c4a57f534151d24cca"},
+    {file = "django_schema_viewer-0.4.1.tar.gz", hash = "sha256:824b81f443d7d8e8ae39bfd3dd412b8337807701dab3a94bc46248728b14a521"},
+]
+
+[package.dependencies]
+django = ">=4.0,<5.1"
+
+[[package]]
 name = "django-simple-captcha"
 version = "0.6.0"
 description = "A very simple, yet powerful, Django captcha application"
@@ -5270,4 +5284,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4800bcec69f104439d297f4bcf7e1b6f3534e627377d7d8b301c1c589ee8746a"
+content-hash = "85973897979f18cea8405b09bf210e7dc84bdc96db61de5ffa71d19d49409db7"

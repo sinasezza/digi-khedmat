@@ -1,5 +1,6 @@
 <!-- partials/header.html -->
 {% extends 'base/base.html' %} 
+{% load static %}
 
 {% block title %} ایجاد حساب {% endblock title %}
 
@@ -30,24 +31,24 @@
               name="username"
               type="text"
               autocomplete="username"
-              style="text-align: center"
               required
-              class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              placeholder="نام کاربری خود را وارد کنید."
+              maxlength="25"
+              class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+              placeholder="{{form.username.help_text}}"
               {% if form.username.value %}value="{{form.username.value }}"{% endif %}
             />
-            
-            <div>
+
+            <div id="username-errors">
               {% for error in form.username.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
-            
+          </div>
         </div>
 
         <div>
           <div>
-            <label for="name" class="text-sm"> نام: </label>
+            <label for="first_name" class="text-sm"> نام: </label>
           </div>
           <div class="mt-2">
             <input
@@ -56,25 +57,26 @@
               type="text"
               style="text-align: center"
               required
+              maxlength="20"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:leading-6"
-              placeholder="نام خود را وارد کنید."
+              placeholder="{{form.first_name.help_text}}"
               {% if form.first_name.value %}value="{{form.first_name.value }}"{% endif %}
 
             />
             
-            <div>
+            <div id="first_name-errors">
               {% for error in form.first_name.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
-
+            
           </div>
         </div>
 
         <div>
           <div>
             <label
-              for="name"
+              for="last_name"
               class="md:text-right block text-sm font-medium leading-6 text-gray-900"
             >
               نام‌خانوادگی:
@@ -87,14 +89,15 @@
               type="text"
               style="text-align: center"
               required
+              maxlength="20"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="نام‌خانوادگی خود را وارد کنید."
+              placeholder="{{form.last_name.help_text}}"
               {% if form.last_name.value %}value="{{form.last_name.value }}"{% endif %}
             />
             
-            <div>
+            <div id="last_name-errors">
               {% for error in form.last_name.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
 
@@ -104,7 +107,7 @@
         <div>
           <div>
             <label
-              for="phone"
+              for="phone_number"
               class="md:text-right block text-sm font-medium leading-6 text-gray-900"
             >
               شماره تلفن:
@@ -112,19 +115,21 @@
           </div>
           <div class="mt-2">
             <input
-              id="phone"
+              id="phone_number"
               name="phone_number"
               type="tel"
               style="text-align: center"
               required
+              minlength="11"
+              maxlength="20"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="مثال: 09909900000"
+              placeholder="{{form.phone_number.help_text}}"
               {% if form.phone_number.value %}value="{{form.phone_number.value }}"{% endif %}
             />
             
-            <div>
+            <div id="phone_number-errors">
               {% for error in form.phone_number.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
 
@@ -147,14 +152,15 @@
               type="email"
               style="text-align: center"
               required
+              maxlength="60"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="مثال: something@company.com"
+              placeholder="{{form.email.help_text}}"
               {% if form.email.value %}value="{{form.email.value }}"{% endif %}
             />
             
-            <div>
+            <div id="email-errors">
               {% for error in form.email.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
 
@@ -175,9 +181,19 @@
               name="password"
               style="text-align: center"
               required
+              minlength="8"
+              maxlength="30"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="رمز عبور خود را وارد کنید."
+              placeholder="{{form.password.help_text}}"
             />
+
+            <div id="password-errors">
+              {% for error in form.password.errors %}
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
+              {% endfor %}
+            </div>
+
+
             <button @click="show = !show" type="button">
               <svg
                 x-show="!show"
@@ -235,13 +251,15 @@
               name="confirm_password"
               style="text-align: center"
               required
+              minlength="8"
+              maxlength="30"
               class="w-full rounded-md py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="رمز عبور خود را دوباره وارد کنید."
             />
             
-            <div>
+            <div id="confirm_password-errors">
               {% for error in form.confirm_password.errors %}
-                <p class="text-lg text-red-800">*{{error}}</p>
+                <p class="text-red-500 text-xs italic">*{{error}}</p>
               {% endfor %}
             </div>
 
@@ -289,7 +307,7 @@
         </div>
 
         <div>
-          <input id="agreement" type="checkbox" name="agreement" />
+          <input id="agreement" type="checkbox" name="agreement" required/>
           <label
             for="agreement"
             style="margin-right: 5px"
@@ -308,14 +326,11 @@
 
         <div>
           {% for error in form.non_field_errors %}
-            <p class="text-lg bg-red-200 text-red-800">*{{error}}</p>
+            <p class="text-red-500 text-xs italic">*{{error}}</p>
           {% endfor %}
         </div>
 
-        <button
-          class="w-full py-1.5 rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          role="group"
-        >
+        <button id="submit-btn" class="w-full py-1.5 my-5 rounded-md btn-primary" role="group">
           ثبت‌نام
         </button>
       </form>
@@ -325,40 +340,6 @@
 
 
 {% block custom_js %}
-  <script>
-    $(document).ready(function() {
-      // Function to validate phone number
-      function validatePhoneNumber(phoneValue) {
-        // Check if phone number starts with 0 and is all numbers
-        return phoneValue.startsWith('0') && (/^\d+$/.test(phoneValue)) && phoneValue.length >= 11;
-      }
-
-      // Function to validate email
-      function validateEmail(emailValue) {
-        // Email validation regex pattern
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(emailValue);
-      }
-
-      // Phone input change event
-      $('#phone').change(function() {
-        var phoneValue = $(this).val();
-        if (!validatePhoneNumber(phoneValue)) {
-          alert('شماره تلفن وارد شده معتبر نیست. لطفاً یک شماره تلفن معتبر با فرمت درست وارد کنید.');
-          $(this).val(''); // Clear the invalid phone number
-        }
-      });
-
-      // Email input change event
-      $('#email').change(function() {
-        var emailValue = $(this).val();
-        if (!validateEmail(emailValue)) {
-          alert('آدرس ایمیل وارد شده معتبر نیست. لطفاً یک آدرس ایمیل معتبر وارد کنید.');
-          $(this).val(''); // Clear the invalid email value
-        }
-      });
-    });
-  </script>
-
+  <script src="{% static 'accounts/js/register.js' %}"></script>
 {% endblock custom_js %}
 

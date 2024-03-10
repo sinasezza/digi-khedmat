@@ -1,18 +1,205 @@
 {% extends 'base/base.html' %}
-{% load crispy_forms_tags %}
-{% load tailwind_filters %}
+{% load static %}
 
 {% block title %}تکمیل اطلاعات{% endblock title %}
 
 
 {% block content %}
-  <div class="my-24 font-vazir">
+<div class="font-vazir py-12">
+  <div class="sm:mx-auto sm:max-w-sm">
     <form  class="max-w-xl mx-auto" method='POST'>
       <h3 class="p-5">لطفا اطلاعات خود را تکمیل کنید.</h3>
       {% csrf_token %}
-      {{form | crispy}}
-      <button type="submit" class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">ثبت اطلاعات</button>
+      
+      <div>
+        <label for="age" class="text-sm"> سن: </label>
+        <div class="mt-2">
+          <input
+            id="age"
+            name="age"
+            type="text"
+            autocomplete="age"
+            required
+            max="100"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.age.help_text}}"
+            {% if form.age.value %}value="{{form.age.value }}"{% endif %}
+          />
+
+          <div id="age-errors">
+            {% for error in form.age.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <label for="gender" class="text-sm"> جنسیت: </label>
+        </div>
+        <div class="mt-2">
+          <select
+            id="gender"
+            name="gender"
+            required
+            maxlength="20"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:leading-6"
+            placeholder="{{form.gender.help_text}}"
+            {% if form.gender.value %}value="{{form.gender.value }}"{% endif %}
+          >
+            <option value="male">مرد</option>
+            <option value="female">زن</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="national_code" class="text-sm"> کد ملی: </label>
+        <div class="mt-2">
+          <input
+            id="national_code"
+            name="national_code"
+            type="text"
+            autocomplete="national_code"
+            required
+            maxlength="10"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.national_code.help_text}}"
+            {% if form.national_code.value %}value="{{form.national_code.value }}"{% endif %}
+          />
+
+          <div id="national_code-errors">
+            {% for error in form.national_code.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+
+      <div>
+        <label for="bio" class="text-sm">درباره شما: <span class="text-xs">({{form.bio.help_text}})</span></label>
+        <div class="mt-2">
+          <textarea
+            id="bio"
+            name="bio"
+            autocomplete="bio"
+            required
+            maxlength="250"
+            class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm">
+            {% if form.bio.value %}{{form.bio.value }}{% endif %}
+          </textarea>
+      
+          <div id="bio-errors">
+            {% for error in form.bio.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+
+      <div>
+        <label for="education" class="text-sm"> تحصیلات: </label>
+        <div class="mt-2">
+          <input
+            id="education"
+            name="education"
+            type="text"
+            autocomplete="education"
+            required
+            maxlength="50"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.education.help_text}}"
+            {% if form.education.value %}value="{{form.education.value }}"{% endif %}
+          />
+
+          <div id="education-errors">
+            {% for error in form.education.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="occupation" class="text-sm"> شغل: </label>
+        <div class="mt-2">
+          <input
+            id="occupation"
+            name="occupation"
+            type="text"
+            autocomplete="occupation"
+            required
+            maxlength="40"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.occupation.help_text}}"
+            {% if form.occupation.value %}value="{{form.occupation.value }}"{% endif %}
+          />
+
+          <div id="occupation-errors">
+            {% for error in form.occupation.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="company_name" class="text-sm"> نام شرکت: </label>
+        <div class="mt-2">
+          <input
+            id="company_name"
+            name="company_name"
+            type="text"
+            autocomplete="company_name"
+            required
+            maxlength="50"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.company_name.help_text}}"
+            {% if form.company_name.value %}value="{{form.company_name.value }}"{% endif %}
+          />
+
+          <div id="company_name-errors">
+            {% for error in form.company_name.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <label for="address" class="text-sm"> آدرس: </label>
+        <div class="mt-2">
+          <input
+            id="address"
+            name="address"
+            type="text"
+            autocomplete="address"
+            required
+            maxlength="50"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="{{form.address.help_text}}"
+            {% if form.address.value %}value="{{form.address.value }}"{% endif %}
+          />
+
+          <div id="address-errors">
+            {% for error in form.address.errors %}
+              <p class="text-red-500 text-xs italic">*{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="text-white bg-gradient-to-br my-3 from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">ثبت اطلاعات</button>
     </form>
     <a href="{% url 'generics:main-page' %}" class="grid place-items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">بعدا تکمیل میکنم</a>
   </div>
+</div>
 {% endblock content %}
+
+
+{% block custom_js %}
+  <script src="{% static 'accounts/js/register-info.js' %}"></script>
+{% endblock custom_js %}

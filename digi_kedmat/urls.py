@@ -32,6 +32,7 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^watchman/', include('watchman.urls')),
+    path('schema-viewer/', include('schema_viewer.urls')),
 ]
 
 if settings.DEBUG:

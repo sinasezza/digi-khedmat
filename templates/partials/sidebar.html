@@ -5,7 +5,7 @@
     <div class="fixed flex flex-col top-0 left-0 bg-white h-full" style="width: 18.7rem">
         <div class="flex flex-col items-center">
           <!-- User avatar -->
-          <img class="mt-4 w-20 h-20 rounded-full dark:opacity-70"
+          <img class="mt-4 w-20 h-20 rounded-full opacity-70"
               src="{% if user.profile_photo %} {{ user.profile_photo.url }} {% else %}  {% static 'global/icons/add-profile-image.png' %} {% endif %}"
               alt="PROFILE"
           />
