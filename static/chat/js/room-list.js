@@ -57,9 +57,15 @@ $(document).ready(function () {
 
   // Event listener for submitting the report form
   $("#submit-btn").on("click", function () {
+
     let csrftoken = getCookie("csrftoken");
     let roomName = $("#reportRoomName").val();
     let message = $("#reportMessage").val();
+
+    if (message.length < 1) {
+      alert("شما باید چیزی بنویسید.")
+      return
+    }
 
     // Make a POST request to the report API endpoint
     fetch(`/api/chat/room-report/${roomName}/`, {

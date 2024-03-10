@@ -109,7 +109,7 @@ class Contact(models.Model):
     # --------------------------------------
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="شماره تلفن")
     # --------------------------------------
-    message = models.TextField(max_length=3000, verbose_name="نام")
+    message = models.TextField(max_length=450, verbose_name="نام")
     # --------------------------------------
 
     def __str__(self):

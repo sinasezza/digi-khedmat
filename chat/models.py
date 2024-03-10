@@ -55,4 +55,6 @@ class Report(models.Model):
     reporter = models.ForeignKey(to=get_user_model(), on_delete=models.SET_NULL, null=True, related_name='reports', verbose_name="گزارش دهنده")
     # -------------------------------------------------
     message = models.TextField(max_length=400, verbose_name="پیام گزارش")
+    # -------------------------------------------------
+    date_reported = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ گزارش")
     

@@ -21,5 +21,5 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(models.Report)
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('id', 'thread', 'reporter', 'message',)
+    list_display = ('id', 'thread', 'reporter', 'date_reported',)
     ordering = ('-id',)
