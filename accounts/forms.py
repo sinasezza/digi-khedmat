@@ -111,13 +111,19 @@ class UserRegisterInfoForm(forms.ModelForm):
         help_texts = {
             'age': 'حداکثر 100',
             'gender': 'جنسیت',
-            'national_code': 'کد ملی',
-            'bio': 'درباره شما',
-            'education': 'تحصیلات', 
-            'occupation': 'شغل', 
-            'company_name': 'نام شرکت', 
-            'address': 'آدرس', 
+            'national_code': '10 کاراکتر و عددی',
+            'bio': 'حداکثر 250 کاراکتر',
+            'education': 'حداکثر 50 کاراکتر', 
+            'occupation': 'حداکثر 40 کاراکتر', 
+            'company_name': 'حداکثر 50 کاراکتر', 
+            'address': 'حداکثر 90 کاراکتر', 
         }
+        
+    def clean_age(self):
+        age = int(self.cleaned_data.get('age'))
+        if not 0 < age <= 100:
+            raise forms.ValidationError('سن باید عددی بین 1 و 100 باشد.')
+        return age
     
     def save(self, commit=True, *args, **kwargs) -> models.Account:
         info_complete = kwargs.pop('info_complete', None)
@@ -138,7 +144,7 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     captcha = CaptchaField()
     
-
+    
 # ======================================================
 
 class UserProfileForm(forms.ModelForm):
@@ -146,6 +152,14 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = models.Account
         fields = ('username', 'profile_photo', 'first_name', 'last_name', 'phone_number', 'email')
+        
+        help_texts = {
+            'username': 'حداکثر 25 کاراکتر وارد کنید.',
+            'first_name': 'حداکثر 20 کاراکتر وارد کنید.',
+            'last_name': 'حداکثر 20 کاراکتر وارد کنید.',
+            'phone_number': 'یک شماره تلفن معتبر مانند 09909900000 کنید. حداکثر 20 کاراکتر.',
+            'email': 'لطفا یک ایمیل معتبر مانند something@company.com حداکثر 60 کاراکتر وارد کنید.',
+        }
 
 # ======================================================
 
