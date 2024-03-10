@@ -85,12 +85,47 @@ $(document).ready(function() {
 
   // Handle favorite button click
   toggleFavoriteButton.on('click', function() {
+    if (!userAuthenticated) {
+      alert("لطفا به حساب خود وارد شوید یا حسابی بسازید.");
+      return;
+    }
+
     if(isFavorite)
       // delete
       deleteFavorite();
     else
       // add
       addFavorite();
+  });
+
+  $("#copy-link-btn").on("click", function () {
+    // Get the current URL
+    var currentUrl = window.location.href;
+
+    // Create a temporary textarea element
+    var tempTextArea = document.createElement("textarea");
+
+    // Set the value of the textarea to the current URL
+    tempTextArea.value = currentUrl;
+
+    // Append the textarea to the body
+    document.body.appendChild(tempTextArea);
+
+    // Select the text inside the textarea
+    tempTextArea.select();
+
+    try {
+      // Copy the selected text to the clipboard
+      document.execCommand("copy");
+
+      // Alert the user that the URL has been copied
+      alert("لینک آگهی کپی شد");
+    } catch (err) {
+      console.error("Unable to copy:", err);
+    } finally {
+      // Remove the temporary textarea from the body
+      document.body.removeChild(tempTextArea);
+    }
   });
 });
 
