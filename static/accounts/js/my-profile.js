@@ -1,18 +1,40 @@
 $(document).ready(function () {
+
+  function checkFileType(file) {
+    var ext = file.name.split('.').pop().toLowerCase();
+    switch (ext) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        return true;
+      default:
+        return false;
+    }
+  }
+  
   $("#file-upload").change(function () {
-    var file = this.files[0];
+    var file = this.files[0]; // Access the files property of the raw DOM element
+    if (!checkFileType(file)) {
+      alert("شما تنها اجازه دارید تصویر با فرمت jpg، jpeg یا png آپلود کنید.");
+      $(this).val(''); // Clear the file input
+      return; // Exit the function if file type is not allowed
+    }
+  
     var fileSize = file.size / 1024 / 1024; // in MB
     if (fileSize > 5) {
       alert("حجم فایل نباید بیشتر از 5 مگابایت باشد.");
       $(this).val(''); // Clear the file input
-    } else {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        $("#profile-image").attr("src", e.target.result);
-      };
-      reader.readAsDataURL(file);
+      return; // Exit the function if file size exceeds the limit
     }
+  
+    // If file type and size are valid, proceed to read and display the image
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $("#profile-image").attr("src", e.target.result);
+    };
+    reader.readAsDataURL(file);
   });
+  
 
   // Function to handle error message removal timer
   function setErrorMessageTimer(errorElement) {
