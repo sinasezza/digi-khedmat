@@ -17,8 +17,18 @@ class UserRegisterForm(forms.ModelForm):
             'first_name': 'نام',
             'last_name': 'نام خانوادگی',
             'phone_number': 'شماره تلفن',
-            'password': 'رمز عبور',
             'email': 'ایمیل',
+            'password': 'رمز عبور',
+            'confirm_password': 'تایید رمز عبور', 
+        }
+        
+        help_texts = {
+            'username': 'حداکثر 25 کاراکتر وارد کنید.',
+            'first_name': 'حداکثر 20 کاراکتر وارد کنید.',
+            'last_name': 'حداکثر 20 کاراکتر وارد کنید.',
+            'phone_number': 'یک شماره تلفن معتبر مانند 09909900000 کنید. حداکثر 20 کاراکتر.',
+            'email': 'لطفا یک ایمیل معتبر مانند something@company.com حداکثر 60 کاراکتر وارد کنید.',
+            'password': 'رمز عبور حداقل 8 حرف و حداکثر 30 حرف باشد',
             'confirm_password': 'تایید رمز عبور', 
         }
     
@@ -29,8 +39,8 @@ class UserRegisterForm(forms.ModelForm):
         matching_usernames = models.Account.objects.filter(username=username)
         if not username or username == "":
             raise forms.ValidationError('لطفا نام کاربری خود را به درستی وارد کنید.')
-        if len(username) > 150:
-            raise forms.ValidationError('نام کاربری حداکثر میتواند ۱۵۰ کاراکتر داشته باشد.')
+        if len(username) > 25:
+            raise forms.ValidationError('نام کاربری حداکثر میتواند 25 حرف داشته باشد.')
         if matching_usernames.exists():
             raise forms.ValidationError('این نام کاربری در سیستم وجود دارد.')
         
@@ -89,6 +99,17 @@ class UserRegisterInfoForm(forms.ModelForm):
         
         labels = {
             'age': 'سن',
+            'gender': 'جنسیت',
+            'national_code': 'کد ملی',
+            'bio': 'درباره شما',
+            'education': 'تحصیلات', 
+            'occupation': 'شغل', 
+            'company_name': 'نام شرکت', 
+            'address': 'آدرس', 
+        }
+        
+        help_texts = {
+            'age': 'حداکثر 100',
             'gender': 'جنسیت',
             'national_code': 'کد ملی',
             'bio': 'درباره شما',

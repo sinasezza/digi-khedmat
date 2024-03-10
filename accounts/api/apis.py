@@ -113,3 +113,25 @@ def send_otp_api(request):
             return Response(data={"message": "این شماره تلفن در سامانه موجود نیست."}, status=rest_status.HTTP_404_NOT_FOUND)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+
+# --------------------------------------------------------------------------------
+
+@api_view(http_method_names=('POST',))
+@permission_classes([rest_permissions.AllowAny])
+def check_field_existence_api(request):
+    if request.method == 'POST':
+        field_name = request.data.get('field_name')
+        field_value = request.data.get('field_value')
+        
+        # Define the lookup condition dynamically
+        lookup = {f"{field_name}": field_value}
+
+        exists = models.Account.objects.filter(**lookup).exists()
+        
+        # Return the result based on existence
+        return Response(data={"result": not exists}, status=rest_status.HTTP_200_OK)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+
+# --------------------------------------------------------------------------------
+
