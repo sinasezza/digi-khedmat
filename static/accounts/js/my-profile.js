@@ -1,4 +1,19 @@
 $(document).ready(function () {
+  $("#file-upload").change(function () {
+    var file = this.files[0];
+    var fileSize = file.size / 1024 / 1024; // in MB
+    if (fileSize > 5) {
+      alert("حجم فایل نباید بیشتر از 5 مگابایت باشد.");
+      $(this).val(''); // Clear the file input
+    } else {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#profile-image").attr("src", e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
   // Function to handle error message removal timer
   function setErrorMessageTimer(errorElement) {
     setTimeout(function () {
@@ -14,7 +29,7 @@ $(document).ready(function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // You may need to include CSRF token if your API requires it
+          "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
           field_name: "phone_number",
@@ -49,6 +64,8 @@ $(document).ready(function () {
   // Phone input change event
   $("#phone_number").change(async function () {
     var phoneValue = $(this).val();
+    if (phoneValue === myPhoneNumber)
+      return;
     try {
       const patternIsValid = validatePhoneNumberPattern(phoneValue);
 
@@ -89,7 +106,7 @@ $(document).ready(function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // You may need to include CSRF token if your API requires it
+          "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
           field_name: "email",
@@ -119,6 +136,8 @@ $(document).ready(function () {
   // Email input change event
   $("#email").change(async function () {
     var emailValue = $(this).val();
+    if (emailValue === myEmail)
+      return;
     try {
       const patternIsValid = validateEmailPattern(emailValue);
 
@@ -167,6 +186,7 @@ $(document).ready(function () {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'X-CSRFToken': csrftoken,
       },
       body: JSON.stringify({
         field_name: "username",
@@ -192,6 +212,8 @@ $(document).ready(function () {
 
   $("#username").change(async function () {
     usernameValue = $(this).val();
+    if (usernameValue === myUsername)
+      return;
     try {
       const isValid = await validateUsername(usernameValue);
       if (!isValid) {
