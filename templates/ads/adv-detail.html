@@ -99,12 +99,16 @@
             </div>
               <div>
                 <div class="flex items-center">
-                    <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4">
+                    <button id="toggle-favorite-btn" class="text-white p-4 py-2 rounded-md shadow-md transition duration-300 mt-4 cursor-pointer hover:bg-slate-200">
                       {% if favorite %}
                         <img src="{% static 'global/icons/insta-save.png' %}" alt="" class="w-5 h-5 favorite-icon">
                       {% else %}
                         <img src="{% static 'global/icons/insta-unsave.png' %}" alt="" class="w-5 h-5 favorite-icon">
                       {% endif %}
+                    </button>
+
+                    <button id="copy-link-btn" class="text-white p-4 mx-3 py-2 rounded-md shadow-md transition duration-300 mt-4 cursor-pointer hover:bg-slate-200">
+                      <img src="{% static 'global/icons/share.png' %}" alt="" class="w-5 h-5 favorite-icon">
                     </button>
                 </div>
 
@@ -163,6 +167,7 @@
    const advertisementId = "{{ advertise.id }}";
    const advertisementType = "StuffAdvertising";
    const csrftoken = getCookie('csrftoken');
+   const userAuthenticated = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
    let isFavorite = {% if favorite %}true{% else %}false{% endif %};
    let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};
 </script>
