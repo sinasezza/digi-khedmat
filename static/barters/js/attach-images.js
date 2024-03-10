@@ -2,8 +2,42 @@ $(document).ready(function () {
   const input = $("#imagesInput");
   const form = $("#formData");
 
+  function checkFileType(file) {
+    var ext = file.name.split('.').pop().toLowerCase();
+    switch (ext) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  // Add event listener to the file upload
   input.on('change', (e) => {
-    form.submit();
+    const files = e.target.files;
+    if (files.length > 0) {
+      const fileSize = files[0].size; // Size of the first file
+      if (!checkFileType(files[0])) {
+        alert("شما تنها اجازه دارید عکس آپلود کنید.");
+        // Clear the file input
+        input.val('');
+        return;
+      }
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      if (fileSize > maxSize) {
+        alert('حجم فایل نباید بیشتر از 5 مگابایت باشد.');
+        // Clear the file input
+        input.val('');
+        return;
+      }
+      // Prevent form submission
+      e.preventDefault();
+      // Submit the form programmatically
+      form[0].submit();
+    }
   });
 
   // Show delete button on hover
