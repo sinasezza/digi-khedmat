@@ -3,7 +3,7 @@
 
 <header class="bg-white">
   <nav class="flex justify-between p-6" aria-label="Global">
-      <div style="margin-left: 448px; margin-right: 170px" class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+      <div style="margin-left: 448px; margin-right: 170px" class="rounded-md shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
           role="group">
           <a href="{% url 'generics:main-page' %}" type="button"
               class="inline-block px-6 pt-2 font-vazir"
@@ -28,7 +28,7 @@
       </div>
       <!-- Start Search Box -->
       <form method="get">
-        <div class="dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+        <div class="shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
             <div class="flex">
               <!--Search button-->
               <button
@@ -46,13 +46,13 @@
                 action="{{request.resolver_match.app_name}}/list/" 
                 type="text"
                 style="border-color: inherit; text-align: center; color: black"
-                class="font-vazir leading-[1.6]  dark:placeholder:text-neutral-200"
+                class="font-vazir leading-[1.6]  placeholder:text-neutral-200"
                 placeholder="جستجو"  aria-label="Search" aria-describedby="button-addon3"/>
             </div>
         </div>
       </form>
       <!-- Logo -->
-      <div class="rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+      <div class="rounded-md shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
           <a href="{% url 'generics:main-page' %}" class="-m-1.5 p-1.5 inline-block rounded-l bg-primary px-6 pb-2 pt-2 font-vazir">
               <span class="sr-only">DIGI KHEDMAT</span>
               <img class="h-8" style="margin-bottom: -18px;" src="{% static 'global/images/DigiKhedmatLogo.png' %}" alt="">
