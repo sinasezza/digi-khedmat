@@ -71,7 +71,7 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
     """View to create a new barter advertisement."""
     if request.method == 'POST':
         # If the request is POST, process the form data
-        form = forms.BarterForm(request.POST, request.FILES)
+        form = forms.BarterForm(request.POST)
 
         if form.is_valid():
             new_barter = form.save(commit=False)
@@ -90,9 +90,8 @@ def barter_create_view(request: HttpRequest) -> HttpResponse:
 
             return redirect('barters:attach-images', new_barter.slug)
         else:
+            messages.error(request, "مشکلی در ثبت آگهی پیش آمده، دوباره تلاش کنید.")
             print(f"form : error : {form.errors.as_data()}")
-            
-            
     else:
         form = forms.BarterForm()
 

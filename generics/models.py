@@ -57,9 +57,9 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     id    = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # --------------------------------------
-    title = models.CharField(max_length=120, verbose_name="عنوان")
+    title = models.CharField(max_length=35, verbose_name="عنوان")
     # --------------------------------------
-    slug = models.SlugField(max_length=256, blank=True, unique=True, allow_unicode=True)
+    slug = models.SlugField(max_length=80, blank=True, unique=True, allow_unicode=True)
     # --------------------------------------
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد آگهی")
     # --------------------------------------
@@ -69,7 +69,7 @@ class BaseAdvertisingModel(models.Model):
     # --------------------------------------
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft', verbose_name="وضعیت انتشار",)
     # --------------------------------------
-    summary = models.CharField(max_length=400, null=True, blank=True, verbose_name="خلاصه")
+    summary = models.CharField(max_length=40, null=True, blank=True, verbose_name="خلاصه")
     # --------------------------------------
     description = RichTextField(max_length=2000, null=True, blank=True, verbose_name="توضیحات")
     # --------------------------------------
