@@ -68,6 +68,11 @@ def login_view(request):
             user = utils.check_user(request, identifier)
             
             if user and user.check_password(password):
+                if not user.is_active:
+                    messages.warning(request, "حساب کاربری شما غیر فعال است. لطفا جهت فعال سازی اقدام کنید.")
+                    return redirect('accounts:login')
+                
+                # Login the user in
                 login(request, user)    
                 messages.success(request, f"{user.first_name} عزیز خوش آمدی")
 
@@ -85,7 +90,7 @@ def login_view(request):
 # ---------------------------------------------------
 
 @decorators.logout_required
-def login_otp_view(request):
+def activate_account_view(request):
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
         otp = request.POST.get('otp')
@@ -95,16 +100,21 @@ def login_otp_view(request):
         if user is not None:
             otp_obj = models.OneTimePassword.objects.filter(user=user, code=otp, created_at__gt=timezone.now() - timezone.timedelta(minutes=2)).last()            
             if otp_obj and otp_obj.code == otp:
-                login(request, otp_obj.user)
                 otp_obj.delete()
-                return redirect('generics:main-page')
+                
+                # activate the user
+                user.is_active = True
+                user.save()
+                
+                messages.success(request, 'تبریک! شما حساب خود را در دیجی خدمت فعال کردید.')
+                return redirect('accounts:login')
             else:
                 messages.error(request, 'کد نادرست است و یا منقضی شده است.')             
         else:
             messages.error(request, 'کد نادرست است و یا منقضی شده است.')             
             
     
-    return render(request, 'accounts/login-otp.html')
+    return render(request, 'accounts/activate-account.html')
 
 # ---------------------------------------------------
 

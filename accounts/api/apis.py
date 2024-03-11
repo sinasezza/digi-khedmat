@@ -103,6 +103,8 @@ def send_otp_api(request):
         user = utils.find_phone_number_owner(phone_number)
         
         if user is not None:
+            if user.is_active:
+                return Response(data={"message": "حساب شما هم اکنون فعال است!"}, status=rest_status.HTTP_403_FORBIDDEN)
             check = utils.check_last_otp(user)
             if check:
                 utils.create_otp(phone_number, user)

@@ -246,6 +246,7 @@ userpath = "1.9.2"
 virtualenv = "20.25.1"
 psycopg = "^3.1.18"
 django-schema-viewer = "^0.4.1"
+django-eventstream = "^5.1.0"
 
 
 [build-system]
