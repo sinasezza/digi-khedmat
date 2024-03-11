@@ -51,6 +51,14 @@ class BarterForm(forms.ModelForm):
     
     # ----------------------------------------------
     
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 2000:
+            raise forms.ValidationError('توضیحات باید حداکثر 2000 حرف باشد.')
+        return description
+    
+    # --------------------------------------------------------
+    
     def clean_address(self):
         address = self.cleaned_data.get('address')
         if address and len(address) > 55:
