@@ -20,6 +20,42 @@ class BarterForm(forms.ModelForm):
             "categories",
             "tags",
         )
+        
+        error_messages = {
+            'title': {
+                'max_length': "حداکثر طول عنوان باید 20 حرف باشد.",
+            },
+            'summary': {
+                'max_length': "حداکثر طول معاوضه باید 25 حرف باشد.",
+            },
+            'address': {
+                'max_length': "حداکثر طول آدرس باید 55 حرف باشد.",
+            },
+        }
+    
+    # ----------------------------------------------
+    
+    def clean_title(self):
+        title: str = self.cleaned_data.get('title')
+        if len(title) > 20:
+            raise forms.ValidationError("حداکثر طول عنوان باید 20 حرف باشد.")
+        return title
+    
+    # ----------------------------------------------
+    
+    def clean_summary(self):
+        summary = self.cleaned_data.get('summary')
+        if summary and len(summary) > 25:
+            raise forms.ValidationError("حداکثر طول معاوضه باید 25 حرف باشد.")
+        return summary
+    
+    # ----------------------------------------------
+    
+    def clean_address(self):
+        address = self.cleaned_data.get('address')
+        if address and len(address) > 55:
+            raise forms.ValidationError("حداکثر طول آدرس باید 55 حرف باشد.")
+        return address
 
 # =====================================================
 

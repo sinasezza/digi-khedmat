@@ -13,7 +13,7 @@
           <div class="flex flex-wrap justify-center">
             <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
               <div class="relative">
-                <img alt="..." src="{% if user.profile_photo %} {{user.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" class="mt-3 shadow-xl rounded-full h-auto align-middle border-none max-w-150-px">
+                <img alt="..." src="{% if user.profile_photo %} {{user.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" class="mt-6 shadow-xl rounded-full h-36 align-middle border-none max-w-150-px">
               </div>
             </div>
             {% if not request.user == user %}
@@ -123,47 +123,4 @@
   </section>
 </main>
 {% endblock content %}
-{% comment %} {% extends "base/base.html" %}
-{% load static %}
 
-{% block title %}حساب کاربری{% endblock title %}
-
-{% block content %}
-<main class="profile-page flex justify-center items-center h-screen font-vazir">
-  <section class="relative py-16 bg-blueGray-200">
-    <div class="container mx-auto px-4">
-      <article class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg">
-        <header class="px-6">
-          <div class="text-center mt-12">
-
-            <p class="mb-2 text-blueGray-600">
-              <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-            </p>
-          </div>
-          <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-            <div class="flex flex-wrap justify-center">
-              <div class="w-full lg:w-9/12 px-4">
-                <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-                  
-                </p>
-                <a href="#pablo" class="font-normal text-pink-500">Show more</a>
-              </div>
-            </div>
-          </div>
-        </header>
-      </article>
-    </div>
-    <footer class="relative bg-blueGray-200 pt-8 pb-6 mt-8">
-      <div class="container mx-auto px-4">
-        <footer class="flex flex-wrap items-center md:justify-between justify-center">
-          <div class="w-full md:w-6/12 px-4 mx-auto text-center">
-            <div class="text-sm text-blueGray-500 font-semibold py-1">
-              Made with <a href="https://www.creative-tim.com/product/notus-js" class="text-blueGray-500 hover:text-gray-800" target="_blank">Notus JS</a> by <a href="https://www.creative-tim.com" class="text-blueGray-500 hover:text-blueGray-800" target="_blank"> Creative Tim</a>.
-            </div>
-          </div>
-        </footer>
-      </div>
-    </footer>
-  </section>
-</main>
-{% endblock content %} {% endcomment %}

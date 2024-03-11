@@ -31,13 +31,13 @@
   {% if messages %}
       <ul class="messages flex justify-center min-w-full h-8">
         {% for message in messages %}
-          <li class="items-center rounded text-center min-w-[66vw] 
-                    {% if message.tags == 'info' %} bg-[#0369a1]
-                    {% elif message.tags == 'success' %} bg-[#22c55e]
-                    {% elif message.tags == 'error' %} bg-[#e11d48]
-                    {% elif message.tags == 'warning' %} bg-[#f97316]
-                    {% endif %} 
-                    text-white"> {{ message | safe }} 
+          <li class="block my-2 items-center rounded text-center min-w-[66vw] h-8
+            {% if message.tags == 'info' %} bg-[#0369a1]
+            {% elif message.tags == 'success' %} bg-[#22c55e]
+            {% elif message.tags == 'error' %} bg-[#e11d48]
+            {% elif message.tags == 'warning' %} bg-[#f97316]
+            {% endif %} 
+            text-white"> {{ message | safe }} 
           </li>
         {% endfor %}
       </ul>

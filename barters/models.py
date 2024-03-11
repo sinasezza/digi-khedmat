@@ -24,7 +24,7 @@ class BarterAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     qrcode_image = models.ImageField(max_length=255, upload_to=barter_qrcode_path, blank=True, null=True, verbose_name="بارکد آگهی")
     # --------------------------------------
-    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
+    address = models.CharField(max_length=55, null=True, blank=True, verbose_name="آدرس")
     # --------------------------------------
     region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='barters', verbose_name="منطقه")
     # --------------------------------------

@@ -3,7 +3,6 @@ from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
-import django_eventstream
 
 
 urlpatterns = [
@@ -34,7 +33,6 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^watchman/', include('watchman.urls')),
     path('schema-viewer/', include('schema_viewer.urls')),
-    path("events/", include(django_eventstream.urls), {"channels": ["test"]}),
 ]
 
 if settings.DEBUG:
