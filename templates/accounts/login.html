@@ -19,9 +19,20 @@
       <a
         href="{% url 'accounts:register' %}"
         class="text-blue-600 hover:underline"
-        title="Sign In"
+        title="ساخت حساب"
       >
         از اینجا ثبت نام کنید.
+      </a>
+    </p>
+
+    <p class="text-center text-sm text-gray-600">
+      حسابتان فعال نیست؟
+      <a
+      href="{% url 'accounts:activate-account' %}"
+        class="text-blue-600 hover:underline"
+        title="فعال سازی"
+      >
+        از اینجا فعال سازی کنید.
       </a>
     </p>
 
@@ -63,15 +74,6 @@
           >
             ورود
           </button>
-        
-          <div class="">
-            <a
-              href="{% url 'accounts:login-otp' %}"
-              class="font-semibold text-indigo-600 hover:text-indigo-500"
-            >
-              ورود با رمز یک‌بار مصرف
-            </a>
-          </div>
         </div>
       </form>
     </div>

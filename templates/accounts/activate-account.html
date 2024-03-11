@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} فعال سازی حساب {% endblock title%} 
+
+{% block content %}
+  <div class="max-w-md mx-auto font-vazir">
+    <form method="post" id="otp-form" style="margin-top: 70px">
+      {% csrf_token %}
+      <h2
+        class="text-center text-4xl font-bold tracking-wide text-gray-800"
+      >
+        فعال سازی حساب کاربری
+      </h2>
+
+      <h5
+      class="mt-5 bg-emerald-100 text-center text-xs font-bold tracking-wide text-gray-800"
+      >
+        برای فعال سازی حساب شماره تلفن خود را وارد کنید و با رمز یکبار مصرف وارد شوید.
+      </h5>
+
+      <div class="mt-10">
+        <label for="otp">شماره تلفن خود را وارد کنید: <span class="text-sm">(حداقل 11 و حداکثر 20 رقم)</span></label>
+        <input
+          type="text"
+          name="phone_number"
+          id="otp-input"
+          required
+          maxlength="20"
+          class="text-center mt-2 w-full rounded-md placeholder:text-gray-400"
+          placeholder="مثال: 09909900000"
+        />
+      </div>
+
+      <div id="otp-message">
+        
+      </div>
+
+      <div class="hidden" id="otp-code-section">
+        <label for="otp"> کد ارسال شده را وارد کنید .</label>
+        <input
+          type="text"
+          name="otp"
+          id="otp-code-input"
+          required
+          maxlength="7"
+          class="mt-2 w-full rounded-md placeholder:text-gray-400"
+        />
+      </div>
+
+      <div class="mt-4">
+        <button
+          type="button"
+          id="otp-btn"
+          class="w-full py-1.5 rounded-md shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+        >
+          ارسال کد
+        </button>
+        <button
+          type="submit"
+          id="submit-btn"
+          class="hidden w-full py-1.5 rounded-md shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+        >
+          ورود
+        </button>
+      </div>
+    </form>
+
+    <div id="otp-message" class="mt-4 text-red-500"></div>
+  </div>
+{% endblock content %} 
+
+
+{% block custom_js %}
+  <script src="{% static 'accounts/js/activate-account.js' %}"></script>
+{% endblock custom_js %}
+

@@ -84,6 +84,7 @@ class UserRegisterForm(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         new_account = super().save(commit=False, *args, **kwargs)
         new_account.set_password(self.cleaned_data.get('password'))
+        new_account.is_active = False  # Set is_active to False for new users
         
         if commit:
             new_account.save()

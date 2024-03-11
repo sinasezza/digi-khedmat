@@ -56,21 +56,25 @@
 
 
   <!-- Start scripts part -->
-  <script src="{% static  'global/js/jquery-3.7.1.min.js' %}"></script>
+  {% compress js %}
+    <script src="{% static  'global/js/jquery-3.7.1.min.js' %}"></script>
 
-  <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.js' %}"></script>
-  <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js' %}"></script>
+    <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'node_packages/node_modules/jalali-moment/dist/jalali-moment.browser.js' %}"></script>
 
-  <script type="text/javascript" src="{% static 'node_packages/node_modules/alpinejs/dist/cdn.min.js' %}" defer></script>
-  {% comment %} <script type="text/javascript" src="{% static 'node_modules/flowbite/dist/flowbite.min.js' %}" ></script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'node_packages/node_modules/alpinejs/dist/cdn.min.js' %}" defer></script>
+    {% comment %} <script type="text/javascript" src="{% static 'node_modules/flowbite/dist/flowbite.min.js' %}" ></script> {% endcomment %}
 
-  <script src="{% static  'global/js/scripts.js' %}"></script>
+    <script src="{% static  'global/js/scripts.js' %}"></script>
 
-  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 
-  <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
 
+    <script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
+    <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
+  {%  endcompress js %}
 
   {% block custom_js %}{% endblock custom_js %}
   <!-- End scripts part -->

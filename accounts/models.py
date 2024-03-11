@@ -11,17 +11,36 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class AccountManager(UserManager):
-    def create_user(self, username, password):
+    def create_user(self, username, phone_number, email, password=None, **extra_fields):
         if not username:
             raise ValueError("Users must have a username")
         
-        if not password:
-            raise ValueError("Users must have password")
-
-        user = self.model(username=username)
+        if not phone_number:
+            raise ValueError("Users must have a phone number")
+        
+        if not email:
+            raise ValueError("Users must have an email address")
+        
+        user = self.model(
+            username=username,
+            phone_number=phone_number,
+            email=self.normalize_email(email),
+            **extra_fields
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
+
+    def create_superuser(self, username, phone_number, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+        
+        return self.create_user(username, phone_number, email, password, **extra_fields)
+
     
 
 # ==================================================================================
@@ -65,6 +84,14 @@ class Account(AbstractUser):
     # -----------------------------------------
     favorites = GenericRelation(to='Favorite', object_id_field='object_id', content_type_field='advertisement_type')
     # -----------------------------------------
+    # is_active = models.BooleanField(
+    #     _("active"),
+    #     default=False,
+    #     help_text=_(
+    #         "Designates whether this user should be treated as active. "
+    #         "Unselect this instead of deleting accounts."
+    #     ),
+    # )
     
     
     objects = AccountManager()

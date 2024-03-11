@@ -36,6 +36,7 @@ AUTH_USER_MODEL = 'accounts.Account'
 INSTALLED_APPS = [
     # privileged third party apps
     'daphne',
+    'django_eventstream',
     'jazzmin',
     
     # django's builtin apps
@@ -95,6 +96,7 @@ MIDDLEWARE = [
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    "django_grip.GripMiddleware",
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     # 'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static in production without nginx or apache
@@ -490,3 +492,7 @@ SHELL_PLUS = "ipython"
 #### DJANGO CRISPY-TAILWIND SETTINGS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+#### DJANGO EVENT STREAM SETTINGS
+GRIP_URL = 'http://localhost:8000'
+EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
