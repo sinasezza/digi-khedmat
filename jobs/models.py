@@ -87,13 +87,13 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # ---------------------------------------------------------------------
     age_range = models.CharField(max_length=30, null=True, blank=True, verbose_name="بازه سنی")
     # ---------------------------------------------------------------------
-    skills = models.TextField(max_length=1000, null=True, blank=True, verbose_name="الزامات / مهارت ها")
+    skills = models.TextField(max_length=200, null=True, blank=True, verbose_name="الزامات / مهارت ها")
     # ---------------------------------------------------------------------
-    benefits = models.TextField(max_length=1000, null=True, blank=True, verbose_name="مزایا")
+    benefits = models.TextField(max_length=200, null=True, blank=True, verbose_name="مزایا")
     # ---------------------------------------------------------------------
-    work_time = models.CharField(max_length=150, null=True, blank=True, verbose_name="ساعات کاری")
+    work_time = models.CharField(max_length=50, null=True, blank=True, verbose_name="ساعات کاری")
     # ---------------------------------------------------------------------
-    military_service = models.CharField(max_length=50, null=True, blank=True, verbose_name="وضعیت سربازی")
+    military_service = models.CharField(max_length=20, null=True, blank=True, verbose_name="وضعیت سربازی")
     # --------------------------------------
     region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='jobs', verbose_name="منطقه")
     # --------------------------------------
@@ -101,7 +101,7 @@ class JobAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='jobs', verbose_name="برچسب ها")
     # --------------------------------------
-    address = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس")
+    address = models.CharField(max_length=55, null=True, blank=True, verbose_name="آدرس")
     # --------------------------------------
     
     
