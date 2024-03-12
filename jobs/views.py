@@ -318,7 +318,6 @@ def resume_complete_view(request, resume_id):
     LanguageFormSet = modelformset_factory(models.Language, form=forms.LanguageForm, extra=1)
 
     if request.method == 'POST':
-        resume_form = forms.ResumeForm(data=request.POST, files=request.FILES, instance=resume)
         # Save formsets if they are valid
         experience_formset = ExperienceFormSet(request.POST, prefix='experience', queryset=models.Experience.objects.none())
         skill_formset = SkillFormSet(request.POST, prefix='skill', queryset=models.Skill.objects.none())
@@ -326,42 +325,40 @@ def resume_complete_view(request, resume_id):
         achievement_formset = AchievementFormSet(request.POST, prefix='achievement', queryset=models.Achievement.objects.none())
         language_formset = LanguageFormSet(request.POST, prefix='language', queryset=models.Language.objects.none())
 
-        if (resume_form.is_valid() and
-            experience_formset.is_valid() and
+        if (experience_formset.is_valid() and
             skill_formset.is_valid() and
             education_formset.is_valid() and
             achievement_formset.is_valid() and
             language_formset.is_valid()):
             
-            updated_resume = resume_form.save()
             
             # Save formsets with the main form instance
             for form in experience_formset:
                 new_exp = form.save(commit=False)
-                new_exp.resume = updated_resume
+                new_exp.resume = resume
                 new_exp.save()
 
             for form in skill_formset:
                 new_skill = form.save(commit=False)
-                new_skill.resume = updated_resume
+                new_skill.resume = resume
                 new_skill.save()
 
             for form in education_formset:
                 new_edu = form.save(commit=False)
-                new_edu.resume = updated_resume
+                new_edu.resume = resume
                 new_edu.save()
 
             for form in achievement_formset:
                 new_ach = form.save(commit=False)
-                new_ach.resume = updated_resume
+                new_ach.resume = resume
                 new_ach.save()
 
             for form in language_formset:
                 new_lang = form.save(commit=False)
-                new_lang.resume = updated_resume
+                new_lang.resume = resume
                 new_lang.save()
 
-            updated_resume.send()
+            resume.send()
             messages.success(request, f"رزومه شما برای {resume.employer.username} ارسال شد.")
             return redirect(resume.advertisement.get_absolute_url())
         else:
