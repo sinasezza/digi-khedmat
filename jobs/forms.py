@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 from . import models
@@ -123,10 +124,58 @@ class ResumeFileForm(forms.ModelForm):
             'description',
             'pdf_file',
         )
+    
+    def clean_fname(self):
+        fname = self.cleaned_data.get('fname')
+        if fname and len(fname) > 20:
+            raise forms.ValidationError('طول نام نباید از 20 حرف بیشتر باشد.')
+        return fname
+    
+    # -------------------------------------------------------------
+    
+    def clean_lname(self):
+        lname = self.cleaned_data.get('lname')
+        if lname and len(lname) > 20:
+            raise forms.ValidationError('طول نام خانوادگی نباید بیش از 20 حرف باشد.')
+        return lname
+    
+    # -------------------------------------------------------------
+    
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if title and len(title) > 20:
+            raise forms.ValidationError('طول عنوان نباید بیش از 20 حرف باشد.')
+        return title
+    
+    # -------------------------------------------------------------
+    
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 250:
+            raise forms.ValidationError('طول توضیحات نباید بیش از 250 حرف باشد.')
+        return description
+
+
+
 
 # ================================================================
 
+from django import forms
+from . import models
+
 class ResumeForm(forms.ModelForm):
+    
+    fname = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True, 'disabled': True,}), label='نام')
+    lname = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True, 'disabled': True,}), label='نام خانوادگی')
+    title = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True, 'disabled': True,}), label='عنوان')
+    description = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 250, 'required': True, 'disabled': True,}), label='توضیحات')
+    gender = forms.ChoiceField(widget=forms.Select(attrs={'disabled': True}), choices=models.JobAdvertising.GENDERS)
+    military_service = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 25, 'required': True, 'disabled': True,}), label='وضعیت سربازی')
+    telephone = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True, 'disabled': True,}), label='شماره تلفن')
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'maxlength': 50, 'required': True, 'disabled': True,}), label='ایمیل')
+    linkedin = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 255, 'disabled': True,}), label='لینکدین')
+    github = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 255, 'disabled': True,}), label='گیت‌هاب')
+    website = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 150, 'disabled': True,}), label='وب‌سایت')
     
     class Meta:
         model = models.Resume
@@ -144,10 +193,95 @@ class ResumeForm(forms.ModelForm):
             'github',
             'website',
         )
+
+    def clean_fname(self):
+        fname = self.cleaned_data.get('fname')
+        if fname and len(fname) > 20:
+            raise forms.ValidationError('طول نام نباید از 20 حرف بیشتر باشد.')
+        return fname
+    
+    # ------------------------------------------------------------------
+
+    def clean_lname(self):
+        lname = self.cleaned_data.get('lname')
+        if lname and len(lname) > 20:
+            raise forms.ValidationError('طول نام خانوادگی نباید بیش از 20 حرف باشد.')
+        return lname
+    
+    # ------------------------------------------------------------------
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if title and len(title) > 20:
+            raise forms.ValidationError('طول عنوان نباید بیش از 20 حرف باشد.')
+        return title
+    
+    # ------------------------------------------------------------------
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 250:
+            raise forms.ValidationError('طول توضیحات نباید بیش از 250 حرف باشد.')
+        return description
+
+    # ------------------------------------------------------------------
+
+    def clean_military_service(self):
+        military_service = self.cleaned_data.get('military_service')
+        if military_service and len(military_service) > 25:
+            raise forms.ValidationError('وضعیت سربازی نباید بیش از 25 حرف باشد.')
+        return military_service
+    
+    # ------------------------------------------------------------------
+
+    def clean_telephone(self):
+        telephone = self.cleaned_data.get('telephone')
+        if telephone and len(telephone) > 20:
+            raise forms.ValidationError('شماره تلفن نباید بیش از 20 حرف باشد.')
+        return telephone
+
+    # ------------------------------------------------------------------
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and len(email) > 50:
+            raise forms.ValidationError('طول توضیحات نباید بیش از 50 حرف باشد.')
+        return email
+
+    # ------------------------------------------------------------------
+
+    def clean_linkedin(self):
+        linkedin = self.cleaned_data.get('linkedin')
+        if linkedin and len(linkedin) > 255:
+            raise forms.ValidationError('آدرس لیندکدین نباید بیش از 255 حرف باشد.')
+        return linkedin
+
+    # ------------------------------------------------------------------
+
+    def clean_github(self):
+        github = self.cleaned_data.get('github')
+        if github and len(github) > 255:
+            raise forms.ValidationError('آدرس گیتهاب نباید بیش از 255 حرف باشد.')
+        return github
+
+    # ------------------------------------------------------------------
+
+    def clean_website(self):
+        website = self.cleaned_data.get('website')
+        if website and len(website) > 150:
+            raise forms.ValidationError('آدرس وبسایت نباید بیش از 150 حرف باشد.')
+        return website
+
         
 # ================================================================
 
 class ExperienceForm(forms.ModelForm):
+
+    title = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True}), label='عنوان')
+    company = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 35, 'required': True}), label='شرکت/مجموعه')
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'required': True}), label='تاریخ شروع')
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='تاریخ پایان')
+    description = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 100, 'required': True}), label='توضیحات')
     
     class Meta:
         model = models.Experience
@@ -159,9 +293,46 @@ class ExperienceForm(forms.ModelForm):
             'description',
         )
 
+    def clean(self) -> dict[str, Any]:
+        cleaned_data = self.cleaned_data
+        
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        
+        if start_date > end_date :
+            raise forms.ValidationError('تاریخ شروع از تاریخ پایان بیشتر است.')
+
+        return  cleaned_data
+
+    # ------------------------------------------------------------------
+    
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) > 20:
+            raise forms.ValidationError("حداکثر طول عنوان باید 20 حرف باشد.")
+        return title
+    
+    # ------------------------------------------------------------------
+    
+    def clean_company(self):
+        company = self.cleaned_data.get('company')
+        if len(company) > 35:
+            raise forms.ValidationError("حداکثر طول شرکت/مجموعه باید 35 حرف باشد.")
+        return company
+
+    # ------------------------------------------------------------------
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 100:
+            raise forms.ValidationError("حداکثر طول توضیحات باید 100 حرف باشد.")
+        return description
+
 # ================================================================
 
 class SkillForm(forms.ModelForm):
+    
+    title = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True}), label='عنوان')
     
     class Meta:
         model = models.Skill
@@ -169,9 +340,20 @@ class SkillForm(forms.ModelForm):
             'title',
         )
 
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) > 20:
+            raise forms.ValidationError("حداکثر طول عنوان باید 20 حرف باشد.")
+        return title
+
 # ================================================================
 
 class EducationForm(forms.ModelForm):
+
+    title = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True}), label='عنوان')
+    description = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 100, 'required': True}), label='توضیحات')
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'required': True}), label='تاریخ شروع')
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='تاریخ پایان')
     
     class Meta:
         model = models.Education
@@ -182,10 +364,40 @@ class EducationForm(forms.ModelForm):
             'end_date',
         )
 
+    def clean(self) -> dict[str, Any]:
+        cleaned_data = self.cleaned_data
+        
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        
+        if start_date > end_date :
+            raise forms.ValidationError('تاریخ شروع از تاریخ پایان بیشتر است.')
+
+        return  cleaned_data
+
+    # ------------------------------------------------------------------
+    
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) > 20:
+            raise forms.ValidationError("حداکثر طول عنوان باید 20 حرف باشد.")
+        return title
+
+    # ------------------------------------------------------------------
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 100 :
+            raise forms.ValidationError("حداکثر طول توضیحات باید 100 حرف باشد.")
+        return description
+
 # ================================================================
 
 class AchievementForm(forms.ModelForm):
-    
+
+    title = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True}), label='عنوان')
+    description = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 100, 'required': True}), label='توضیحات')
+
     class Meta:
         model = models.Achievement
         fields = (
@@ -193,13 +405,36 @@ class AchievementForm(forms.ModelForm):
             'description',
         )
 
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) > 20 :
+            raise forms.ValidationError("حداکثر طول عنوان باید 20 حرف باشد.")
+        return title
+
+    # ------------------------------------------------------------------
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description and len(description) > 100 :
+            raise forms.ValidationError("حداکثر طول توضیحات باید 100 حرف باشد.")
+        return description
+
 # ================================================================
 
 class LanguageForm(forms.ModelForm):
-    
+
+    name = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True}), label='نام')
+    level = forms.ChoiceField(widget=forms.Select(attrs={'required': True}), choices=models.Language.LEVELS, label='سطح')
+
     class Meta:
         model = models.Language
         fields = (
             'name',
             'level',
         )
+        
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if len(name) > 20 :
+            raise forms.ValidationError("حداکثر طول نام باید 20 حرف باشد.")
+        return name

@@ -193,9 +193,9 @@ class BaseResume(models.Model):
     # --------------------------------------
     title = models.CharField(max_length=80, blank=True, verbose_name="عنوان شغلی")
     # --------------------------------------
-    fname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام")
+    fname = models.CharField(max_length=25, null=True, blank=True, verbose_name="نام")
     # --------------------------------------
-    lname = models.CharField(max_length=255, null=True, blank=True, verbose_name="نام خانوادگی")
+    lname = models.CharField(max_length=30, null=True, blank=True, verbose_name="نام خانوادگی")
     # --------------------------------------
     description = models.TextField(max_length=255, null=True, blank=True, verbose_name="توضیحات")
     # -----------------------------------------
@@ -292,19 +292,19 @@ class Resume(BaseResume):
     # -----------------------------------------
     gender = models.CharField(max_length=15, default="male", choices=GENDERS, verbose_name="جنسیت")
     # --------------------------------------
-    military_service = models.CharField(max_length=200, null=True, blank=True, verbose_name="وضعیت سربازی")
+    military_service = models.CharField(max_length=30, null=True, blank=True, verbose_name="وضعیت سربازی")
     # --------------------------------------
     image = models.ImageField(upload_to=resume_image_path, null=True, blank=True, verbose_name="عکس")
     # --------------------------------------
     telephone = models.CharField(max_length=20, null=True, blank=True, verbose_name="شماره تلفن")
     # --------------------------------------
-    email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="ایمیل")
+    email = models.EmailField(max_length=80, null=True, blank=True, verbose_name="ایمیل")
     # --------------------------------------
-    linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس لینکدین")
+    linkedin = models.CharField(max_length=255, default='ندارم', null=True, blank=True, verbose_name="آدرس لینکدین")
     # --------------------------------------
-    github = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس گیتهاب")
+    github = models.CharField(max_length=255, default='ندارم', null=True, blank=True, verbose_name="آدرس گیتهاب")
     # --------------------------------------
-    website = models.CharField(max_length=255, null=True, blank=True, verbose_name="آدرس وبسایت")
+    website = models.CharField(max_length=150, default='ندارم', null=True, blank=True, verbose_name="آدرس وبسایت")
     # --------------------------------------
 
     class Meta:
