@@ -21,7 +21,7 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------------------------------------------
     stuff_status = models.CharField(max_length=12, default='unknown', choices=STUFF_STATUSES, verbose_name="وضعیت کالا")
     # --------------------------------------------------------------------------
-    price = models.CharField(max_length=15, null=True, default="رایگان" , verbose_name="قیمت")
+    price = models.CharField(max_length=20, null=True, default="رایگان" , verbose_name="قیمت")
     # --------------------------------------------------------------------------
     region  = models.ForeignKey(to=generics_models.Region, on_delete=models.SET_NULL, null=True, blank=True, related_name='stuffs', verbose_name="منطقه")
     # --------------------------------------
@@ -29,7 +29,7 @@ class StuffAdvertising(generics_models.BaseAdvertisingModel):
     # --------------------------------------
     tags = models.ManyToManyField(generics_models.Tag, blank=True, related_name='stuff_ads', verbose_name="تگ")
     # --------------------------------------
-    address = models.CharField(max_length=55, null=True, blank=True, verbose_name="آدرس")
+    address = models.CharField(max_length=75, null=True, blank=True, verbose_name="آدرس")
     
     class Meta:
         pass
