@@ -74,7 +74,7 @@ $(document).ready(function () {
     let messageInput = $('[name="message"]');
     let message = messageInput.val().trim();
 
-    if (message !== '') {
+    if (message !== '' && message.length <= 100) {
       chatSocket.send(JSON.stringify({
         'type': 'chat.message',
         'sender': senderUsername,
@@ -84,4 +84,19 @@ $(document).ready(function () {
       messageInput.val('');
     }
   });
+
+  $('#id_message').on('input', function() {
+    var messageLength = $(this).val().length;
+    if (messageLength > 50) {
+      $(this).css('height', 'auto');
+      var newHeight = Math.max(48, $(this).prop('scrollHeight'));
+      $(this).height(newHeight);
+    } else {
+      $(this).css('height', 'auto');
+    }
+  });
+
+
+  
+
 });
