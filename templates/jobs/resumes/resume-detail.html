@@ -45,7 +45,7 @@
 
           <div>
             <span class="font-semibold">عکس :</span>
-            <img src="{{resume.image.url}}" alt="عکس {{ resume.full_name }}" class="w-24 h-24 rounded-lg">
+            <img src="{% if resume.image %} {{resume.image.url}} {% endif %}" alt="عکس ندارد" class="w-24 h-24 rounded-lg">
           </div>
 
           <div>
