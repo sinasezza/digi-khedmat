@@ -48,13 +48,29 @@ class UserRegisterForm(forms.ModelForm):
     
     # ---------------------------------------------------
     
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get("first_name")
+        if len(first_name) > 20:
+            raise forms.ValidationError('نام حداکثر 20 حرف میتواند داشته  باشد.')
+    
+    # ---------------------------------------------------
+    
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get("last_name")
+        if len(last_name) > 20:
+            raise forms.ValidationError('نام خانوادگی 20 حرف میتواند داشته  باشد.')
+    
+    # ---------------------------------------------------
+    
     def clean_confirm_password(self):
         password1 = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('confirm_password')
-                
+        
+        if len(password1) > 30:
+            raise forms.ValidationError('طول رمز حداکثر 30 حرف است.')
         if not password1 == password2 :
             raise forms.ValidationError('رمز عبور و تاییدیه رمز هماهنگ نیستند')
-        
+
         return password1, password2
     
     # ---------------------------------------------------
@@ -63,6 +79,8 @@ class UserRegisterForm(forms.ModelForm):
         phone_number = self.cleaned_data.get('phone_number')
         matching_phone_numbers = models.Account.objects.filter(phone_number=phone_number)
 
+        if len(phone_number) > 20:
+            raise forms.ValidationError('حداکثر طول شماره تلفن 20 شماره است.')
         if matching_phone_numbers.exists():
             raise forms.ValidationError('این شماره تلفن در سامانه وجود دارد.')
         
@@ -74,6 +92,8 @@ class UserRegisterForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         matching_emails = models.Account.objects.filter(email=email)
 
+        if len(email) > 60:
+            raise forms.ValidationError('حداکثر طول ایمیل 60 حرف است.')
         if matching_emails.exists():
             raise forms.ValidationError('این ایمیل در سامانه وجود دارد.')
         

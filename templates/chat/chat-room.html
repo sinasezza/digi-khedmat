@@ -74,11 +74,12 @@
         {% csrf_token %}
         <input
           type="text"
+          id="id_message"
           name="message"
-          maxlength="200"
+          maxlength="100"
           placeholder="پیام خود را وارد کنید..."
           required
-          class="flex-1 border p-2 mr-2 rounded-lg focus:outline-none focus:border-indigo-300"
+          class="flex-1 border p-2 mr-2 rounded-lg focus:outline-none focus:border-indigo-300 h-12"
         />
         <button
           type="submit"
