@@ -29,10 +29,10 @@
       <!-- Start Search Box -->
       <form method="get">
         <div class="shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-            <div class="flex">
+            <div class="flex rounded-md">
               <!--Search button-->
               <button
-              class="border-2 px-6 py-2  hover:bg-black hover:bg-opacity-5"
+              class="border-2 px-6 py-2 rounded-md hover:bg-black hover:bg-opacity-5"
               type="submit" id="button-addon3" data-te-ripple-init>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 border-black" >
                 <path fill-rule="evenodd"
@@ -46,7 +46,7 @@
                 action="{{request.resolver_match.app_name}}/list/" 
                 type="text"
                 style="border-color: inherit; text-align: center; color: black"
-                class="font-vazir leading-[1.6]  placeholder:text-neutral-200"
+                class="font-vazir leading-[1.6]  placeholder:text-neutral-200 rounded-md"
                 maxlength="25"
                 placeholder="جستجو"  aria-label="Search" aria-describedby="button-addon3"/>
             </div>
