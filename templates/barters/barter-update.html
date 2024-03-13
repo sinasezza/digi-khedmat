@@ -1,183 +1,164 @@
 {% extends "base/base.html" %}
 {% load barters_filters %}
-
 {% block title %}ویرایش آگهی | تهاتر کالا{% endblock title %}
-
 {% block content %}
-
 <div>
-  <section class="dark:bg-gray-300 font-vazir">
-    <div class="lg:w-1/3 mx-auto lg:py-6">
-      <div>
-        <div class="place-items-center">
-          <form action="" method="post">
-            {% csrf_token %}
-            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div>
-                <label for="title"> عنوان آگهی: </label>
-                <div class="mt-2">
-                  <input
-                    maxlength="20"
-                    type="text"
-                    name="title"
-                    id="title"
-                    autocomplete="title"
-                    required
-                    class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                    placeholder="حداکثر 20 کاراکتر"
-                    value="{{ form.title.value }}"
-                  />
+    <section class="dark:bg-gray-300 font-vazir">
+        <div class="lg:w-1/3 mx-auto lg:py-6">
+            <div>
+                <div class="place-items-center">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <div>
+                                <label for="title"> عنوان آگهی: </label>
+                                <div class="mt-2">
+                                    <input
+                                        maxlength="20"
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        autocomplete="title"
+                                        required
+                                        class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                        placeholder="حداکثر ۲۰ کاراکتر"
+                                        value="{{ form.title.value }}"
+                                        />
+                                </div>
+                                <div id="title-errors">
+                                    {% for error in form.title.errors %}
+                                    <p class="text-red-500 text-xs italic">*{{error}}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                <label for="summary"> معاوضه با: </label>
+                                <div class="mt-2">
+                                    <input
+                                        maxlength="25"
+                                        type="text"
+                                        name="summary"
+                                        id="summary"
+                                        autocomplete="summary"
+                                        required
+                                        placeholder="حداکثر ۲۵ کاراکتر"
+                                        class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                        value="{{ form.summary.value }}"
+                                        />
+                                </div>
+                                <div id="summary-errors">
+                                    {% for error in form.summary.errors %}
+                                    <p class="text-red-500 text-xs italic">*{{error}}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="id_description"> توضیحات آگهی: </label>
+                                <div class="mt-2">{{ form.description }}</div>
+                            </div>
+                        </div>
+                        <label for="address">آدرس</label>
+                        <div class="mt-2">
+                            <input
+                                maxlength="55"
+                                type="text"
+                                name="address"
+                                id="address"
+                                autocomplete="address"
+                                required
+                                class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                placeholder="حداکثر ۵۵ کاراکتر"
+                                value="{{ form.address.value }}"
+                                />
+                            <div id="address-errors">
+                                {% for error in form.address.errors %}
+                                <p class="text-red-500 text-xs italic">*{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <div class="mt-6">
+                                <label for="categories" class="block leading-6">
+                                دسته‌بندی:
+                                </label>
+                                <div class="mt-2">
+                                    <select
+                                        id="categories"
+                                        name="categories"
+                                        autocomplete="categories-name"
+                                        multiple
+                                        class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        >
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if category in barter.categories.all %} selected {% endif %}>{{ category.title }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="mt-6">
+                                    <label for="tags"> تگ‌ها: </label>
+                                    <div class="mt-2">
+                                        <select
+                                            id="tags"
+                                            name="tags"
+                                            autocomplete="given-name"
+                                            multiple
+                                            class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                                            >
+                                        {% for tag in tags %}
+                                        <option value="{{ tag.id }}" {% if tag in barter.tags.all %} selected {% endif %}>{{ tag.name }}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <div class="mt-6">
+                                <label for="region" class="block leading-6"> منطقه: </label>
+                                <div class="mt-2">
+                                    <select
+                                        id="region"
+                                        name="region"
+                                        autocomplete="region-name"
+                                        required
+                                        class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        >
+                                    {% for region in regions %}
+                                    <option value="{{ region.id }}" {% if region.id == form.region.value %} selected {% endif %}>{{ region }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <label for="status" class="block leading-6">
+                                وضعیت انتشار آگهی:
+                                </label>
+                                <div class="mt-2">
+                                    <select
+                                        id="status"
+                                        name="status"
+                                        autocomplete="status-name"
+                                        required
+                                        class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        >
+                                    <option value="published" {% if form.status.value == 'published' %} selected {% endif %}>انتشار</option>
+                                    <option value="draft" {% if form.status.value == 'draft' %} selected {% endif %}>پیش نویس</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="mt-4 mb-2 bg-blue-600 hover:bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 w-full py-1.5 rounded-md"
+                            role="group"
+                            >
+                        ثبت آگهی
+                        </button>
+                    </form>
                 </div>
-
-                <div id="title-errors">
-                  {% for error in form.title.errors %}
-                    <p class="text-red-500 text-xs italic">*{{error}}</p>
-                  {% endfor %}
-                </div>
-              </div>
-
-              <div>
-                <label for="summary"> معاوضه با: </label>
-                <div class="mt-2">
-                  <input
-                    maxlength="25"
-                    type="text"
-                    name="summary"
-                    id="summary"
-                    autocomplete="summary"
-                    required
-                    class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                    value="{{ form.summary.value }}"
-                  />
-                </div>
-
-                <div id="summary-errors">
-                  {% for error in form.summary.errors %}
-                    <p class="text-red-500 text-xs italic">*{{error}}</p>
-                  {% endfor %}
-                </div>
-
-              </div>
-              <div class="sm:col-span-2">
-                <label for="id_description"> توضیحات آگهی: </label>
-                <div class="mt-2">{{ form.description }}</div>
-              </div>
             </div>
-
-            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div class="mt-6">
-                <label for="region" class="block leading-6"> منطقه: </label>
-                <div class="mt-2">
-                  <select
-                    id="region"
-                    name="region"
-                    autocomplete="region-name"
-                    required
-                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
-                  >
-                    {% for region in regions %}
-                      <option value="{{ region.id }}" {% if region.id == form.region.value %} selected {% endif %}>{{ region }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <label for="address">آدرس</label>
-            <div class="mt-2">
-              <input
-                maxlength="55"
-                type="text"
-                name="address"
-                id="address"
-                autocomplete="address"
-                required
-                class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                placeholder="حداکثر 55 کاراکتر"
-                value="{{ form.address.value }}"
-              />
-
-              <div id="address-errors">
-                {% for error in form.address.errors %}
-                  <p class="text-red-500 text-xs italic">*{{error}}</p>
-                {% endfor %}
-              </div>
-
-            </div>
-
-            
-
-            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div class="mt-6">
-                <label for="categories" class="block leading-6">
-                  دسته‌بندی:
-                </label>
-                <div class="mt-2">
-                  <select
-                    id="categories"
-                    name="categories"
-                    autocomplete="categories-name"
-                    multiple
-                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
-                  >
-                    {% for category in categories %}
-                      <option value="{{ category.id }}" {% if category in barter.categories.all %} selected {% endif %}>{{ category.title }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <div class="mt-6">
-                  <label for="tags"> تگ‌ها: </label>
-                  <div class="mt-2">
-                    <select
-                      id="tags"
-                      name="tags"
-                      autocomplete="given-name"
-                      multiple
-                      class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
-                    >
-                      {% for tag in tags %}
-                        <option value="{{ tag.id }}" {% if tag in barter.tags.all %} selected {% endif %}>{{ tag.name }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div class="mt-6">
-                <label for="status" class="block leading-6">
-                  وضعیت انتشار آگهی:
-                </label>
-                <div class="mt-2">
-                  <select
-                    id="status"
-                    name="status"
-                    autocomplete="status-name"
-                    required
-                    class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
-                  >
-                    <option value="published" {% if form.status.value == 'published' %} selected {% endif %}>انتشار</option>
-                    <option value="draft" {% if form.status.value == 'draft' %} selected {% endif %}>پیش نویس</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <button
-              class="mt-4 mb-2 dark:bg-white w-full py-1.5 rounded-md dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-              role="group"
-            >
-              ثبت آگهی
-            </button>
-          </form>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </div>
-
 {% endblock content %}
