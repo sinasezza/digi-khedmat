@@ -6,7 +6,7 @@
 {% block content %}
   <div
     id="messages"
-    class="flex flex-col items-center justify-center w-screen min-h-[80vh] bg-gray-100 text-gray-800 p-10"
+    class="font-vazir flex flex-col items-center justify-center w-screen min-h-[80vh] bg-gray-100 text-gray-800 p-10"
   >
     <div
       class="flex items-center space-x-2 w-full max-w-xl bg-gray-900 rounded-lg p-4"
@@ -16,13 +16,15 @@
         class="h-10 w-10 rounded-full bg-white"
         alt="{{ receiver.username }}"
       />
-      <div class="text-xl font-bold text-white">
-        <div>{{ receiver.username }}</div>
+      <div class="pr-2 text-xl font-bold text-white">
+        <div>
+          {{ receiver.username }}
+        </div>
         <a
           href="{{receiver.get_user_profile}}"
-          class="text-sm text-gray-500 dark:text-gray-400"
-          >مشاهده مشخصات</a
-        >
+          class="text-sm text-gray-500 dark:text-gray-400">
+          مشاهده مشخصات
+        </a>
       </div>
     </div>
 
