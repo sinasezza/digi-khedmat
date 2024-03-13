@@ -1,10 +1,10 @@
-$(document).ready(function() {
-  $('#toggleSidebarBtn').click(function() {
-    $('body').toggleClass('sidebar-open');
-    $("#sidebar").toggleClass("hidden");
-  });
-});
+// toggle sidebar on click
+$("#toggleSidebarBtn").click(function () {
+  $("body").toggleClass("sidebar-open");
+  $("#sidebar").toggleClass("hidden");
 
+  if ($("body").hasClass("sidebar-open")) fetchSidebarCounts();
+});
 
 // Function to retrieve CSRF token from cookies
 function getCookie(name) {
@@ -21,4 +21,31 @@ function getCookie(name) {
     }
   }
   return cookieValue;
+}
+
+// Function to fetch sidebar counts using API
+async function fetchSidebarCounts() {
+  try {
+    const response = await fetch("/api/auth/get-sidebar-counts/", {
+      method: "GET",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Update the counts in the sidebar
+    console.log(`favorite counts is ${data.favorites_count}`);
+    $("#unseen-notifications-count").text(data.unseen_notifications_count);
+    $("#favorites-count").text(data.favorites_count);
+    $("#resumes-count").text(data.resumes_count);
+  } catch (error) {
+    console.error("Error fetching sidebar counts:", error);
+  }
 }

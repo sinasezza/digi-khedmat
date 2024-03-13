@@ -33,3 +33,9 @@ def resume_file_delete_api(request: HttpRequest, id: str) -> Response:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
 
 # ------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([rest_permissions.AllowAny])
+def job_fetch_views_api(request: HttpRequest, job_slug: str):
+    job = get_object_or_404(models.JobAdvertising, slug=job_slug)
+    return Response(data={'views': job.views}, status=rest_status.HTTP_200_OK)

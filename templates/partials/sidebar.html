@@ -43,7 +43,7 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
             </span>
             <span class="ml-2 text-sm">اعلان‌ها</span>
-            <span class="px-2 py-0.5 text-xs text-red-500 bg-red-50 rounded-full">
+            <span id='unseen-notifications-count' class="px-2 py-0.5 text-xs text-red-500 bg-red-50 rounded-full">
                 {{unseen_notifications_count}}
             </span>
           </a>
@@ -59,7 +59,7 @@
               <img class="w-5 h-5" src="{% static 'global/icons/heart.png' %}" alt="favorites">
             </span>
             <span class="ml-2 text-sm">علاقه‌مندی‌ها</span>
-            <span class="px-2 py-0.5 text-xs text-blue-500 bg-blue-50 rounded-full">
+            <span id="favorites-count" class="px-2 py-0.5 text-xs text-blue-500 bg-blue-50 rounded-full">
                 {{ favorites_count }}
             </span>
           </a>
@@ -70,7 +70,7 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             </span>
             <span class="ml-2 text-sm">کارجویان</span>
-            <span class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">{{ resumes_count }}</span>
+            <span id="resumes-count" class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">{{ resumes_count }}</span>
           </a>
         </li>
           <div>
