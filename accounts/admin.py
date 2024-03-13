@@ -4,7 +4,8 @@ from . import models
 
 @admin.register(models.Account)
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'phone_number',)
+    list_display = ('username', 'phone_number', 'email')
+    ordering = ('date_joined',)
 
 # =================================================================
 

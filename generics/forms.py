@@ -14,3 +14,5 @@ class ContactForm(forms.ModelForm):
 
         if message and len(message) > 350:
             raise forms.ValidationError("طول پیام باید حداکثر 350 حرف باشد.")
+    
+        return message

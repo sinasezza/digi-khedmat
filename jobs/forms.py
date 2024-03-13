@@ -160,9 +160,6 @@ class ResumeFileForm(forms.ModelForm):
 
 # ================================================================
 
-from django import forms
-from . import models
-
 class ResumeForm(forms.ModelForm):
     
     fname = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 20, 'required': True, 'disabled': True,}), label='نام')

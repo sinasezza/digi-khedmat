@@ -9,6 +9,7 @@ from accounts.models import Account
 from . import models, decorators
 
 
+@login_required(login_url='accounts:login')
 def get_or_create_chat_room_view(request: HttpRequest, receiver_id: str) -> HttpResponseRedirect:
     receiver = get_object_or_404(Account, id=receiver_id)
     
