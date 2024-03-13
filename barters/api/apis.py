@@ -31,3 +31,11 @@ def barter_delete_api(request: HttpRequest, barter_slug: str) -> Response:
         return Response(status=rest_status.HTTP_204_NO_CONTENT)
     else:
         return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+    
+# ------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([rest_permissions.AllowAny])
+def barter_fetch_views_api(request: HttpRequest, barter_slug: str):
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
+    return Response(data={'views': barter.views}, status=rest_status.HTTP_200_OK)

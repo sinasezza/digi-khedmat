@@ -166,7 +166,6 @@
    const unsave_img = "{% static 'global/icons/insta-unsave.png' %}";
    const advertisementId = "{{ advertise.id }}";
    const advertisementType = "StuffAdvertising";
-   const csrftoken = getCookie('csrftoken');
    const userAuthenticated = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
    let isFavorite = {% if favorite %}true{% else %}false{% endif %};
    let favoriteId = {% if favorite %} {{favorite.id}} {% else %}null{% endif %};

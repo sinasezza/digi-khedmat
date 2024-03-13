@@ -137,3 +137,21 @@ def check_field_existence_api(request):
 
 # --------------------------------------------------------------------------------
 
+@api_view(http_method_names=('GET',))
+@authentication_classes([rest_authentications.SessionAuthentication,])
+@permission_classes([rest_permissions.IsAuthenticatedOrReadOnly])
+def get_sidebar_counts_api(request):
+    if request.method == 'GET':
+        unseen_notifications_count = request.user.notifications.unseen_notifications_count()
+        favorites_count = request.user.favorites.count()
+        resumes_count = request.user.rcv_resumes.unseen_count() + request.user.rcv_resume_files.unseen_count()
+        
+        counts_data = {
+            'unseen_notifications_count': unseen_notifications_count,
+            'favorites_count': favorites_count,
+            'resumes_count': resumes_count,
+        }
+        
+        return Response(data=counts_data, status=rest_status.HTTP_200_OK)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
