@@ -52,6 +52,7 @@ class UserRegisterForm(forms.ModelForm):
         first_name = self.cleaned_data.get("first_name")
         if len(first_name) > 20:
             raise forms.ValidationError('نام حداکثر 20 حرف میتواند داشته  باشد.')
+        return first_name
     
     # ---------------------------------------------------
     
@@ -59,6 +60,7 @@ class UserRegisterForm(forms.ModelForm):
         last_name = self.cleaned_data.get("last_name")
         if len(last_name) > 20:
             raise forms.ValidationError('نام خانوادگی 20 حرف میتواند داشته  باشد.')
+        return last_name
     
     # ---------------------------------------------------
     
@@ -201,7 +203,7 @@ class ChangePasswordForm(forms.Form):
         
         print(f"old pass is {old_pass}")
         if not self.user.check_password(old_pass):
-            raise forms.ValidationError("گذرواژه قبل  اشتباه است.")
+            raise forms.ValidationError("گذرواژه قبلی  اشتباه است.")
         
         if new_pass1 and new_pass2:
             if new_pass1 != new_pass2:
