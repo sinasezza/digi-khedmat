@@ -4,8 +4,10 @@ from rest_framework import authentication as rest_authentications
 from rest_framework import permissions as rest_permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status as rest_status
+from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from .. import models, permissions, utils
+
 
 def handle_api_response(success_message: str, error_message: str, status_code: int):
     def decorator(func):
@@ -137,3 +139,30 @@ def check_field_existence_api(request):
 
 # --------------------------------------------------------------------------------
 
+@api_view(http_method_names=('GET',))
+@authentication_classes([rest_authentications.SessionAuthentication,])
+@permission_classes([rest_permissions.IsAuthenticatedOrReadOnly])
+def get_sidebar_counts_api(request: HttpRequest):
+    if request.method == 'GET':
+        unseen_notifications_count = request.user.notifications.unseen_notifications_count()
+        favorites_count = request.user.favorites.count()
+        resumes_count = request.user.rcv_resumes.unseen_count() + request.user.rcv_resume_files.unseen_count()
+        
+        counts_data = {
+            'unseen_notifications_count': unseen_notifications_count,
+            'favorites_count': favorites_count,
+            'resumes_count': resumes_count,
+        }
+        
+        return Response(data=counts_data, status=rest_status.HTTP_200_OK)
+    else:
+        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+    
+
+# --------------------------------------------------------------------------------
+
+@api_view(http_method_names=('GET',))
+@permission_classes([rest_permissions.AllowAny])
+def get_user_ads_count_api(request: HttpRequest, username: str):
+    user = get_object_or_404(models.Account, username=username)
+    return Response(data={'count': user.advertising_count}, status=rest_status.HTTP_200_OK)
