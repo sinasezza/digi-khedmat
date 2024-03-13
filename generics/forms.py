@@ -12,5 +12,5 @@ class ContactForm(forms.ModelForm):
     def clean_message(self):
         message = self.cleaned_data.get('message')
 
-        if message and len(message) > 450:
-            raise forms.ValidationError("طول پیام باید حداکثر 450 حرف باشد.")
+        if message and len(message) > 350:
+            raise forms.ValidationError("طول پیام باید حداکثر 350 حرف باشد.")
