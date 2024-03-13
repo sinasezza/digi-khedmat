@@ -11,12 +11,13 @@
   <div class="min-h-28 ">
     <div class="max-w-screen-lg mx-auto py-4">
 
-      <div class="border-2 bg-yellow-400 text-black border-slate-700 rounded-md p-4">
+      <div class="border-2 bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md p-4">
         <h2 class="font-bold text-center text-6xl">
           تبلیغات
         </h2>
         <h2 class="text-3xl mt-2 text-center font-semibold">در این صفحه میتوانید آگهی های خود را درج کنید یا آگهی دیگران
-          را ببینید.</h2>
+          را ببینید.
+        </h2>
         <p class="text-center mt-4">- صفحه آگهی‌های تبلیغاتی کسب‌وکارها و کالاها -</p>
       </div>
 
@@ -24,7 +25,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {% for adv in ads %}
           <a href="{{ adv.get_absolute_url }}">
-            <div class="bg-yellow-200 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+            <div class="bg-blue-600 hover:bg-blue-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
               <img src="{{ adv.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
               <div class="p-6 flex flex-col flex-1">
                 <h3 class="mt-3 mb-2 font-bold text-lg">
