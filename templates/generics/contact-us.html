@@ -18,8 +18,8 @@
 												name="fname"
 												id="first-name"
 												autocomplete="given-name"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												value="{{request.user.first_name}}"
 												readonly
 											/>
@@ -32,9 +32,9 @@
 												type="text"
 												name="lname"
 												id="last-name"
-												autocomplete="family-name"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												autocomplete="lname"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												value="{{request.user.last_name}}"
 												readonly
 											/>
@@ -47,9 +47,9 @@
 												type="text"
 												name="company_name"
 												id="company"
-												autocomplete="organization"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												autocomplete="company_name"
+												maxlength="35"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												value="{{request.user.company_name}}"
 												readonly
 											/>
@@ -63,8 +63,8 @@
 												name="email"
 												id="email"
 												autocomplete="email"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="60"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												value="{{request.user.email}}"
 												readonly
 											/>
@@ -78,8 +78,8 @@
 												name="phone_number"
 												id="phone-number"
 												autocomplete="tel"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												value="{{request.user.phone_number}}"
 												readonly
 											/>
@@ -92,7 +92,7 @@
 												name="message"
 												id="message"
 												rows="4"
-                        maxlength="450"
+                        maxlength="300"
 												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                         required
 												placeholder="پیام خود را وارد کنید."
@@ -121,8 +121,8 @@
 												name="fname"
 												id="first-name"
 												autocomplete="given-name"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												placeholder="نام خود را وارد کنید."
 											/>
 										</div>
@@ -134,9 +134,9 @@
 												type="text"
 												name="lname"
 												id="last-name"
-												autocomplete="family-name"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												autocomplete="lname"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												placeholder="نام‌خانوادگی خود را وارد کنید."
 											/>
 										</div>
@@ -149,8 +149,8 @@
 												name="company_name"
 												id="company"
 												autocomplete="organization"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="35"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												placeholder="نام شرکت خود را وارد کنید."
 											/>
 										</div>
@@ -163,8 +163,8 @@
 												name="email"
 												id="email"
 												autocomplete="email"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="60"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												placeholder="آدرس ایمیل خود را وارد کنید."
 											/>
 										</div>
@@ -177,8 +177,8 @@
 												name="phone_number"
 												id="phone-number"
 												autocomplete="tel"
-												style="text-align: center"
-												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+												maxlength="20"
+												class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 												placeholder="شماره تماس خود را وارد کنید."
 											/>
 										</div>
@@ -190,7 +190,7 @@
 												name="message"
 												id="message"
 												rows="4"
-                        maxlength="450"
+                        maxlength="300"
 												class="w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                         required
 												placeholder="پیام خود را وارد کنید."
