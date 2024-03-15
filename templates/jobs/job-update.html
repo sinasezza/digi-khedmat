@@ -202,15 +202,15 @@
                         </label>
                         <div class="mt-2">
                             <select
-                                id="cooperation_types"
-                                name="cooperation_types"
-                                multiple
-                                class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
-                                >
+                              id="cooperation_types"
+                              name="cooperation_types"
+                              multiple
+                              class="w-full rounded-md py-1.5 text-gray-900 sm:max-w-xs sm:text-sm sm:leading-6"
+                            >
                             {% for cooperation_type in cooperation_types %}
-                            <option value="{{cooperation_type.id}}" {% if cooperation_type in job.cooperation_types.all %} selected {% endif %}>
-                            {{ co_type.name }}
-                            </option>
+                              <option value="{{cooperation_type.id}}" {% if cooperation_type in job.cooperation_types.all %} selected {% endif %}>
+                                {{ cooperation_type.name }}
+                              </option>
                             {% endfor %}
                             </select>
                         </div>
