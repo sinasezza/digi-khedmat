@@ -53,11 +53,17 @@ $(document).ready(function () {
     }
   });
 
+  // Handle delete button click
+  $(".delete-button").on("click", function () {
+    let imageId = $(this).data("image-id");
+    deleteImage(imageId);
+  });
+
   function deleteImage(imageId) {
     // Perform delete action or show a confirmation modal
     console.log("Delete image with id:", imageId);
     // Add your delete logic here, e.g., AJAX request to server
-    fetch(`/api/ads/stuff-ads-image-delete/${imageId}/`, {
+    fetch(`/api/ads/stuff-adv-image-delete/${imageId}/`, {
       method: "DELETE",
       headers: {
         "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val(),
@@ -77,4 +83,12 @@ $(document).ready(function () {
         console.error("Error deleting image:", error);
       });
   }
+
+  $("#register").on("click", function (e) {
+    const imgCount = $("#image-items").find("img").length; // Count the number of <img> elements
+    if (!(imgCount >= 1 && imgCount <= 9)) {
+      e.preventDefault();
+      alert("شما باید حداقل 1 و حداکثر 9 تصویر بارگزاری کنید.");
+    }
+  });
 });

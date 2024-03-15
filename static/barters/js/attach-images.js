@@ -91,4 +91,14 @@ $(document).ready(function () {
         console.error('Error deleting image:', error);
     });
   }
+
+  $('#register').on('click', function(e) {
+    const imgCount = $('#image-items').find('img').length; // Count the number of <img> elements
+    if(!(imgCount >= 1 && imgCount <= 9)) {
+      e.preventDefault();
+      alert("شما باید حداقل 1 و حداکثر 9 تصویر بارگزاری کنید.");
+    }
+  });
+
+
 });

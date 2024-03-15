@@ -39,3 +39,14 @@ def resume_file_delete_api(request: HttpRequest, id: str) -> Response:
 def job_fetch_views_api(request: HttpRequest, job_slug: str):
     job = get_object_or_404(models.JobAdvertising, slug=job_slug)
     return Response(data={'views': job.views}, status=rest_status.HTTP_200_OK)
+
+
+# ------------------------------------------------------------------------------------
+
+@api_view(http_method_names=["DELETE",])
+@authentication_classes((rest_authentications.SessionAuthentication,))
+@permission_classes((permissions.IsJobOwnerOrReadOnly,))
+def job_delete_api(request: HttpRequest, job_slug: str) -> Response:
+    job = get_object_or_404(models.JobAdvertising, slug=job_slug)
+    job.delete()
+    return Response(status=rest_status.HTTP_204_NO_CONTENT)

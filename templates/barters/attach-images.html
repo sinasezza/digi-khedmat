@@ -25,7 +25,7 @@
   </div>
 
   <div id="custom-controls-gallery" class=" mt-8 mb-4 mx-10" data-carousel="slide">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div id="image-items" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {% for image_obj in barter_images %}
         <div class="relative group">
           <img class="w-full h-9/12 rounded-lg" src="{{ image_obj.image.url }}" alt="image-{{ image_obj.id }}" data-image-id="{{ image_obj.id }}">

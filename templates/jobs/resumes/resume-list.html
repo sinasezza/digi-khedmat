@@ -21,11 +21,12 @@
 
       <h4 class="text-lg font-semibold mt-4 text-center">فایل‌های دریافت شده</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for resume in received_resume_files %}
-          <div class="bg-gray-200 p-4 rounded-lg {% if resume.seen %} bg-lime-200 {% endif %}">
-            <p class="mb-2">فرستنده: <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
-            <p class="mb-2">آگهی: <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
-            <p><a href="{{resume.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
+        {% for resume_file in received_resume_files %}
+          <div class="bg-gray-200 p-4 rounded-lg {% if resume_file.seen %} bg-lime-200 {% endif %}">
+            <p class="mb-2">فرستنده: <a href="{{resume_file.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume_file.user.username}}</a></p>
+            <p class="mb-2">آگهی: <a href="{{resume_file.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume_file.advertisement.title}}</a></p>
+            <p><a href="{{resume_file.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
+            <p class="text-sm">تاریخ دریافت : {{resume_file.date_sent | to_Jdate}}</p>
           </div>
         {% endfor %}
       </div>
@@ -37,6 +38,7 @@
             <p class="mb-2">فرستنده: <a href="{{ resume_file.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume_file.user.username }}</a></p>
             <p class="mb-2">آگهی: <a href="{{ resume_file.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume_file.advertisement.title }}</a></p>
             <p><a href="{{resume_file.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
+            <p class="text-sm">تاریخ ارسال : {{resume_file.date_sent | to_Jdate }}</p>
             <button class="delete-resume-file text-red-500 hover:underline" data-resume-file-id="{{ resume_file.id }}">حذف</button>
           </div>
         {% endfor %}
@@ -52,6 +54,7 @@
             <p class="mb-2">فرستنده: <a href="{{resume.user.get_user_profile}}" class="text-blue-500 hover:underline">{{resume.user.username}}</a></p>
             <p class="mb-2">آگهی: <a href="{{resume.advertisement.get_absolute_url}}" class="text-blue-500 hover:underline">{{resume.advertisement.title}}</a></p>
             <p><a href="{{resume.get_absolute_url}}" class="text-blue-500 hover:underline">مشاهده</a></p>
+            <p class="text-sm">تاریخ دریافت : {{resume.date_sent | to_Jdate}}</p>
           </div>
         {% endfor %}
       </div>
@@ -63,7 +66,8 @@
             <p class="mb-2">فرستنده: <a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
             <p class="mb-2">آگهی: <a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
             <p><a href="{{ resume.get_absolute_url }}" class="text-blue-500 hover:underline">مشاهده</a></p>
-            <button class="delete-resume" data-resume-id="{{ resume.id }}">حذف</button>
+            <p class="text-sm">تاریخ ارسال : {{resume.date_sent | to_Jdate }}</p>
+            <button class="delete-resume text-red-500 hover:underline" data-resume-id="{{ resume.id }}">حذف</button>
           </div>        
         {% endfor %}
       </div>
