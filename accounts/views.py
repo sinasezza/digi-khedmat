@@ -173,7 +173,7 @@ def change_password_view(request: HttpRequest) -> HttpResponse:
 @login_required(login_url='accounts:login')
 def user_panel_view(request):
     """View for the user panel page."""
-    barters = request.user.barters.filter(status='published').order_by('-date_created')
+    barters = request.user.barters.all().order_by('-date_created')
     jobs = request.user.jobs.all().order_by('-date_created')
     stuff_ads = request.user.stuff_ads.all().order_by('-date_created')
     
