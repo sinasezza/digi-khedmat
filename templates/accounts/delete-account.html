@@ -3,9 +3,9 @@
 {% block title %}حذف حساب کاربری{% endblock title %} 
 
 {% block content %}
-  <div class="container mx-auto mt-8 px-4">
+  <div class="container mx-auto mt-8 px-4 font-vazir text-center bg-blue-600 hover:bg-blue-500 text-white w-1/2 rounded py-4">
     <h1 class="text-3xl font-bold mb-4">حذف حساب کاربری</h1>
-    <p class="text-lg text-gray-700 mb-6">
+    <p class="text-lg mb-6">
       اگر قصد حذف حساب خود را دارید رمز عبور و جمله خواسته شده را وارد کنید و بر
       روی حذف حساب کلیک کنید.
     </p>
@@ -15,20 +15,23 @@
 
       <div class="mb-6">
         <label for="password" class="block text-lg mb-2"
-          >رمز خود را وارد کنید</label
+          >رمز خود را وارد کنید:</label
         >
+
         <input
-          type="password"
-          name="password"
-          id="password"
-          class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
-          required
-        />
+            id="password"
+            name="password"
+            type="password"
+            max="100"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="رمز فعلی شما"
+          />
+
       </div>
 
       <div class="mb-6">
         <label for="sentence" class="block text-lg mb-2">
-          بنویسید :
+          بنویسید:
           <span
             class="underline underline-offset-8 cursor-not-allowed select-none"
             oncopy="return false;"
@@ -39,13 +42,16 @@
             اینجانب {{request.user.username}} حساب خود را حذف میکنم
           </span>
         </label>
+
         <input
-          type="text"
-          id="sentence"
-          name="sentence"
-          class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
-          maxlength="100"
-        />
+            id="sentence"
+            name="sentence"
+            type="text"
+            max="100"
+            class="text-center w-full rounded-md py-1.5 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="متن بالا را در این قسمت بنویسید."
+          />
+
       </div>
 
       <div class="flex items-center justify-between">
