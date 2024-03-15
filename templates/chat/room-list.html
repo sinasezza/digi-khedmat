@@ -2,14 +2,79 @@
 {% load static %} 
 {% load chat_tags %} 
 
-{% block title %}پیام ها{% endblock title %} 
+{% block title %}پیام‌ها{% endblock title %} 
 
 {% block content %}
-<h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-  پیام های شما
-</h3>
 
-<ul class="max-w-md space-y-4">
+<!--
+Include Tailwind JIT CDN compiler
+More info: https://beyondco.de/blog/tailwind-jit-compiler-via-cdn
+-->
+<script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+
+<!-- Specify a custom Tailwind configuration -->
+
+
+<!-- Snippet -->
+<section class="font-vazir flex flex-col justify-center antialiased bg-gray-50 text-gray-600 min-h-screen p-4">
+  <div class="h-full">
+      <h3 class="text-2xl font-semibold text-gray-900 dark:text-white text-center">
+        پیام‌های شما
+      </h3>
+        <!-- Card -->
+        <div class="relative max-w-[340px] mx-auto bg-white shadow-lg rounded-lg">
+            <!-- Card header -->
+            <header class="pt-6 pb-4 px-5 border-b border-gray-200">
+                <div class="flex justify-between items-center mb-3">
+                    <!-- Image + name -->
+                    <div class="flex items-center">
+                        <a class="inline-flex items-start mr-3">
+                            <img class="rounded-full" src="{% if user.profile_photo %} {{user.profile_photo.url}} {% else %} {% static 'global/icons/add-profile-image.png' %} {% endif %}" width="48" height="48" alt="Lauren Marsano" />
+                        </a>
+                        <div class="pr-1">
+                            <a class="inline-flex text-gray-800 hover:text-gray-900">
+                                <h2 class="text-xl leading-snug font-bold">
+                                  {{ user.get_full_name }}
+                                </h2>
+                            </a>
+                            <a class="block text-sm font-medium hover:text-indigo-500" href="{{user.get_user_profile}}">
+                              {{ user.get_username }}@
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Settings button -->
+                    <a href="{% url "accounts:my-profile" %}">
+                      <div class="relative inline-flex flex-shrink-0">
+                          <button class="text-gray-400 hover:text-gray-500 rounded-full focus:ring-0 outline-none focus:outline-none">
+                              <span class="sr-only">Settings</span>
+                              <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
+                                  <path d="m15.621 7.015-1.8-.451A5.992 5.992 0 0 0 13.13 4.9l.956-1.593a.5.5 0 0 0-.075-.611l-.711-.707a.5.5 0 0 0-.611-.075L11.1 2.87a5.99 5.99 0 0 0-1.664-.69L8.985.379A.5.5 0 0 0 8.5 0h-1a.5.5 0 0 0-.485.379l-.451 1.8A5.992 5.992 0 0 0 4.9 2.87l-1.593-.956a.5.5 0 0 0-.611.075l-.707.711a.5.5 0 0 0-.075.611L2.87 4.9a5.99 5.99 0 0 0-.69 1.664l-1.8.451A.5.5 0 0 0 0 7.5v1a.5.5 0 0 0 .379.485l1.8.451c.145.586.378 1.147.691 1.664l-.956 1.593a.5.5 0 0 0 .075.611l.707.707a.5.5 0 0 0 .611.075L4.9 13.13a5.99 5.99 0 0 0 1.664.69l.451 1.8A.5.5 0 0 0 7.5 16h1a.5.5 0 0 0 .485-.379l.451-1.8a5.99 5.99 0 0 0 1.664-.69l1.593.956a.5.5 0 0 0 .611-.075l.707-.707a.5.5 0 0 0 .075-.611L13.13 11.1a5.99 5.99 0 0 0 .69-1.664l1.8-.451A.5.5 0 0 0 16 8.5v-1a.5.5 0 0 0-.379-.485ZM8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                              </svg>
+                          </button>
+                      </div>
+                    </a>
+                </div>
+            </header>
+            <!-- Card body -->
+            <div class="py-3 px-5">
+                <h3 class="text-xs font-semibold uppercase text-gray-800 mb-1">
+                  پیام‌ها
+                </h3>
+                <!-- Chat list -->
+                {% comment %} <div class="divide-y divide-gray-200">
+                    <!-- User -->
+                    <button class="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
+                        <div class="flex items-center">
+                            <img class="rounded-full items-start flex-shrink-0 mr-3" src="https://res.cloudinary.com/dc6deairt/image/upload/v1638102932/user-32-01_pfck4u.jpg" width="32" height="32" alt="Marie Zulfikar" />
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900">Marie Zulfikar</h4>
+                                <div class="text-[13px]">The video chat ended · 2hrs</div>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- User -->
+                </div> {% endcomment %}
+                <ul class="max-w-md space-y-4">
   {% for room in rooms %} {% get_other_user request.user room as other_user %}
   <li
     id="room-{{ room.name }}"
@@ -37,7 +102,7 @@
 
       <!-- Dropdown menu -->
       <div
-        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700 dark:divide-gray-600"
         x-show="isOpen"
         @click.away="isOpen = false"
       >
@@ -45,24 +110,20 @@
           class="py-2 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownMenuIconHorizontalButton"
         >
-          <li>
             <button
               @click="action = 'delete'"
-              class="delete-room px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              class="mr-1 delete-room px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
               data-room-name="{{ room.name }}"
             >
               حذف
             </button>
-          </li>
-          <li>
             <button
               @click="action = 'report'"
-              class="report-room px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="mr-3 report-room px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               data-room-name="{{ room.name }}"
             >
               گزارش
             </button>
-          </li>
         </ul>
       </div>
     </div>
@@ -81,7 +142,7 @@
           <p class="text-lg font-semibold text-gray-900 dark:text-white">
             {{ other_user.username }}
           </p>
-          <p class="text-sm text-gray-500 dark:text-gray-400">
+          <p class="text-sm text-gray-500 dark:text-gray-400 mr-4">
             {% if room.messages.count %}
             <span class="block">{{ room.messages.last.content }}</span>
             <span class="text-gray-400"
@@ -161,7 +222,15 @@
     </div>
   </div>
 </div>
-<!-- end modal for taking report -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- end modal for taking report --> 
 
 {% endblock content %} 
 
