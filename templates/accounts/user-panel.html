@@ -7,31 +7,6 @@
 
 
 {% block content %}
-  <!-- start modal -->
-  <div id="popup-modal" tabindex="-1" class="font-vazir hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center bg-black bg-opacity-50">
-    <div class="relative w-full max-w-md mx-auto bg-white rounded-lg shadow-lg">
-        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-            <span class="sr-only">Close modal</span>
-        </button>
-        <div class="p-4 md:p-5 text-center">
-            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>
-            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">آیا می‌خواهید این آگهی را حذف کنید؟</h3>
-            <button id="confirm-delete" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-              بله, حذف کن
-            </button>
-            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-              نه, دست نگه دار
-            </button>
-        </div>
-    </div>
-  </div>
-  <!-- end modal -->
-
   <!-- Tabs for small screens -->
   <div class="sm:hidden">
     <label for="tabs" class="sr-only">Select your country</label>
@@ -68,41 +43,41 @@
             </div>
             
             {% if barters %}
-              <li>
+              <ul>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-                {% for barter in barters %}
-                <ol class="border-b border-gray-300 py-4">
-                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
-                      <img src="{{ barter.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
-                      <div class="p-6 flex flex-col flex-1">
-                        <h3 class="mt-3 mb-2 font-bold text-lg">
-                          {{ barter.title }}
-                        </h3>
-                        <span>
-                          معاوضه با : {{ barter.summary }}
-                        </span>
-                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
-                          <span class="text-sm">
-                            منطقه: {{ barter.region }}
-                          </span>
-                          |
+                  {% for barter in barters %}
+                    <li class="border-b border-gray-300 py-4" id="{{barter.slug}}">
+                      <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                        <img src="{{ barter.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
+                        <div class="p-6 flex flex-col flex-1">
+                          <h3 class="mt-3 mb-2 font-bold text-lg">
+                            {{ barter.title }}
+                          </h3>
                           <span>
-                            دسته‌بندی: {% for category in barter.categories.all %} {{category.title}} - {% endfor %}
+                            معاوضه با : {{ barter.summary }}
                           </span>
+                          <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
+                            <span class="text-sm">
+                              منطقه: {{ barter.region }}
+                            </span>
+                            |
+                            <span>
+                              دسته‌بندی: {% for category in barter.categories.all %} {{category.title}} - {% endfor %}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="mr-11">
+                          <a href="{{barter.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
+                          |
+                          <a href="{{barter.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                          |
+                          <button data-slug="{{barter.slug}}" class="barter-item-delete text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                         </div>
                       </div>
-                      <div class="mr-11">
-                        <a href="{{barter.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
-                        |
-                        <a href="{{barter.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
-                        |
-                        <button id="delete-barter" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
-                      </div>
-                    </div>
-                  </ol>
+                    </li>
                   {% endfor %}
                 </div>
-                </li>
+              </ul>
             {% else %}
               <p class="text-lg text-center">
                 شما هیچ آگهی‌ مبادله کالایی ندارید.
@@ -119,35 +94,35 @@
             </div>
 
             {% if jobs %}
-              <li>
+              <ul>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-                {% for job in jobs %}
-                <ol class="border-b border-gray-300 py-4">
-                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
-                      <div class="p-6 flex flex-col flex-1">
-                        <h3 class="mt-3 mb-2 font-bold text-lg">
-                          {{ job.title }} - 
-                          {{ job.summary }}
-                        </h3>
-                        <div class="mt-auto pt-4 border-t border-slate-950">
-                          <p class="text-sm">
-                            منطقه: {{ job.region }}
-                          </p>
-                          <p>همکاری: {% for co_type in job.cooperation_types.all %} {{co_type.name}} - {% endfor %}</p>
+                  {% for job in jobs %}
+                    <li class="border-b border-gray-300 py-4" id="{{job.slug}}">
+                      <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                        <div class="p-6 flex flex-col flex-1">
+                          <h3 class="mt-3 mb-2 font-bold text-lg">
+                            {{ job.title }} - 
+                            {{ job.summary }}
+                          </h3>
+                          <div class="mt-auto pt-4 border-t border-slate-950">
+                            <p class="text-sm">
+                              منطقه: {{ job.region }}
+                            </p>
+                            <p>همکاری: {% for co_type in job.cooperation_types.all %} {{co_type.name}} - {% endfor %}</p>
+                          </div>
+                        </div>
+                        <div class="mr-11">
+                          <a href="{{job.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
+                          |
+                          <a href="{{job.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                          |
+                          <button data-slug="{{job.slug}}" class="job-item-delete text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                         </div>
                       </div>
-                      <div class="mr-11">
-                        <a href="{{job.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
-                        |
-                        <a href="{{job.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
-                        |
-                        <button id="delete-job" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
-                      </div>
-                    </div>
-                  </ol>
+                    </li>
                   {% endfor %}
                 </div>
-                </li>
+              </ul>
             {% else %}
               <p class="text-lg text-center">شما هیچ آگهی کاریابی ندارید.</p>
             {% endif %}
@@ -162,39 +137,39 @@
             </div>
             
             {% if stuff_ads %}
-              <li>
+              <ul>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-                {% for stuff_adv in stuff_ads %}
-                <ol class="border-b border-gray-300 py-4">
-                    <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
-                      <img src="{{ stuff_adv.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
-                      <div class="p-6 flex flex-col flex-1">
-                        <h3 class="mt-3 mb-2 font-bold text-lg">
-                          {{ stuff_adv.title }} - 
-                          {{ stuff_adv.summary }}
-                        </h3>
-                        <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
-                          <span class="text-sm">
-                            وضعیت آگهی: {{ stuff_adv.get_stuff_status }}
-                          </span>
+                  {% for stuff_adv in stuff_ads %}
+                    <li class="border-b border-gray-300 py-4" id="{{stuff_adv.slug}}">
+                      <div class="dark:bg-gray-300 group-hover:opacity-75 lg:aspect-none w-full shadow rounded-lg overflow-hidden">
+                        <img src="{{ stuff_adv.images.first.image.url }}" class="object-cover h-40 w-full" alt="">
+                        <div class="p-6 flex flex-col flex-1">
+                          <h3 class="mt-3 mb-2 font-bold text-lg">
+                            {{ stuff_adv.title }} - 
+                            {{ stuff_adv.summary }}
+                          </h3>
+                          <div class="flex gap-4 place-content-center mt-auto pt-4 border-t border-slate-950">
+                            <span class="text-sm">
+                              وضعیت آگهی: {{ stuff_adv.get_stuff_status }}
+                            </span>
+                            |
+                            <span class="text-sm">
+                              {{ stuff_adv.price | intcomma }} تومان
+                            </span>
+                          </div>
+                        </div>
+                        <div class="mr-11">
+                          <a href="{{stuff_adv.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
                           |
-                          <span class="text-sm">
-                            {{ stuff_adv.price | intcomma }} تومان
-                          </span>
+                          <a href="{{stuff_adv.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
+                          |
+                          <button  data-slug="{{stuff_adv.slug}}" class="stuff_adv-item-delete text-blue-500 hover:text-blue-600 mx-2">حذف</button>
                         </div>
                       </div>
-                      <div class="mr-11">
-                        <a href="{{stuff_adv.get_absolute_url}}" class="text-blue-500 hover:text-blue-600 mr-2">مشاهده</a>
-                        |
-                        <a href="{{stuff_adv.get_edit_url}}" class="text-blue-500 hover:text-blue-600">ویرایش</a>
-                        |
-                        <button id="delete-stuff_adv" class="text-blue-500 hover:text-blue-600 mx-2">حذف</button>
-                      </div>
-                    </div>
-                  </ol>
+                    </li>
                   {% endfor %}
                 </div>
-                </li>
+              </ul>
             {% else %}
               <p class="text-lg text-center">
                 شما هیچ آگهی تبلیغاتی ندارید.

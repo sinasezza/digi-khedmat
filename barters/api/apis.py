@@ -25,12 +25,9 @@ def barter_image_delete_api(request: HttpRequest, id: int) -> Response:
 @authentication_classes((rest_authentications.SessionAuthentication,))
 @permission_classes((permissions.IsBarterOwnerOrReadOnly,))
 def barter_delete_api(request: HttpRequest, barter_slug: str) -> Response:
-    if request.method == "DELETE":
-        barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
-        barter.delete()
-        return Response(status=rest_status.HTTP_204_NO_CONTENT)
-    else:
-        return Response(data={"message": "BAD REQUEST!"}, status=rest_status.HTTP_400_BAD_REQUEST)
+    barter = get_object_or_404(models.BarterAdvertising, slug=barter_slug)
+    barter.delete()
+    return Response(status=rest_status.HTTP_204_NO_CONTENT)
     
 # ------------------------------------------------------------------------------------
 

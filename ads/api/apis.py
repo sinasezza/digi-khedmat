@@ -28,3 +28,15 @@ def stuff_image_delete_api(request: HttpRequest, id: int):
 def advertise_fetch_views_api(request: HttpRequest, adv_slug: str):
     advertise = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
     return Response(data={'views': advertise.views}, status=rest_status.HTTP_200_OK)
+
+# ------------------------------------------------------------------------------------
+
+
+
+@api_view(http_method_names=["DELETE",])
+@authentication_classes((rest_authentications.SessionAuthentication,))
+@permission_classes((permissions.IsStuffAdvertisingOwnerOrReadOnly,))
+def stuff_adv_delete_api(request: HttpRequest, adv_slug: str) -> Response:
+    adv = get_object_or_404(models.StuffAdvertising, slug=adv_slug)
+    adv.delete()
+    return Response(status=rest_status.HTTP_204_NO_CONTENT)

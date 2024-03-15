@@ -53,11 +53,18 @@ $(document).ready(function () {
     }
   });
 
+  // Handle delete button click
+  $('.delete-button').on('click', function () {
+    let imageId = $(this).data('image-id');
+    deleteImage(imageId);
+  });
+
+    
   function deleteImage(imageId) {
     // Perform delete action or show a confirmation modal
     console.log("Delete image with id:", imageId);
     // Add your delete logic here, e.g., AJAX request to server
-    fetch(`/api/ads/stuff-ads-image-delete/${imageId}/`, {
+    fetch(`/api/ads/stuff-adv-image-delete/${imageId}/`, {
       method: "DELETE",
       headers: {
         "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val(),
