@@ -4,26 +4,26 @@
 
 {% block content %}
 
-  <div class="bg-white p-4 rounded-lg shadow-lg">
-    <h3 class="text-xl font-bold mb-4">فرستنده :</h3>
-    <p><a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a></p>
-
-    <h3 class="text-xl font-bold mt-4 mb-4">آگهی :</h3>
-    <p><a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a></p>
-
+  <div style="margin-left: 500px; margin-right: 500px" class="font-vazir text-center place-items-center mt-12 bg-white p-4 rounded-lg shadow-lg">
+    <h3 class="text-xl font-bold mb-4">فرستنده:
+      <a href="{{ resume.user.get_user_profile }}" class="text-blue-500 hover:underline">{{ resume.user.username }}</a>
+    </h3>
+    <h3 class="text-xl font-bold mt-4 mb-4">آگهی‌:
+      <a href="{{ resume.advertisement.get_absolute_url }}" class="text-blue-500 hover:underline">{{ resume.advertisement.title }}</a>
+    </h3>
     <div class="mt-8">
       <div class="mb-4">
-        <span class="font-semibold">نام :</span>
-        <p>{{ resume.fname }} {{ resume.lname }}</p>
+        <span class="font-semibold">نام:</span>
+        {{ resume.fname }} {{ resume.lname }}
       </div>
 
       <div class="mb-4">
-        <span class="font-semibold">توضیحات :</span>
-        <p>{{ resume.description | safe }}</p>
+        <span class="font-semibold">توضیحات:</span>
+        {{ resume.description | safe }}
       </div>
 
       <div class="mb-4">
-        <span class="font-semibold">فایل :</span>
+        <span class="font-semibold">فایل:</span>
         <a href="{{ resume.get_pdf_url }}" class="text-blue-500 hover:underline">دانلود</a>
       </div>
     </div>
