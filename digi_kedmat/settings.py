@@ -347,7 +347,7 @@ else:
 
 
 # default Auto Field
-DEFAULT_AUTO_FIELD = os.environ.get('DEFAULT_AUTO_FIELD')
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Ckeditor Settings and Configs
