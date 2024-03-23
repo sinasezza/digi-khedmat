@@ -31,6 +31,12 @@ Ensure you have the following software installed:
 - [Node.js 18.15 LTS](https://nodejs.org/) or newer (required for Tailwind CSS)
 - [Git](https://git-scm.com/)
 
+## get the repository
+```bash
+git clone https://github.com/sinasezza/digi-khedmat.git
+cd digi-khedmat
+```
+
 ## Setup
 
 
