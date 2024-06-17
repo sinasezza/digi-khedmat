@@ -1,6 +1,6 @@
 # digi-khedmat
 
-Welcome to digi-khedmat! This repository contains the source code for both the backend and frontend services of the digi-khedmat web application ([digi-khedmat.ir](https://digi-khedmat.ir)).
+Welcome to digi-khedmat! This repository contains the source code for both the backend and frontend services of the digi-khedmat web application.
 
 ## Overview
 
