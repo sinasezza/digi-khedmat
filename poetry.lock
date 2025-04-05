@@ -1104,14 +1104,14 @@ files = [
 
 [[package]]
 name = "django"
-version = "5.0.13"
+version = "5.0.14"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "Django-5.0.13-py3-none-any.whl", hash = "sha256:b983238dfa2eb2e6b27ebb815e14f0741cf186606eb7bcd857e740174017c50e"},
-    {file = "Django-5.0.13.tar.gz", hash = "sha256:f9d4b7b87a9dae248d5f20cec940cf7290e07d508d6d8432e3c2cabf09b3b0ff"},
+    {file = "Django-5.0.14-py3-none-any.whl", hash = "sha256:e762bef8629ee704de215ebbd32062b84f4e56327eed412e5544f6f6eb1dfd74"},
+    {file = "Django-5.0.14.tar.gz", hash = "sha256:29019a5763dbd48da1720d687c3522ef40d1c61be6fb2fad27ed79e9f655bc11"},
 ]
 
 [package.dependencies]
@@ -2767,10 +2767,11 @@ name = "markuppy"
 version = "1.14"
 description = "An HTML/XML generator"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7"
 groups = ["main"]
 files = [
     {file = "MarkupPy-1.14.tar.gz", hash = "sha256:1adee2c0a542af378fe84548ff6f6b0168f3cb7f426b46961038a2bcfaad0d5f"},
+    {file = "markuppy-1.14-py3-none-any.whl", hash = "sha256:dc893880c5551d8388b688eef1d425dd48bb0b7d5bc74414fae86764ff4660ee"},
 ]
 
 [[package]]
@@ -5669,4 +5670,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "e1ee46a7cfa0579192449ca30463f28ee7b932353df947ece5ef0ed68736c987"
+content-hash = "bb486de1394ed75f48834afa904d71a1f8d1f37f62b3822183894d4c4cc0872d"
