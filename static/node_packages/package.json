@@ -18,7 +18,7 @@
     "moment-jalaali": "^0.10.4",
     "reconnecting-websocket": "^4.4.0",
     "socket.io": "^4.8.0",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.0",
     "validator": "^13.15.22"
   }
 }
